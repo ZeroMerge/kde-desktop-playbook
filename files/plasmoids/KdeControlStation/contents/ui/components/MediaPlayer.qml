@@ -15,7 +15,7 @@ Lib.Card {
     visible: root.showMediaPlayer
     property bool small: width < (root.fullRepWidth / 4)*3 
     property bool isLongButton: true
-    cornerRadius: roundedWidget ? 32 : 8
+    cornerRadius: roundedWidget ? 32 : 4
     Layout.fillWidth: true
     Layout.fillHeight: true
 

@@ -51,7 +51,7 @@ Item {
     Rectangle {
         anchors.fill: parent
         color: "#181a1e"
-        radius: 10
+        radius: 6
         border.color: "#282a30"
         border.width: 1
         z: -1

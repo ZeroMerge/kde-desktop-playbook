@@ -41,11 +41,11 @@ Rectangle {
 
     property bool roundedWidget: false
 
-    property int cornerRadius: roundedWidget ? 24 : 8
+    property int cornerRadius: roundedWidget ? 24 : 4
 
     property var margins: shadowContainer.margins
     default property alias content: dataContainer.data
-    radius: 8
+    radius: 4
 
     property bool hovered: false
     property bool showContentOverflowIndicator: false
@@ -81,7 +81,7 @@ Rectangle {
         Rectangle {
             id: shadowWidget
             anchors.fill: parent
-            anchors.margins: 2
+            anchors.margins: 0
             color: root.themeBgColor
             radius: cornerRadius
         }
@@ -91,21 +91,21 @@ Rectangle {
             transparentBorder: true
             horizontalOffset: 0
             verticalOffset: 1
-            radius: 4
-            samples: 9
-            color: "black"
+            radius: 2
+            samples: 5
+            color: Qt.rgba(0, 0, 0, 0.3)
         }
     }
 
     Rectangle {
         id: cardBg; 
-        color: !filled ? "transparent" :
+        color: !filled ? (rectangle.hovered ? Qt.rgba(1, 1, 1, 0.07) : "transparent") :
                 root.enableTransparency ? 
                 Qt.rgba(root.themeBgColor.r, root.themeBgColor.g, root.themeBgColor.b, root.transparencyLevel/100)
-                : (root.isDarkTheme ? "#202228" : root.themeBgColor)
+                : (rectangle.hovered ? "#2b2f38" : (root.isDarkTheme ? "#21242b" : root.themeBgColor))
 
-        border.color: glassEffect ? Qt.rgba(255, 255, 255, 0.18): (root.isDarkTheme ? "#2e323b" : root.disabledBgColor)
-        border.width: root.showBorders && bordr ? 1 : 0
+        border.color: "transparent"
+        border.width: 0
         anchors.centerIn: shadowContainer
         width: shadowWidget.width
         height: shadowWidget.height

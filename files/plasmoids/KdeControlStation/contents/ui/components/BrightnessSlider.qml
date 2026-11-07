@@ -21,7 +21,7 @@ Item {
     property bool canTogglePage: false
 
     property bool glassEffect: false
-    property int cornerRadius: roundedWidget ? 22 : 8
+    property int cornerRadius: roundedWidget ? 22 : 4
     property bool mediumSizeSlider: false
 
     property bool flat: false
