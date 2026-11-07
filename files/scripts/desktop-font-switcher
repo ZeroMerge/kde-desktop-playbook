@@ -63,11 +63,11 @@ EOF
         fi
     done
 
-    # 5. Notify KWin and Plasma to reload
+    # 5. Notify KWin and restart Plasma smoothly to apply font changes
     if command -v qdbus6 >/dev/null 2>&1; then
         qdbus6 org.kde.KWin /KWin reconfigure 2>/dev/null || true
-        qdbus6 org.kde.plasmashell /PlasmaShell refreshCurrentShell 2>/dev/null || true
     fi
+    systemctl --user restart plasma-plasmashell.service 2>/dev/null || true
 
     echo "Successfully activated font: $family across KDE, Dolphin, and GTK applications!"
 }
