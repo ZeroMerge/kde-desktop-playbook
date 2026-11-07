@@ -19,7 +19,7 @@
   <title>Home</title>
   <info>
    <metadata owner="http://freedesktop.org">
-    <bookmark:icon name="user-home"/>
+    <bookmark:icon name="user-home-symbolic"/>
    </metadata>
    <metadata owner="http://www.kde.org">
     <ID>1794044104/0</ID>
@@ -31,7 +31,7 @@
   <title>Desktop</title>
   <info>
    <metadata owner="http://freedesktop.org">
-    <bookmark:icon name="user-desktop"/>
+    <bookmark:icon name="user-desktop-symbolic"/>
    </metadata>
    <metadata owner="http://www.kde.org">
     <ID>1794044104/1</ID>
@@ -43,7 +43,7 @@
   <title>Documents</title>
   <info>
    <metadata owner="http://freedesktop.org">
-    <bookmark:icon name="folder-documents"/>
+    <bookmark:icon name="folder-documents-symbolic"/>
    </metadata>
    <metadata owner="http://www.kde.org">
     <ID>1794044104/2</ID>
@@ -55,7 +55,7 @@
   <title>Downloads</title>
   <info>
    <metadata owner="http://freedesktop.org">
-    <bookmark:icon name="folder-downloads"/>
+    <bookmark:icon name="folder-downloads-symbolic"/>
    </metadata>
    <metadata owner="http://www.kde.org">
     <ID>1794044104/3</ID>
@@ -67,7 +67,7 @@
   <title>Music</title>
   <info>
    <metadata owner="http://freedesktop.org">
-    <bookmark:icon name="folder-music"/>
+    <bookmark:icon name="folder-music-symbolic"/>
    </metadata>
    <metadata owner="http://www.kde.org">
     <ID>1794044104/6</ID>
@@ -79,7 +79,7 @@
   <title>Pictures</title>
   <info>
    <metadata owner="http://freedesktop.org">
-    <bookmark:icon name="folder-pictures"/>
+    <bookmark:icon name="folder-pictures-symbolic"/>
    </metadata>
    <metadata owner="http://www.kde.org">
     <ID>1794044104/7</ID>
@@ -91,7 +91,7 @@
   <title>Videos</title>
   <info>
    <metadata owner="http://freedesktop.org">
-    <bookmark:icon name="folder-videos"/>
+    <bookmark:icon name="folder-videos-symbolic"/>
    </metadata>
    <metadata owner="http://www.kde.org">
     <ID>1794044104/8</ID>
@@ -103,7 +103,7 @@
   <title>Network</title>
   <info>
    <metadata owner="http://freedesktop.org">
-    <bookmark:icon name="folder-network"/>
+    <bookmark:icon name="network-workgroup-symbolic"/>
    </metadata>
    <metadata owner="http://www.kde.org">
     <ID>1794044104/4</ID>
@@ -115,7 +115,7 @@
   <title>Trash</title>
   <info>
    <metadata owner="http://freedesktop.org">
-    <bookmark:icon name="user-trash"/>
+    <bookmark:icon name="user-trash-symbolic"/>
    </metadata>
    <metadata owner="http://www.kde.org">
     <ID>1794044104/5</ID>
@@ -127,7 +127,7 @@
   <title>Recent Files</title>
   <info>
    <metadata owner="http://freedesktop.org">
-    <bookmark:icon name="document-open-recent"/>
+    <bookmark:icon name="document-open-recent-symbolic"/>
    </metadata>
    <metadata owner="http://www.kde.org">
     <ID>1794044104/9</ID>
@@ -139,7 +139,7 @@
   <title>Recent Locations</title>
   <info>
    <metadata owner="http://freedesktop.org">
-    <bookmark:icon name="folder-open-recent"/>
+    <bookmark:icon name="folder-open-recent-symbolic"/>
    </metadata>
    <metadata owner="http://www.kde.org">
     <ID>1794044104/10</ID>
@@ -198,7 +198,7 @@
   <title>Redmi Pad SE</title>
   <info>
    <metadata owner="http://freedesktop.org">
-    <bookmark:icon name="kdeconnect"/>
+    <bookmark:icon name="kdeconnect-symbolic"/>
    </metadata>
    <metadata owner="http://www.kde.org">
     <ID>1794086429/1</ID>
