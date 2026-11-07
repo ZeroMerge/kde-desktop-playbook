@@ -5,6 +5,7 @@ import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.components as PlasmaComponents
 import org.kde.plasma.components as PlasmaComponents3
 import org.kde.plasma.networkmanagement as PlasmaNM
+import org.kde.kirigami as Kirigami
 import org.kde.ksvg as KSvg
 import "../lib" as Lib
 import org.kde.plasma.extras as PlasmaExtras
@@ -55,8 +56,11 @@ Lib.Card {
 
     ColumnLayout {
         anchors.fill: parent
-        spacing: root.smallSpacing
-        anchors.margins: 5
+        spacing: 12
+        anchors.leftMargin: 16
+        anchors.rightMargin: 16
+        anchors.topMargin: 14
+        anchors.bottomMargin: 14
 
         RowLayout {
             id: headerActions
@@ -64,14 +68,33 @@ Lib.Card {
             Layout.fillWidth: true
             visible: !customHeader
             z: page.z+1
-            ToolButton {
-                Layout.preferredHeight: root.largeFontSize * 2.5
-                icon.name: "arrow-left"
-                MouseArea {
-                    
+            spacing: 8
+
+            Item {
+                id: backBtn
+                Layout.preferredHeight: root.largeFontSize * 1.8
+                Layout.preferredWidth: Layout.preferredHeight
+
+                Rectangle {
                     anchors.fill: parent
-                    
-                    onClicked: fullRep.togglePage();
+                    color: backMouse.pressed ? "#2f333e" : backMouse.containsMouse ? "#2b2f38" : "transparent"
+                    radius: 4
+                    border.width: 0
+                }
+
+                Kirigami.Icon {
+                    anchors.centerIn: parent
+                    width: root.largeFontSize * 1.1
+                    height: width
+                    source: "go-previous-symbolic"
+                }
+
+                MouseArea {
+                    id: backMouse
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: fullRep.togglePage()
                 }
             }
 

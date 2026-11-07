@@ -48,6 +48,15 @@ Item {
 
     property bool expanded: root.expanded
 
+    Connections {
+        target: root
+        function onOpenPageRequested(pageName) {
+            if (pageName === "nightlight") {
+                fullRep.togglePage(fullRep.defaultInitialWidth, 260, nightLightPage);
+            }
+        }
+    }
+
     Rectangle {
         anchors.fill: parent
         color: "#181a1e"

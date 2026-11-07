@@ -118,6 +118,8 @@ PlasmoidItem {
 
     property int plasmaVersion
 
+    signal openPageRequested(string pageName)
+
     Plasma5Support.DataSource {
         id: executable
         engine: "executable"
@@ -135,6 +137,9 @@ PlasmoidItem {
                         root.expanded = false;
                     } else if (out === "toggle") {
                         root.expanded = !root.expanded;
+                    } else if (out === "nightlight") {
+                        root.expanded = true;
+                        root.openPageRequested("nightlight");
                     }
                 }
             }

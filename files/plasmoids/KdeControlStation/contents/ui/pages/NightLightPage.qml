@@ -139,6 +139,12 @@ PageTemplate {
 
                     Layout.alignment: Qt.AlignRight
 
+                    background: Rectangle {
+                        color: kcmButton.down ? "#2f333e" : kcmButton.hovered ? "#2b2f38" : "#22252c"
+                        radius: 4
+                        border.width: 0
+                    }
+
                     KeyNavigation.up: root.KeyNavigation.up
                     KeyNavigation.backtab: inhibitionSwitch.visible ? inhibitionSwitch : root
                     KeyNavigation.left: inhibitionSwitch
