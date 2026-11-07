@@ -1,0 +1,13 @@
+{
+    "KPackageStructure": "Plasma/Applet",
+    "KPlugin": {
+        "Id": "org.kde.plasma.dockpin",
+        "Name": "Dock Pin Strip",
+        "Description": "Toggle dock between static (pinned) and dodge mode",
+        "Version": "1.0",
+        "Category": "Windows and Tasks",
+        "Icon": "pin"
+    },
+    "X-Plasma-API": "declarativeappletscript",
+    "X-Plasma-MainScript": "ui/main.qml"
+}

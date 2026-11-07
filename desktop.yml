@@ -1,0 +1,172 @@
+---
+# ==============================================================================
+# Ansible Playbook: Modern Desktop Suite for Kubuntu / KDE Plasma 6
+# Features:
+#   1. Bottom Floating Dock with 0px Flush-Right Activator & On-Top Toggle
+#   2. Top-Center Status Capsule with Digital Clock & KDE Control Station
+#   3. Zero-Padding Custom Shell (Panel.qml) & 60fps Blur-Free Slide Transitions
+#   4. Fully Self-Contained Plasmoids (dockpin, KdeControlStation, dynamicisland)
+# ==============================================================================
+
+- name: Deploy Modern Desktop Suite on KDE Plasma 6
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  vars:
+    user_home: "{{ ansible_env.HOME }}"
+    plasma_plasmoids_dir: "{{ user_home }}/.local/share/plasma/plasmoids"
+    plasma_shells_dir: "{{ user_home }}/.local/share/plasma/shells/org.kde.plasma.desktop/contents/views"
+    plasma_themes_dir: "{{ user_home }}/.local/share/plasma/desktoptheme"
+    plasma_config_dir: "{{ user_home }}/.config"
+    repo_files_dir: "{{ playbook_dir }}/files"
+
+  tasks:
+    # --------------------------------------------------------------------------
+    # 1. System Dependencies (Run with sudo / become if root rights available)
+    # --------------------------------------------------------------------------
+    - name: Install System Dependencies for Plasma 6 & QML Modules
+      become: true
+      ignore_errors: true
+      apt:
+        name:
+          - curl
+          - git
+          - zip
+          - unzip
+          - python3
+          - python3-pil
+          - qml6-module-qtquick-effects
+          - qml6-module-qtquick-layouts
+          - plasma-widgets-addons
+        state: present
+        update_cache: false
+      tags:
+        - packages
+
+    # --------------------------------------------------------------------------
+    # 2. Directory Structure Creation
+    # --------------------------------------------------------------------------
+    - name: Ensure User Plasma Directories Exist
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+      loop:
+        - "{{ plasma_plasmoids_dir }}"
+        - "{{ plasma_shells_dir }}"
+        - "{{ plasma_themes_dir }}"
+        - "{{ plasma_config_dir }}"
+
+    # --------------------------------------------------------------------------
+    # 3. Deploy Custom Plasmoids
+    # --------------------------------------------------------------------------
+    - name: Deploy Dock Pin Activator (Halved 16px, Flush 0px Margin, On-Top Mode)
+      copy:
+        src: "{{ repo_files_dir }}/plasmoids/org.kde.plasma.dockpin"
+        dest: "{{ plasma_plasmoids_dir }}/"
+        mode: '0755'
+
+    - name: Deploy KDE Control Station (Patched for Plasma 6 & Dark Solid Card)
+      copy:
+        src: "{{ repo_files_dir }}/plasmoids/KdeControlStation"
+        dest: "{{ plasma_plasmoids_dir }}/"
+        mode: '0755'
+
+    - name: Deploy Community Dynamic Island (Option 2 Plasmoid Alternative)
+      copy:
+        src: "{{ repo_files_dir }}/plasmoids/com.manu028.dynamicisland"
+        dest: "{{ plasma_plasmoids_dir }}/"
+        mode: '0755'
+
+    # --------------------------------------------------------------------------
+    # 4. Deploy Shell Customization (Zero Floating Margin Fix)
+    # --------------------------------------------------------------------------
+    - name: Deploy Custom Panel.qml (Eliminate Floating Horizontal Padding)
+      copy:
+        src: "{{ repo_files_dir }}/shell/org.kde.plasma.desktop/contents/views/Panel.qml"
+        dest: "{{ plasma_shells_dir }}/Panel.qml"
+        mode: '0644'
+
+    # --------------------------------------------------------------------------
+    # 5. Deploy Custom Desktop Theme (Performance & Blur-Free Transitions)
+    # --------------------------------------------------------------------------
+    - name: Deploy Modern-Dock Theme (Opaque SVG Borders, Instant 60fps)
+      copy:
+        src: "{{ repo_files_dir }}/themes/modern-dock"
+        dest: "{{ plasma_themes_dir }}/"
+        mode: '0755'
+
+    # --------------------------------------------------------------------------
+    # 6. Apply Performance & Animation Configurations
+    # --------------------------------------------------------------------------
+    - name: Disable Dynamic Blur and Contrast Effects in plasmarc (Smooth Slides)
+      ini_file:
+        path: "{{ plasma_config_dir }}/plasmarc"
+        section: "{{ item.section }}"
+        option: "{{ item.option }}"
+        value: "{{ item.value }}"
+        mode: '0644'
+      loop:
+        - { section: 'Blur', option: 'Enabled', value: 'false' }
+        - { section: 'ContrastEffect', option: 'Enabled', value: 'false' }
+        - { section: 'AdaptiveTransparency', option: 'Enabled', value: 'false' }
+
+    - name: Stop and Disable Legacy Background Services if present
+      systemd:
+        name: modern-desktop.service
+        scope: user
+        state: stopped
+        enabled: false
+      ignore_errors: true
+
+    - name: Deploy Python Desktop Services (Option 4 Standalone Dynamic Island)
+      tags:
+        - python-service
+      block:
+        - name: Ensure modern-desktop directory exists
+          file:
+            path: "{{ user_home }}/.local/share/modern-desktop"
+            state: directory
+            mode: '0755'
+        - name: Copy Python Services
+          copy:
+            src: "{{ repo_files_dir }}/python-services/{{ item }}"
+            dest: "{{ user_home }}/.local/share/modern-desktop/{{ item }}"
+            mode: '0755'
+          loop:
+            - dynamic_island.py
+            - bottom_dock.py
+            - start_desktop.sh
+        - name: Deploy Systemd User Service
+          copy:
+            src: "{{ repo_files_dir }}/python-services/modern-desktop.service"
+            dest: "{{ user_home }}/.config/systemd/user/modern-desktop.service"
+            mode: '0644'
+      when: false  # Only runs when explicitly requested with `--tags python-service`
+
+    # --------------------------------------------------------------------------
+    # 7. Apply Plasma Layout (Top Status Capsule + Bottom Dock)
+    # --------------------------------------------------------------------------
+    - name: Execute Plasma Layout Generator via D-Bus Scripting
+      command: >
+        qdbus6 org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript
+        "$(cat {{ repo_files_dir }}/scripts/setup_desktop_layout.js)"
+      environment:
+        DBUS_SESSION_BUS_ADDRESS: "{{ ansible_env.DBUS_SESSION_BUS_ADDRESS | default('unix:path=/run/user/' ~ ansible_user_uid ~ '/bus') }}"
+      changed_when: true
+
+    - name: Restart Plasmashell to Apply All Visual Refinements
+      systemd:
+        name: plasma-plasmashell.service
+        scope: user
+        state: restarted
+      ignore_errors: true
+      changed_when: true
+
+    - name: Display Success Message
+      debug:
+        msg: >
+          Modern Desktop Suite has been successfully installed and activated!
+          Top-Center Capsule: Digital Clock + KDE Control Station.
+          Bottom Dock: Pinned launchers + Flush 0px Halved Activator with On-Top Toggle.

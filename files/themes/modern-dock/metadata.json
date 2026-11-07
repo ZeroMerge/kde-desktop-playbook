@@ -1,0 +1,10 @@
+{
+    "KPlugin": {
+        "Id": "modern-dock",
+        "Name": "Modern Dock",
+        "Description": "0px panel corners with 0px edge padding and 4px task highlights",
+        "Version": "1.0",
+        "License": "LGPL"
+    },
+    "X-Plasma-API": "5.0"
+}

@@ -1,0 +1,13 @@
+[Unit]
+Description=Modern Desktop Dynamic Island and Physics Dock
+After=plasma-plasmashell.service
+
+[Service]
+Type=simple
+ExecStart=/home/zeromerge/.local/share/modern-desktop/start_desktop.sh
+Restart=always
+RestartSec=2
+Environment=QT_QPA_PLATFORM=wayland
+
+[Install]
+WantedBy=default.target
