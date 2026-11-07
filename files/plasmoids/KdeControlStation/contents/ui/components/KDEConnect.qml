@@ -15,9 +15,10 @@ Lib.CardButton {
     Layout.fillHeight: true
     title: i18n("KDE Connect")
     shouldStickIconSize: true
-    Kirigami.Icon {
+    Lib.Icon {
         anchors.fill: parent
         source: "kdeconnect-tray"
+        selected: false
     }
     onClicked: KdeConnect.OpenConfig.openConfiguration();
 }

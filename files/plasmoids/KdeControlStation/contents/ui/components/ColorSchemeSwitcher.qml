@@ -17,7 +17,7 @@ Lib.CardButton {
     visible: root.showColorSwitcher
     Layout.fillHeight: true
     Layout.fillWidth: true
-    title: i18n("Dark Theme")
+    title: root.isDarkTheme ? i18n("Dark Theme") : i18n("Light Theme")
     property string command: root.preferChangeGlobalTheme ? 
                             "plasma-apply-lookandfeel -a " : 
                             "plasma-apply-colorscheme "
@@ -43,7 +43,7 @@ Lib.CardButton {
         id: executable
         engine: "executable"
         connectedSources: []
-        onNewData: { 
+        onNewData: (sourceName, data) => { 
             disconnectSource(sourceName)
         }
         

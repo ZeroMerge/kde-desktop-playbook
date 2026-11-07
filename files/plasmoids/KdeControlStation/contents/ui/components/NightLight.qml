@@ -9,9 +9,6 @@ import org.kde.kirigami as Kirigami
 
 import "../lib" as Lib
 
-import org.kde.plasma.private.brightnesscontrolplugin
-
-
 Lib.CardButton {
     id: nightLight
 
@@ -24,23 +21,21 @@ Lib.CardButton {
 
     property var control: nightLightPage.control
 
-    Kirigami.Icon {
+    Lib.Icon {
+        id: icon
         anchors.fill: parent
-        source: {
-            if (!control.enabled) {
-                return "redshift-status-on"; // not configured: show generic night light icon rather "manually turned off" icon
-            } else if (!control.running) {
-                return "redshift-status-off";
-            } else if (control.daylight && control.targetTemperature != 6500) { // show daylight icon only when temperature during the day is actually modified
-                return "redshift-status-day";
-            } else {
-                return "redshift-status-on";
+        source: "weather-clear-night-symbolic"
+        selected: control.running && !control.inhibited
+        enableQuickAction: true
+        onQuickActionTriggered: {
+            if (control.togglable) {
+                control.inhibited = !control.inhibited;
             }
         }
     }
 
     onClicked: {
-        var pageHeight =  nightLightPage.contentItemHeight + nightLightPage.headerHeight;
+        var pageHeight = Math.max(260, nightLightPage.contentItemHeight + nightLightPage.headerHeight);
         fullRep.togglePage(fullRep.defaultInitialWidth, pageHeight, nightLightPage);
     }
 }

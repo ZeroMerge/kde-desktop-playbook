@@ -91,11 +91,11 @@ Lib.Card {
 
         KSvg.SvgItem {
             id: separatorLine
-            visible: !customHeader
+            visible: false
             z: 4
             elementId: "horizontal-line"
             Layout.fillWidth: true
-            Layout.preferredHeight: root.scale
+            Layout.preferredHeight: 0
 
             svg: KSvg.Svg {
                 imagePath: "widgets/line"

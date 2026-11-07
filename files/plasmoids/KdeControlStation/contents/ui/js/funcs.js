@@ -48,12 +48,11 @@ function toggleBluetooth()
 
 function checkInhibition() {
     var inhibited = false;
-
-    if (!NotificationManager.Server.valid) {
+    if (typeof notificationSettings === "undefined" || !notificationSettings) {
         return false;
     }
     var inhibitedUntil = notificationSettings.notificationsInhibitedUntil;
-    if (!isNaN(inhibitedUntil.getTime())) {
+    if (inhibitedUntil && !isNaN(inhibitedUntil.getTime())) {
         inhibited |= (Date.now() < inhibitedUntil.getTime());
     }
 
@@ -64,11 +63,11 @@ function checkInhibition() {
     if (notificationSettings.inhibitNotificationsWhenScreensMirrored) {
         inhibited |= notificationSettings.screensMirrored;
     }
-    return inhibited;
+    return Boolean(inhibited);
 }
 
 function toggleDnd() {
-    if (Funcs.checkInhibition()) {
+    if (checkInhibition()) {
         notificationSettings.notificationsInhibitedUntil = undefined;
         notificationSettings.revokeApplicationInhibitions();
 

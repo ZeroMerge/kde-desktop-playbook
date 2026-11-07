@@ -36,7 +36,7 @@ Lib.CardButton {
 
     onClicked: {
         KCM.KCMLauncher.openSystemSettings("kcm_users")
-        root.toggle()
+        root.expanded = false
     }
 }
 

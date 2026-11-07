@@ -124,35 +124,24 @@ Item {
         }
     }
 
-    SequentialAnimation  {
-        id: animation
-        running: false
-
-        property var hide: wrapper
-        property var show: activePage
-
-        PropertyAnimation { target: animation.hide; property: "shown"; from: animation.hide.shown; to: !animation.hide.shown; duration: 20 }
-        ParallelAnimation {
-            PropertyAnimation { target: fullRep; property: "Layout.preferredWidth"; to: newWidth; duration: 50 }
-            PropertyAnimation { target: fullRep; property: "Layout.preferredHeight"; to: newHeight; duration: 50 }
-        }
-        PropertyAnimation { target: animation.show; property: "shown"; from: animation.show.shown; to: !animation.show.shown; duration: 20}
-    }
-
     function togglePage(width = defaultInitialWidth, height = defaultInitialHeight, page = activePage) {
-        if(root.animations) {
-            newHeight = height;
-            newWidth = width;
-        }else {
-            newHeight = defaultInitialHeight;
-            newWidth = defaultInitialWidth;
+        newHeight = Math.max(340, height);
+        newWidth = width > 0 ? width : defaultInitialWidth;
+        
+        if (wrapper.shown) {
+            activePage = page;
+            wrapper.shown = false;
+            activePage.shown = true;
+            fullRep.Layout.preferredWidth = newWidth;
+            fullRep.Layout.preferredHeight = newHeight;
+        } else {
+            if (activePage) {
+                activePage.shown = false;
+            }
+            wrapper.shown = true;
+            fullRep.Layout.preferredWidth = defaultInitialWidth;
+            fullRep.Layout.preferredHeight = defaultInitialHeight;
         }
-
-        activePage = page;
-
-        animation.hide = wrapper.shown ? wrapper : activePage;
-        animation.show = wrapper.shown ? activePage : wrapper;
-        animation.running = true;
     }
 
     onExpandedChanged: {
