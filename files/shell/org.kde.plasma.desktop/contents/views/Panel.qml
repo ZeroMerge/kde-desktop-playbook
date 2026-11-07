@@ -311,7 +311,7 @@ Item {
                         return panel.screenGeometry.width
                     }
                 }
-                return containment.Layout.preferredWidth
+                return containment.Layout.preferredWidth + (root.topEdge ? 8 : 0)
             }
         }
         restoreMode: Binding.RestoreBinding
@@ -378,8 +378,10 @@ Item {
     }
     Item {
         id: containmentParent
-        anchors.centerIn: root.isOpaque ? floatingOpaqueItem : floatingTranslucentItem
-        width: root.verticalPanel ? panel.thickness : (root.topEdge ? Math.max(1, root.width - 24) : root.width)
+        anchors.verticalCenter: (root.topEdge ? topIslandPill : (root.isOpaque ? floatingOpaqueItem : floatingTranslucentItem)).verticalCenter
+        anchors.horizontalCenter: (root.topEdge ? topIslandPill : (root.isOpaque ? floatingOpaqueItem : floatingTranslucentItem)).horizontalCenter
+        anchors.horizontalCenterOffset: root.topEdge ? 4 : 0
+        width: root.verticalPanel ? panel.thickness : (root.topEdge ? containment.Layout.preferredWidth : root.width)
         height: root.verticalPanel ? root.height - root.fixedBottomFloatingPadding - root.fixedTopFloatingPadding : panel.thickness
     }
 }

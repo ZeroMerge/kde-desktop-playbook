@@ -10,9 +10,9 @@ Item {
     
     readonly property bool useCustomButtonImage: (Plasmoid.configuration.useCustomButtonImage && Plasmoid.configuration.customButtonImage.length != 0)
     
-    implicitWidth: 22
+    implicitWidth: 26
     implicitHeight: 22
-    Layout.preferredWidth: 22
+    Layout.preferredWidth: 26
     Layout.preferredHeight: 22
     Layout.alignment: Qt.AlignVCenter
 
