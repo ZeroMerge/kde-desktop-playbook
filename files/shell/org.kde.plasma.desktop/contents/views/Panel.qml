@@ -42,6 +42,7 @@ Item {
 
     readonly property bool rightEdge: containment?.plasmoid?.location === PlasmaCore.Types.RightEdge
     readonly property bool bottomEdge: containment?.plasmoid?.location === PlasmaCore.Types.BottomEdge
+    readonly property bool topEdge: containment?.plasmoid?.location === PlasmaCore.Types.TopEdge
 
     readonly property int bottomFloatingPadding: Math.round(fixedBottomFloatingPadding * floatingness)
     readonly property int leftFloatingPadding: Math.round(fixedLeftFloatingPadding * floatingness)
@@ -148,14 +149,14 @@ Item {
 
     KSvg.FrameSvgItem {
         id: translucentItem
-        visible: root.floatingness === 0 && root.panelOpacity !== 1
+        visible: !root.topEdge && root.floatingness === 0 && root.panelOpacity !== 1
         enabledBorders: panel.enabledBorders
         anchors.fill: floatingTranslucentItem
         imagePath: containment?.plasmoid?.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "widgets/panel-background"
     }
     KSvg.FrameSvgItem {
         id: floatingTranslucentItem
-        visible: root.floatingness !== 0 && root.panelOpacity !== 1
+        visible: !root.topEdge && root.floatingness !== 0 && root.panelOpacity !== 1
         x: root.rightEdge ? root.fixedLeftFloatingPadding + root.fixedRightFloatingPadding * (1 - root.floatingness) : root.leftFloatingPadding
         y: root.bottomEdge ? root.fixedTopFloatingPadding + root.fixedBottomFloatingPadding * (1 - root.floatingness) : root.topFloatingPadding
         width: root.verticalPanel ? panel.thickness : parent.width - root.leftFloatingPadding - root.rightFloatingPadding
@@ -165,14 +166,23 @@ Item {
     }
     KSvg.FrameSvgItem {
         id: floatingOpaqueItem
-        visible: root.floatingness !== 0 && root.panelOpacity !== 0
+        visible: !root.topEdge && root.floatingness !== 0 && root.panelOpacity !== 0
         opacity: root.panelOpacity
         anchors.fill: floatingTranslucentItem
         imagePath: containment?.plasmoid?.backgroundHints === PlasmaCore.Types.NoBackground ? "" : "solid/widgets/panel-background"
     }
+    Rectangle {
+        id: topIslandPill
+        visible: root.topEdge
+        anchors.fill: floatingTranslucentItem
+        radius: height / 2
+        color: "#181a1e"
+        border.color: "#282a30"
+        border.width: 1
+    }
     KSvg.FrameSvgItem {
         id: opaqueItem
-        visible: root.panelOpacity !== 0 && root.floatingness === 0
+        visible: !root.topEdge && root.panelOpacity !== 0 && root.floatingness === 0
         opacity: root.panelOpacity
         enabledBorders: panel.enabledBorders
         anchors.fill: floatingTranslucentItem
@@ -369,7 +379,7 @@ Item {
     Item {
         id: containmentParent
         anchors.centerIn: root.isOpaque ? floatingOpaqueItem : floatingTranslucentItem
-        width: root.verticalPanel ? panel.thickness : root.width
+        width: root.verticalPanel ? panel.thickness : (root.topEdge ? Math.max(1, root.width - 24) : root.width)
         height: root.verticalPanel ? root.height - root.fixedBottomFloatingPadding - root.fixedTopFloatingPadding : panel.thickness
     }
 }

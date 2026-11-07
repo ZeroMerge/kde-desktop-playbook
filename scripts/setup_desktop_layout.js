@@ -10,7 +10,7 @@ for (var i = 0; i < existingPanels.length; ++i) {
 // 2. Create Top-Center Status Capsule (Option 3: KDE Control Station)
 var topPanel = new Panel;
 topPanel.location = "top";
-topPanel.height = 36;
+topPanel.height = 30;
 topPanel.alignment = "center";
 topPanel.lengthMode = "fit";
 topPanel.floating = true;
