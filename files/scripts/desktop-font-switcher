@@ -1,0 +1,144 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# desktop-font-switcher: Fast switcher for modern system & application fonts
+# Supported Fonts: Switzer, Plus Jakarta Sans, Manrope, Satoshi, Inter
+# ==============================================================================
+set -euo pipefail
+
+FONTS_DIR="$HOME/.local/share/fonts"
+
+declare -A FONT_MAP=(
+    ["switzer"]="Switzer"
+    ["plus-jakarta"]="Plus Jakarta Sans"
+    ["jakarta"]="Plus Jakarta Sans"
+    ["manrope"]="Manrope"
+    ["satoshi"]="Satoshi"
+    ["inter"]="Inter"
+)
+
+get_current_font() {
+    kreadconfig6 --file kdeglobals --group General --key font 2>/dev/null | cut -d',' -f1 || echo "Unknown"
+}
+
+apply_font() {
+    local family="$1"
+    echo "Applying system font: $family..."
+
+    # 1. Update KDE Plasma kdeglobals
+    kwriteconfig6 --file kdeglobals --group General --key font "$family,10,-1,5,50,0,0,0,0,0"
+    kwriteconfig6 --file kdeglobals --group General --key menuFont "$family,10,-1,5,50,0,0,0,0,0"
+    kwriteconfig6 --file kdeglobals --group General --key smallestReadableFont "$family,8,-1,5,50,0,0,0,0,0"
+    kwriteconfig6 --file kdeglobals --group General --key toolBarFont "$family,10,-1,5,50,0,0,0,0,0"
+    kwriteconfig6 --file kdeglobals --group WM --key activeFont "$family,10,-1,5,60,0,0,0,0,0"
+
+    # 2. Update Dolphin specific font keys if needed
+    kwriteconfig6 --file dolphinrc --group DetailsMode --key UseSystemFont "true"
+    kwriteconfig6 --file dolphinrc --group IconsMode --key UseSystemFont "true"
+    kwriteconfig6 --file dolphinrc --group CompactMode --key UseSystemFont "true"
+
+    # 3. Update GTK 3 / 4 via gsettings
+    if command -v gsettings >/dev/null 2>&1; then
+        gsettings set org.gnome.desktop.interface font-name "$family 10" 2>/dev/null || true
+        gsettings set org.gnome.desktop.interface document-font-name "$family 10" 2>/dev/null || true
+    fi
+
+    # 4. Update GTK settings files
+    for gtk_ver in "gtk-3.0" "gtk-4.0"; do
+        local config_dir="$HOME/.config/$gtk_ver"
+        mkdir -p "$config_dir"
+        local config_file="$config_dir/settings.ini"
+        if [ -f "$config_file" ]; then
+            if grep -q "gtk-font-name" "$config_file"; then
+                sed -i "s/^gtk-font-name=.*/gtk-font-name=$family 10/" "$config_file"
+            else
+                sed -i "/\[Settings\]/a gtk-font-name=$family 10" "$config_file"
+            fi
+        else
+            cat <<EOF > "$config_file"
+[Settings]
+gtk-font-name=$family 10
+gtk-theme-name=Breeze-Dark
+gtk-application-prefer-dark-theme=1
+EOF
+        fi
+    done
+
+    # 5. Notify KWin and Plasma to reload
+    if command -v qdbus6 >/dev/null 2>&1; then
+        qdbus6 org.kde.KWin /KWin reconfigure 2>/dev/null || true
+        qdbus6 org.kde.plasmashell /PlasmaShell refreshCurrentShell 2>/dev/null || true
+    fi
+
+    echo "Successfully activated font: $family across KDE, Dolphin, and GTK applications!"
+}
+
+show_help() {
+    echo "Usage: $(basename "$0") [FONT_NAME | --list | --current]"
+    echo ""
+    echo "Available fonts:"
+    echo "  1) switzer       - Switzer (Contemporary Swiss Grotesque, clean tabular metrics)"
+    echo "  2) plus-jakarta  - Plus Jakarta Sans (Modern Geometric, high digital legibility)"
+    echo "  3) manrope       - Manrope (Semi-Geometric, friendly modern SaaS look)"
+    echo "  4) satoshi       - Satoshi (Structural Neo-Grotesque, high design polish)"
+    echo "  5) inter         - Inter (Default clean UI grotesque)"
+    echo ""
+    echo "Current active font: $(get_current_font)"
+}
+
+TARGET="${1:-}"
+
+if [ -z "$TARGET" ]; then
+    show_help
+    echo ""
+    read -rp "Enter choice [1-5 or name] (default: switzer): " CHOICE
+    CHOICE="${CHOICE:-switzer}"
+    case "$CHOICE" in
+        1|switzer) TARGET="switzer" ;;
+        2|plus-jakarta|jakarta) TARGET="plus-jakarta" ;;
+        3|manrope) TARGET="manrope" ;;
+        4|satoshi) TARGET="satoshi" ;;
+        5|inter) TARGET="inter" ;;
+        *) TARGET="$CHOICE" ;;
+    esac
+fi
+
+case "$TARGET" in
+    --help|-h)
+        show_help
+        exit 0
+        ;;
+    --current|-c)
+        echo "Current active font: $(get_current_font)"
+        exit 0
+        ;;
+    --list|-l)
+        show_help
+        exit 0
+        ;;
+    switzer|Switzer)
+        apply_font "Switzer"
+        ;;
+    plus-jakarta|plus-jakarta-sans|jakarta|"Plus Jakarta Sans")
+        apply_font "Plus Jakarta Sans"
+        ;;
+    manrope|Manrope)
+        apply_font "Manrope"
+        ;;
+    satoshi|Satoshi)
+        apply_font "Satoshi"
+        ;;
+    inter|Inter)
+        apply_font "Inter"
+        ;;
+    *)
+        # If user passed an arbitrary font family installed on system
+        if fc-list : family | grep -iq "^$TARGET$"; then
+            MATCHED=$(fc-list : family | grep -i "^$TARGET$" | head -n 1)
+            apply_font "$MATCHED"
+        else
+            echo "Error: Unknown font '$TARGET'."
+            show_help
+            exit 1
+        fi
+        ;;
+esac

@@ -47,7 +47,7 @@
     # --------------------------------------------------------------------------
     # 2. Directory Structure Creation
     # --------------------------------------------------------------------------
-    - name: Ensure User Plasma Directories Exist
+    - name: Ensure User Plasma & Font Directories Exist
       file:
         path: "{{ item }}"
         state: directory
@@ -57,6 +57,53 @@
         - "{{ plasma_shells_dir }}"
         - "{{ plasma_themes_dir }}"
         - "{{ plasma_config_dir }}"
+        - "{{ user_home }}/.local/share/fonts"
+        - "{{ user_home }}/.local/bin"
+
+    # --------------------------------------------------------------------------
+    # 2b. Deploy Modern UI Fonts & Switcher Tool
+    # --------------------------------------------------------------------------
+    - name: Deploy Typography Suite (Switzer, Plus Jakarta Sans, Manrope, Satoshi)
+      copy:
+        src: "{{ repo_files_dir }}/fonts/"
+        dest: "{{ user_home }}/.local/share/fonts/"
+        mode: '0644'
+
+    - name: Refresh System Font Cache
+      command: fc-cache -f "{{ user_home }}/.local/share/fonts"
+      changed_when: false
+
+    - name: Deploy Desktop Font Switcher CLI Utility
+      copy:
+        src: "{{ repo_files_dir }}/scripts/desktop-font-switcher"
+        dest: "{{ user_home }}/.local/bin/desktop-font-switcher"
+        mode: '0755'
+
+    - name: Symlink switch-font helper
+      file:
+        src: "{{ user_home }}/.local/bin/desktop-font-switcher"
+        dest: "{{ user_home }}/.local/bin/switch-font"
+        state: link
+        force: true
+
+    - name: Apply Switzer as System & Application Font
+      command: "{{ user_home }}/.local/bin/desktop-font-switcher switzer"
+      changed_when: true
+
+    # --------------------------------------------------------------------------
+    # 2c. Deploy Clean File Explorer (Dolphin) Configurations
+    # --------------------------------------------------------------------------
+    - name: Deploy Dolphin UI Settings (Clean Details Mode, Full-Row Highlight, Minimal Toolbar)
+      copy:
+        src: "{{ repo_files_dir }}/configs/dolphinrc"
+        dest: "{{ plasma_config_dir }}/dolphinrc"
+        mode: '0644'
+
+    - name: Deploy Clean Places Sidebar Bookmarks
+      copy:
+        src: "{{ repo_files_dir }}/configs/user-places.xbel"
+        dest: "{{ user_home }}/.local/share/user-places.xbel"
+        mode: '0644'
 
     # --------------------------------------------------------------------------
     # 3. Deploy Custom Plasmoids

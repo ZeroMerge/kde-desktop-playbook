@@ -32,6 +32,28 @@ mkdir -p "${PLASMOIDS_DIR}"
 mkdir -p "${SHELLS_DIR}"
 mkdir -p "${THEMES_DIR}"
 mkdir -p "${CONFIG_DIR}"
+mkdir -p "${USER_HOME}/.local/share/fonts"
+mkdir -p "${USER_HOME}/.local/bin"
+
+# 1b. Deploy Modern UI Fonts & Switcher Tool
+echo "==> Deploying typography suite (Switzer, Plus Jakarta Sans, Manrope, Satoshi)..."
+cp -r "${SCRIPT_DIR}/files/fonts/"* "${USER_HOME}/.local/share/fonts/"
+fc-cache -f "${USER_HOME}/.local/share/fonts" 2>/dev/null || true
+
+cp "${SCRIPT_DIR}/files/scripts/desktop-font-switcher" "${USER_HOME}/.local/bin/desktop-font-switcher"
+chmod +x "${USER_HOME}/.local/bin/desktop-font-switcher"
+ln -sf "${USER_HOME}/.local/bin/desktop-font-switcher" "${USER_HOME}/.local/bin/switch-font"
+
+# Deploy Dolphin Clean UI configs
+if [ -f "${SCRIPT_DIR}/files/configs/dolphinrc" ]; then
+    cp "${SCRIPT_DIR}/files/configs/dolphinrc" "${CONFIG_DIR}/dolphinrc"
+fi
+if [ -f "${SCRIPT_DIR}/files/configs/user-places.xbel" ]; then
+    cp "${SCRIPT_DIR}/files/configs/user-places.xbel" "${USER_HOME}/.local/share/user-places.xbel"
+fi
+
+# Apply Switzer
+"${USER_HOME}/.local/bin/desktop-font-switcher" switzer || true
 
 # 2. Deploy Custom Plasmoids
 echo "==> Deploying custom plasmoids..."
