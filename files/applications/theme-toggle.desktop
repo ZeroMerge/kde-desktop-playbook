@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Toggle Dark/Light Mode
+Comment=Switch between Modern Dark and Modern Light themes
+Exec=/home/zeromerge/.local/bin/desktop-theme toggle
+Icon=preferences-desktop-theme
+Terminal=false
+Type=Application
+Categories=Settings;DesktopSettings;

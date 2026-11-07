@@ -1,0 +1,10 @@
+{
+    "KPlugin": {
+        "Id": "modern-dock-light",
+        "Name": "Modern Dock Light",
+        "Description": "Modern dock & capsule theme (Light Mode)",
+        "Version": "1.0",
+        "License": "LGPL"
+    },
+    "X-Plasma-API": "5.0"
+}

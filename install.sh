@@ -75,6 +75,31 @@ cp "${SCRIPT_DIR}/files/shell/org.kde.plasma.desktop/contents/views/Panel.qml" "
 
 # 4. Deploy Custom Desktop Theme (Blur-Free Opaque SVG Borders)
 echo "==> Deploying modern-dock desktop theme..."
+
+# Deploy Color Schemes (ModernDark, ModernLight)
+mkdir -p "${USER_HOME}/.local/share/color-schemes"
+cp -r "${SCRIPT_DIR}/files/color-schemes/"* "${USER_HOME}/.local/share/color-schemes/" 2>/dev/null || true
+
+# Deploy modern-dock-light theme
+rm -rf "${THEMES_DIR}/modern-dock-light"
+cp -r "${SCRIPT_DIR}/files/themes/modern-dock-light" "${THEMES_DIR}/"
+
+# Deploy Theme Switcher and Desktop Toggle
+cp "${SCRIPT_DIR}/files/bin/desktop-theme" "${USER_HOME}/.local/bin/desktop-theme"
+chmod +x "${USER_HOME}/.local/bin/desktop-theme"
+mkdir -p "${USER_HOME}/.local/share/applications"
+cp "${SCRIPT_DIR}/files/applications/theme-toggle.desktop" "${USER_HOME}/.local/share/applications/"
+chmod +x "${USER_HOME}/.local/share/applications/theme-toggle.desktop"
+
+# Deploy Dolphin QSS and wrapper
+cp "${SCRIPT_DIR}/files/configs/dolphin-dark.qss" "${CONFIG_DIR}/dolphin-dark.qss" 2>/dev/null || true
+cp "${SCRIPT_DIR}/files/configs/dolphin-light.qss" "${CONFIG_DIR}/dolphin-light.qss" 2>/dev/null || true
+cp "${SCRIPT_DIR}/files/configs/dolphin.qss" "${CONFIG_DIR}/dolphin.qss" 2>/dev/null || true
+if [ -f "${SCRIPT_DIR}/files/bin/dolphin" ]; then
+    cp "${SCRIPT_DIR}/files/bin/dolphin" "${USER_HOME}/.local/bin/dolphin"
+    chmod +x "${USER_HOME}/.local/bin/dolphin"
+fi
+
 rm -rf "${THEMES_DIR}/modern-dock"
 cp -r "${SCRIPT_DIR}/files/themes/modern-dock" "${THEMES_DIR}/"
 

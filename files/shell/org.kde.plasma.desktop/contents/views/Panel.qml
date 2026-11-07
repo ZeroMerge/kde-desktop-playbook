@@ -176,8 +176,9 @@ Item {
         visible: root.topEdge
         anchors.fill: floatingTranslucentItem
         radius: height / 2
-        color: "#181a1e"
-        border.color: "#282a30"
+        readonly property bool isLight: (Kirigami.Theme.backgroundColor.r * 0.299 + Kirigami.Theme.backgroundColor.g * 0.587 + Kirigami.Theme.backgroundColor.b * 0.114) > 0.5
+        color: isLight ? "#f0f2f5" : "#181a1e"
+        border.color: isLight ? "#d0d4dc" : "#282a30"
         border.width: 1
     }
     KSvg.FrameSvgItem {
@@ -311,7 +312,7 @@ Item {
                         return panel.screenGeometry.width
                     }
                 }
-                return containment.Layout.preferredWidth + (root.topEdge ? 6 : 0)
+                return containment.Layout.preferredWidth + (root.topEdge ? 8 : 0)
             }
         }
         restoreMode: Binding.RestoreBinding
@@ -326,7 +327,7 @@ Item {
                 return;
             }
 
-            return containment.plasmoid.backgroundHints;
+            return root.topEdge ? PlasmaCore.Types.NoBackground : containment.plasmoid.backgroundHints;
         }
         restoreMode: Binding.RestoreBinding
     }

@@ -1,6 +1,6 @@
 #!/bin/sh
-if [ 0 -eq 0 ]; then
+if [ $# -eq 0 ]; then
     exec /usr/bin/dolphin -stylesheet /home/zeromerge/.config/dolphin.qss
 else
-    exec /usr/bin/dolphin -stylesheet /home/zeromerge/.config/dolphin.qss ""
+    exec /usr/bin/dolphin -stylesheet /home/zeromerge/.config/dolphin.qss "$@"
 fi

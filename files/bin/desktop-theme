@@ -1,0 +1,102 @@
+#!/usr/bin/env bash
+set -e
+
+MODE_FILE="$HOME/.config/desktop-theme-mode"
+
+apply_light() {
+    echo "Switching to Light Mode..."
+    
+    # 1. Apply Light Color Scheme
+    plasma-apply-colorscheme ModernLight
+    
+    # 2. Apply Modern Dock Light Plasma Theme
+    plasma-apply-desktoptheme modern-dock-light
+    
+    # 3. Apply Papirus icon theme (optimized for light panels)
+    kwriteconfig6 --file kdeglobals --group Icons --key Theme Papirus
+    
+    # 4. Apply GTK 3/4 light themes
+    mkdir -p "$HOME/.config/gtk-3.0" "$HOME/.config/gtk-4.0"
+    kwriteconfig6 --file "$HOME/.config/gtk-3.0/settings.ini" --group Settings --key gtk-theme-name Breeze
+    kwriteconfig6 --file "$HOME/.config/gtk-4.0/settings.ini" --group Settings --key gtk-theme-name Breeze
+    
+    # 5. Apply Dolphin Explorer Light QSS
+    cp "$HOME/.config/dolphin-light.qss" "$HOME/.config/dolphin.qss"
+    
+    # 6. Notify KWin & Plasma
+    qdbus6 org.kde.KWin /KWin org.kde.KWin.reconfigure >/dev/null 2>&1 || true
+    
+    # 7. If Dolphin is running, refresh it
+    if pgrep -x dolphin >/dev/null 2>&1; then
+        killall dolphin 2>/dev/null || true
+        nohup "$HOME/.local/bin/dolphin" >/dev/null 2>&1 &
+    fi
+    
+    echo "light" > "$MODE_FILE"
+    echo "Successfully switched to Light Mode."
+}
+
+apply_dark() {
+    echo "Switching to Dark Mode..."
+    
+    # 1. Apply Dark Color Scheme
+    plasma-apply-colorscheme ModernDark
+    
+    # 2. Apply Modern Dock Dark Plasma Theme
+    plasma-apply-desktoptheme modern-dock
+    
+    # 3. Apply Papirus-Dark icon theme
+    kwriteconfig6 --file kdeglobals --group Icons --key Theme Papirus-Dark
+    
+    # 4. Apply GTK 3/4 dark themes
+    mkdir -p "$HOME/.config/gtk-3.0" "$HOME/.config/gtk-4.0"
+    kwriteconfig6 --file "$HOME/.config/gtk-3.0/settings.ini" --group Settings --key gtk-theme-name Breeze-Dark
+    kwriteconfig6 --file "$HOME/.config/gtk-4.0/settings.ini" --group Settings --key gtk-theme-name Breeze-Dark
+    
+    # 5. Apply Dolphin Explorer Dark QSS
+    cp "$HOME/.config/dolphin-dark.qss" "$HOME/.config/dolphin.qss"
+    
+    # 6. Notify KWin & Plasma
+    qdbus6 org.kde.KWin /KWin org.kde.KWin.reconfigure >/dev/null 2>&1 || true
+    
+    # 7. If Dolphin is running, refresh it
+    if pgrep -x dolphin >/dev/null 2>&1; then
+        killall dolphin 2>/dev/null || true
+        nohup "$HOME/.local/bin/dolphin" >/dev/null 2>&1 &
+    fi
+    
+    echo "dark" > "$MODE_FILE"
+    echo "Successfully switched to Dark Mode."
+}
+
+get_current_mode() {
+    if [ -f "$MODE_FILE" ]; then
+        cat "$MODE_FILE"
+    else
+        echo "dark"
+    fi
+}
+
+case "$1" in
+    light)
+        apply_light
+        ;;
+    dark)
+        apply_dark
+        ;;
+    toggle)
+        CURRENT=$(get_current_mode)
+        if [ "$CURRENT" = "light" ]; then
+            apply_dark
+        else
+            apply_light
+        fi
+        ;;
+    status)
+        echo "Current mode: $(get_current_mode)"
+        ;;
+    *)
+        echo "Usage: desktop-theme {light|dark|toggle|status}"
+        exit 1
+        ;;
+esac

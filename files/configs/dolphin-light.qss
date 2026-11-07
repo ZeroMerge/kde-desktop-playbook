@@ -1,0 +1,65 @@
+* {
+    background-color: #ffffff;
+    color: #181a1c;
+}
+
+QMainWindow, QDockWidget, QToolBar {
+    background-color: #f0f2f5;
+    border: none;
+}
+
+QToolBar::separator {
+    background: transparent;
+    width: 0px;
+    height: 0px;
+    border: none;
+}
+
+QMainWindow::separator {
+    background: transparent;
+    width: 0px;
+    height: 0px;
+    border: none;
+}
+
+QSplitter::handle {
+    background: transparent;
+    width: 0px;
+    height: 0px;
+    border: none;
+}
+
+/* Places Sidebar: generous side padding and floating rounded pill highlight */
+QDockWidget QListView {
+    background-color: #f0f2f5;
+    border: none;
+    outline: none;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+QDockWidget QListView::item {
+    margin-left: 10px;
+    margin-right: 10px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    border-radius: 4px;
+    border: none;
+    color: #181a1c;
+}
+
+QDockWidget QListView::item:selected {
+    background-color: #d0dae6;
+    color: #181a1c;
+    border: none;
+}
+
+QDockWidget QListView::item:hover {
+    background-color: #e2e8f0;
+    color: #181a1c;
+    border: none;
+}
