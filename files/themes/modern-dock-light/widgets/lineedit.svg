@@ -14,12 +14,13 @@
     <ns1:guide position="-5,-115" orientation="0,-1" id="guide10" ns2:locked="false" />
   </ns1:namedview>
   <ns0:style id="current-color-scheme" type="text/css">
-        .ColorScheme-Text { color:#fcfcfc; }
+        .ColorScheme-Text { color:#181a1c; }
         .ColorScheme-Background { color:#ffffff; }
-        .ColorScheme-ViewHover { color:#343d4f; }
-        .ColorScheme-ViewFocus { color:#343d4f; }
-        .ColorScheme-ButtonHover { color:#343d4f; }
-        .ColorScheme-ButtonFocus { color:#343d4f; }
+        .ColorScheme-ViewBackground { color:#ffffff; }
+        .ColorScheme-ViewHover { color:#d0dae6; }
+        .ColorScheme-ViewFocus { color:#d0dae6; }
+        .ColorScheme-ButtonHover { color:#d0dae6; }
+        .ColorScheme-ButtonFocus { color:#d0dae6; }
         </ns0:style>
   <ns0:rect id="hint-tile-center" height="2.07712602615" rx="2.07712602615" style="fill:#4e9a06;" width="2.03293180466" x="0" y="-4" />
   <ns0:rect id="hint-focus-over-base" height="2.07712602615" rx="2.07712602615" style="fill:#4e9a06;" width="2.03293180466" x="4" y="-4" />

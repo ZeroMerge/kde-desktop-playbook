@@ -140,9 +140,10 @@ PageTemplate {
                     Layout.alignment: Qt.AlignRight
 
                     background: Rectangle {
-                        color: kcmButton.down ? "#2f333e" : kcmButton.hovered ? "#2b2f38" : "#22252c"
+                        color: kcmButton.down ? (root.isDarkTheme ? "#2f333e" : "#d8dee6") : kcmButton.hovered ? (root.isDarkTheme ? "#2b2f38" : "#e8edf2") : (root.isDarkTheme ? "#22252c" : "#ffffff")
                         radius: 2
-                        border.width: 0
+                        border.color: root.isDarkTheme ? "transparent" : "#d8dee6"
+                        border.width: root.isDarkTheme ? 0 : 1
                     }
 
                     KeyNavigation.up: root.KeyNavigation.up

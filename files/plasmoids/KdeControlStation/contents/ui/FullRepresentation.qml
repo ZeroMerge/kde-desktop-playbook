@@ -59,9 +59,9 @@ Item {
 
     Rectangle {
         anchors.fill: parent
-        color: "#181a1e"
+        color: root.isDarkTheme ? "#181a1e" : "#f0f2f5"
         radius: 4
-        border.color: "#24262c"
+        border.color: root.isDarkTheme ? "#24262c" : "#d0d4dc"
         border.width: 1
         z: -1
     }

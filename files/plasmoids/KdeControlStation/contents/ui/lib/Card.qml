@@ -82,7 +82,7 @@ Rectangle {
             id: shadowWidget
             anchors.fill: parent
             anchors.margins: 0
-            color: root.themeBgColor
+            color: root.isDarkTheme ? root.themeBgColor : "#ffffff"
             radius: cornerRadius
         }
         DropShadow {
@@ -93,19 +93,19 @@ Rectangle {
             verticalOffset: 1
             radius: 2
             samples: 5
-            color: Qt.rgba(0, 0, 0, 0.3)
+            color: root.isDarkTheme ? Qt.rgba(0, 0, 0, 0.3) : Qt.rgba(0, 0, 0, 0.08)
         }
     }
 
     Rectangle {
         id: cardBg; 
-        color: !filled ? (rectangle.hovered ? Qt.rgba(1, 1, 1, 0.07) : "transparent") :
+        color: !filled ? (rectangle.hovered ? (root.isDarkTheme ? Qt.rgba(1, 1, 1, 0.07) : Qt.rgba(0, 0, 0, 0.05)) : "transparent") :
                 root.enableTransparency ? 
                 Qt.rgba(root.themeBgColor.r, root.themeBgColor.g, root.themeBgColor.b, root.transparencyLevel/100)
-                : (rectangle.hovered ? "#2b2f38" : (root.isDarkTheme ? "#21242b" : root.themeBgColor))
+                : (rectangle.hovered ? (root.isDarkTheme ? "#2b2f38" : "#e8edf2") : (root.isDarkTheme ? "#21242b" : "#ffffff"))
 
-        border.color: "transparent"
-        border.width: 0
+        border.color: root.isDarkTheme ? "transparent" : "#d8dee6"
+        border.width: root.isDarkTheme ? 0 : 1
         anchors.centerIn: shadowContainer
         width: shadowWidget.width
         height: shadowWidget.height

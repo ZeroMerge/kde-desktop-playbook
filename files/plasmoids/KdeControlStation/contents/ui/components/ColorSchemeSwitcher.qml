@@ -34,9 +34,7 @@ Lib.CardButton {
     }
 
     onClicked: {
-        var colorSchemeName = root.isDarkTheme ? root.generalLightTheme : root.generalDarkTheme
-        executable.swapColorScheme(`${command}"${colorSchemeName}"`);
-        root.isDarkTheme = !root.isDarkTheme
+        executable.swapColorScheme("/home/zeromerge/.local/bin/desktop-theme toggle");
     }
 
     Plasma5Support.DataSource {

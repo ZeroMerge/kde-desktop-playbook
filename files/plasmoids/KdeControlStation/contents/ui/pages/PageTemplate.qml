@@ -77,7 +77,7 @@ Lib.Card {
 
                 Rectangle {
                     anchors.fill: parent
-                    color: backMouse.pressed ? "#2f333e" : backMouse.containsMouse ? "#2b2f38" : "transparent"
+                    color: backMouse.pressed ? (root.isDarkTheme ? "#2f333e" : "#d8dee6") : backMouse.containsMouse ? (root.isDarkTheme ? "#2b2f38" : "#e4e8ee") : "transparent"
                     radius: 2
                     border.width: 0
                 }

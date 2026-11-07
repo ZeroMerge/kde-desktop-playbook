@@ -21,14 +21,14 @@ Lib.Card {
         id: buttonsColumn
         anchors.fill: parent
         anchors.margins: 0
-        spacing: 2
+        spacing: 4
 
         Components.DndButton{}
         RowLayout {
             id: secondaryRow
             visible: root.showColorSwitcher || root.showNightLight
             anchors.margins: 0
-            spacing: 2
+            spacing: 4
             Components.NightLight{}
             Components.KDEConnect{}
             Components.ScreenshotBtn {

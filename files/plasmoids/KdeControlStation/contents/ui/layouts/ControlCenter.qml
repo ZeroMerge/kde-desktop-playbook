@@ -9,11 +9,11 @@ ColumnLayout {
 
     anchors.fill: parent
     anchors.margins: 4
-    spacing: 2
+    spacing: 4
 
     RowLayout {
         id: header
-        spacing: 2
+        spacing: 4
         Layout.fillWidth: true
         Layout.preferredHeight: root.sectionHeight/3.3
         anchors.margins: 0
@@ -38,7 +38,7 @@ ColumnLayout {
     RowLayout {
         id: sectionA
 
-        spacing: 2
+        spacing: 4
         anchors.margins: 0
 
         Layout.preferredHeight: root.sectionHeight
