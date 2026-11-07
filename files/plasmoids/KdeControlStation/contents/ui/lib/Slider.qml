@@ -50,7 +50,7 @@ Card {
 
     ColumnLayout {
         anchors.fill: parent
-        anchors.margins: root.largeSpacing
+        anchors.margins: root.mediumSpacing
         clip: true
         spacing: 1
 

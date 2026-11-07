@@ -15,13 +15,13 @@ Lib.Card {
     visible: root.showMediaPlayer
     property bool small: width < (root.fullRepWidth / 4)*3 
     property bool isLongButton: true
-    cornerRadius: roundedWidget ? 32 : 12
+    cornerRadius: roundedWidget ? 32 : 8
     Layout.fillWidth: true
     Layout.fillHeight: true
 
     GridLayout {
         anchors.fill: parent
-        anchors.margins: root.largeSpacing
+        anchors.margins: root.mediumSpacing
 
         rows: small ? 4 : 1
         columns: small? 1 : 3
@@ -51,7 +51,7 @@ Lib.Card {
                         anchors.centerIn: parent
                         width: audioThumb.adapt ? audioThumb.width : Math.min(audioThumb.width, audioThumb.height)
                         height: audioThumb.adapt ? audioThumb.height : width
-                        radius: 12//Math.min(width, height)
+                        radius: 8//Math.min(width, height)
                     }
                 }
             }

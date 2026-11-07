@@ -27,6 +27,7 @@ Lib.CardButton {
     title: i18n("%1@%2", kuser.loginName, kuser.host)
 
     KirigamiComponents.AvatarButton {
+        name: kuser.fullName
         source: kuser.faceIconUrl
         anchors {
             fill: parent

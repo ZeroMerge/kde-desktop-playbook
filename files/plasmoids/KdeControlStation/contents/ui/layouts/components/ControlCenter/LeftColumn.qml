@@ -14,8 +14,8 @@ Lib.Card {
     ColumnLayout {
         id: buttonsColumn
         anchors.fill: parent
-        anchors.margins: 1
-        spacing: 1
+        anchors.margins: 0
+        spacing: 2
 
         Components.NetworkBtn{
             flat: true

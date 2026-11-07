@@ -27,6 +27,7 @@ var cs = topPanel.addWidget("KdeControlStation");
 if (cs) {
     cs.currentConfigGroup = ["Appearance"];
     cs.writeConfig("icon", "configure-toolbars-symbolic");
+    cs.writeConfig("layout", 1);
 }
 
 // 3. Create Bottom Floating Dock

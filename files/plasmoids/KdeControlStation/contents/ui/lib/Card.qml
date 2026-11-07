@@ -41,11 +41,11 @@ Rectangle {
 
     property bool roundedWidget: false
 
-    property int cornerRadius: roundedWidget ? 50 : 12
+    property int cornerRadius: roundedWidget ? 24 : 8
 
     property var margins: shadowContainer.margins
     default property alias content: dataContainer.data
-    radius: 12
+    radius: 8
 
     property bool hovered: false
     property bool showContentOverflowIndicator: false
@@ -81,7 +81,7 @@ Rectangle {
         Rectangle {
             id: shadowWidget
             anchors.fill: parent
-            anchors.margins: 6
+            anchors.margins: 2
             color: root.themeBgColor
             radius: cornerRadius
         }
@@ -90,9 +90,9 @@ Rectangle {
             source: shadowWidget
             transparentBorder: true
             horizontalOffset: 0
-            verticalOffset: 2
-            radius: 12
-            samples: 25
+            verticalOffset: 1
+            radius: 4
+            samples: 9
             color: "black"
         }
     }
@@ -102,9 +102,9 @@ Rectangle {
         color: !filled ? "transparent" :
                 root.enableTransparency ? 
                 Qt.rgba(root.themeBgColor.r, root.themeBgColor.g, root.themeBgColor.b, root.transparencyLevel/100)
-                : root.themeBgColor
+                : (root.isDarkTheme ? "#202228" : root.themeBgColor)
 
-        border.color: glassEffect ? Qt.rgba(255, 255, 255, 0.18): root.disabledBgColor
+        border.color: glassEffect ? Qt.rgba(255, 255, 255, 0.18): (root.isDarkTheme ? "#2e323b" : root.disabledBgColor)
         border.width: root.showBorders && bordr ? 1 : 0
         anchors.centerIn: shadowContainer
         width: shadowWidget.width
@@ -116,10 +116,10 @@ Rectangle {
     Item {
         id: dataContainer
         anchors.fill: parent
-        anchors.topMargin: noMargins ? -1 : smallTopMargins ? 2 : 5
-        anchors.bottomMargin: noMargins ? -1 : smallBottomMargins ? 2 : 5
-        anchors.leftMargin: (noMargins || smallLeftMargins) ? -1 : 5
-        anchors.rightMargin: (noMargins || smallRightMargins) ? -1 : 5
+        anchors.topMargin: noMargins ? -1 : smallTopMargins ? 1 : 2
+        anchors.bottomMargin: noMargins ? -1 : smallBottomMargins ? 1 : 2
+        anchors.leftMargin: (noMargins || smallLeftMargins) ? -1 : 3
+        anchors.rightMargin: (noMargins || smallRightMargins) ? -1 : 3
     }
 
     Rectangle {

@@ -311,7 +311,7 @@ Item {
                         return panel.screenGeometry.width
                     }
                 }
-                return containment.Layout.preferredWidth + (root.topEdge ? 8 : 0)
+                return containment.Layout.preferredWidth + (root.topEdge ? 6 : 0)
             }
         }
         restoreMode: Binding.RestoreBinding

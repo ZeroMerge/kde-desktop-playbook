@@ -8,15 +8,15 @@ ColumnLayout {
     id: wrapper
 
     anchors.fill: parent
-    anchors.margins: 1
-    spacing: 1
+    anchors.margins: 4
+    spacing: 2
 
     RowLayout {
         id: header
-        spacing: 1
+        spacing: 2
         Layout.fillWidth: true
         Layout.preferredHeight: root.sectionHeight/3.3
-        anchors.margins: 1
+        anchors.margins: 0
         visible: header.children.length > 0
         
         Components.UserAvatar{
@@ -38,8 +38,8 @@ ColumnLayout {
     RowLayout {
         id: sectionA
 
-        spacing: 1
-        anchors.margins: 1
+        spacing: 2
+        anchors.margins: 0
 
         Layout.preferredHeight: root.sectionHeight
         Layout.maximumHeight: root.sectionHeight 
@@ -52,11 +52,11 @@ ColumnLayout {
     }
     Components.BrightnessSlider{
         id: brightnessSlider
-        Layout.preferredHeight: root.sectionHeight / (root.brightness_widget_title ? 2 : 2.8)
+        Layout.preferredHeight: root.sectionHeight / (root.brightness_widget_title ? 2.2 : 2.8)
         canTogglePage: true
     }
     Components.Volume{
-        Layout.preferredHeight: root.sectionHeight / (root.volume_widget_title ? 2 : 2.8)
+        Layout.preferredHeight: root.sectionHeight / (root.volume_widget_title ? 2.2 : 2.8)
     }
     Components.MediaPlayer{
         Layout.preferredHeight: root.sectionHeight/2
