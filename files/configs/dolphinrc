@@ -7,9 +7,9 @@ UseSystemFont=true
 ExpandableFolders=true
 HighlightEntireRow=true
 IconSize=22
-LeftPadding=8
+LeftPadding=10
 PreviewSize=32
-RightPadding=8
+RightPadding=10
 UseSystemFont=true
 
 [General]
@@ -30,7 +30,7 @@ UseSystemFont=true
 
 [KFileDialog Settings]
 Places Icons Auto-resize=false
-Places Icons Static Size=22
+Places Icons Static Size=16
 
 [MainWindow]
 MenuBar=Disabled

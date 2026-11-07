@@ -41,11 +41,11 @@ Rectangle {
 
     property bool roundedWidget: false
 
-    property int cornerRadius: roundedWidget ? 24 : 4
+    property int cornerRadius: roundedWidget ? 24 : 2
 
     property var margins: shadowContainer.margins
     default property alias content: dataContainer.data
-    radius: 4
+    radius: 2
 
     property bool hovered: false
     property bool showContentOverflowIndicator: false

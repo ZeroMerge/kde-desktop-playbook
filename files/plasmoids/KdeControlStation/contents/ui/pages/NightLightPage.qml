@@ -141,7 +141,7 @@ PageTemplate {
 
                     background: Rectangle {
                         color: kcmButton.down ? "#2f333e" : kcmButton.hovered ? "#2b2f38" : "#22252c"
-                        radius: 4
+                        radius: 2
                         border.width: 0
                     }
 
