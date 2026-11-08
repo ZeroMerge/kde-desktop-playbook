@@ -1,7 +1,7 @@
 # Modern Desktop Suite for Kubuntu / KDE Plasma 6 (Wayland)
 
 A complete, battle-tested, modular desktop suite for Kubuntu 26.04 LTS running KDE Plasma 6 on Wayland.
-Includes dual-theme instant switching (Dark & Light), adaptive Dynamic Island capsule, flush-fit bottom floating dock, custom Dolphin file explorer stylesheets, Konsole terminal theme with JetBrains Mono, KWin window snapping & borderless maximized windows, Bibata Modern Ice cursors, GTK 3/4 synchronization, and seamless lockscreen wallpaper matching.
+Includes dual-theme instant switching (Dark & Light), adaptive Dynamic Island capsule, flush-fit bottom floating dock, custom Dolphin file explorer stylesheets, Konsole terminal theme with JetBrains Mono, KWin quarter-tiling window snapping, Bibata Modern Ice cursors, GTK 3/4 synchronization, and seamless lockscreen wallpaper matching.
 
 ---
 
@@ -57,7 +57,7 @@ Includes dual-theme instant switching (Dark & Light), adaptive Dynamic Island ca
 - **Minimalist Chrome**: Top menubar hidden by default (accessible via `Ctrl+Shift+M`), 10px comfortable terminal padding.
 
 ### 5. Window Behavior & Snapping (KWin)
-- **Borderless Maximized Windows**: `BorderlessMaximizedWindows=true` strips titlebars when windows are maximized, saving 36px vertical screen real estate.
+- **Standard Titlebars Preserved**: Window titlebars and window control buttons (min/max/close) remain fully visible and interactive when windows are maximized.
 - **Magnetic Snapping**: Drag to top edge to maximize; drag to left/right for 50/50 split; drag to any corner for 25% quarter tiling.
 - **Diffused Ambient Drop Shadows**: Configured `~/.config/breezerc` with `ShadowSize=ShadowLarge` and `ShadowStrength=80` for smooth ambient diffusion.
 
@@ -91,7 +91,7 @@ kde-desktop-playbook/
 │   ├── fonts/                         # JetBrains Mono, Switzer, Plus Jakarta Sans, etc.
 │   ├── gtk/                           # GTK 3.0 and GTK 4.0 settings.ini
 │   ├── konsole/                       # Konsole color schemes, profiles, and konsolerc
-│   ├── kwin/                          # kwinrc (snapping/borderless) & breezerc (shadows)
+│   ├── kwin/                          # kwinrc (quarter snapping) & breezerc (shadows)
 │   ├── lockscreen/                    # kscreenlockerrc wallpaper configurations
 │   ├── plasmoids/                     # KdeControlStation, org.kde.plasma.dockpin, etc.
 │   ├── sddm/                          # 20-kubuntu.conf & kubuntu-theme.conf
@@ -115,7 +115,7 @@ To update or restore only specific components:
 ./install.sh --theme        # Deploy color schemes, modern-dock themes, and switcher
 ./install.sh --dolphin      # Deploy Dolphin QSS stylesheets, wrapper, and desktop entry
 ./install.sh --konsole      # Deploy Konsole profiles, colorschemes, and JetBrains Mono
-./install.sh --kwin         # Deploy KWin borderless maximized, snapping, and soft shadows
+./install.sh --kwin         # Deploy KWin snapping and soft shadows
 ./install.sh --cursor       # Deploy Bibata Modern Ice cursor and X11 inheritance
 ./install.sh --gtk          # Deploy GTK 3/4 settings and GNOME interface portal
 ./install.sh --lockscreen   # Deploy lock screen wallpaper configuration

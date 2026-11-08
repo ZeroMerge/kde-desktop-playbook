@@ -177,14 +177,14 @@ This document is a comprehensive, deep technical reference for the entire custom
 * **Key Directives**:
   ```ini
   [Windows]
-  BorderlessMaximizedWindows=true
+  BorderlessMaximizedWindows=false
   ElectricBorderMaximize=true
   ElectricBorderTiling=true
   ElectricBorderCornerRatio=0.25
   WindowSnapZone=10
   BorderSnapZone=10
   ```
-  - `BorderlessMaximizedWindows=true`: Removes window titlebars when maximized, saving 36px vertical screen space. Unmaximizing is accomplished via edge drag or `Super + Down` / `Alt + F10`.
+  - Standard Titlebars Preserved: Full window titlebars with min/max/close controls remain accessible when maximized.
   - `ElectricBorderCornerRatio=0.25`: Enables quarter-tiling by dragging windows to the corners.
   - `WindowSnapZone=10`: Enables magnetic snapping between adjacent windows.
 * **Soft Ambient Shadows (`~/.config/breezerc`)**:
@@ -302,10 +302,12 @@ If a system update (`apt upgrade` or KDE Plasma point release) resets your deskt
    kquitapp6 plasmashell && kstart plasmashell &
    ```
 
-### Scenario 4: Window titlebars appear on maximized windows
-1. Run:
+### Scenario 4: Window snapping or quarter tiling stops working
+1. Verify KWin configuration:
    ```bash
-   kwriteconfig6 --file kwinrc --group Windows --key BorderlessMaximizedWindows true
+   kwriteconfig6 --file kwinrc --group Windows --key ElectricBorderMaximize true
+   kwriteconfig6 --file kwinrc --group Windows --key ElectricBorderTiling true
+   kwriteconfig6 --file kwinrc --group Windows --key ElectricBorderCornerRatio 0.25
    qdbus6 org.kde.KWin /KWin org.kde.KWin.reconfigure
    ```
 
@@ -323,7 +325,7 @@ You can deploy or restore any single component using `./install.sh` flags:
 ./install.sh --theme        # Only color schemes, modern-dock themes, and switcher
 ./install.sh --dolphin      # Only Dolphin QSS stylesheets, wrapper, and desktop entry
 ./install.sh --konsole      # Only Konsole profiles, colors, and JetBrains Mono
-./install.sh --kwin         # Only borderless maximized, snapping, and soft shadows
+./install.sh --kwin         # Only quarter snapping and soft shadows
 ./install.sh --cursor       # Only Bibata Modern Ice cursor and X11 inheritance
 ./install.sh --gtk          # Only GTK 3/4 settings and GNOME interface portal
 ./install.sh --lockscreen   # Only lock screen wallpaper and settings

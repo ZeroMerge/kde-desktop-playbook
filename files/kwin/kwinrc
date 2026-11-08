@@ -16,7 +16,7 @@ tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"wi
 
 [Windows]
 BorderSnapZone=10
-BorderlessMaximizedWindows=true
+BorderlessMaximizedWindows=false
 ElectricBorderCornerRatio=0.25
 ElectricBorderMaximize=true
 ElectricBorderTiling=true

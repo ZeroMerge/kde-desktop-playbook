@@ -91,7 +91,7 @@ deploy_konsole() {
 }
 
 deploy_kwin() {
-    log "Deploying KWin Window Rules (Borderless Maximized, Quarter Snapping, Soft Shadows)..."
+    log "Deploying KWin Window Rules (Quarter Snapping, Soft Shadows)..."
     mkdir -p "${CONFIG_DIR}"
     
     backup_config "${CONFIG_DIR}/kwinrc"
@@ -101,7 +101,7 @@ deploy_kwin() {
     cp "${FILES_DIR}/kwin/breezerc" "${CONFIG_DIR}/breezerc"
     
     qdbus6 org.kde.KWin /KWin org.kde.KWin.reconfigure >/dev/null 2>&1 || true
-    success "KWin borderless maximized windows and diffused shadows active."
+    success "KWin snapping and diffused shadows active."
 }
 
 deploy_cursor() {
@@ -217,7 +217,7 @@ for arg in "$@"; do
             echo "  --theme       Deploy color schemes, desktop themes, and desktop-theme switcher"
             echo "  --dolphin     Deploy Dolphin QSS stylesheets, wrapper, and desktop entry"
             echo "  --konsole     Deploy Konsole profiles, colorschemes, and JetBrains Mono"
-            echo "  --kwin        Deploy KWin borderless maximized, snapping, and soft shadows"
+            echo "  --kwin        Deploy KWin quarter snapping and soft shadows"
             echo "  --cursor      Deploy Bibata Modern Ice cursor and X11 inheritance"
             echo "  --gtk         Deploy GTK 3/4 settings and GNOME interface portal"
             echo "  --lockscreen  Deploy lock screen wallpaper configuration"
