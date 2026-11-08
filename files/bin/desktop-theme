@@ -33,6 +33,9 @@ apply_light() {
         nohup "$HOME/.local/bin/dolphin" >/dev/null 2>&1 &
     fi
     
+    # 8. Set Konsole default profile to Modern Light
+    kwriteconfig6 --file konsolerc --group "Desktop Entry" --key DefaultProfile ModernLight.profile
+    
     echo "light" > "$MODE_FILE"
     echo "Successfully switched to Light Mode."
 }
@@ -65,6 +68,9 @@ apply_dark() {
         killall dolphin 2>/dev/null || true
         nohup "$HOME/.local/bin/dolphin" >/dev/null 2>&1 &
     fi
+    
+    # 8. Set Konsole default profile to Modern Dark
+    kwriteconfig6 --file konsolerc --group "Desktop Entry" --key DefaultProfile ModernDark.profile
     
     echo "dark" > "$MODE_FILE"
     echo "Successfully switched to Dark Mode."

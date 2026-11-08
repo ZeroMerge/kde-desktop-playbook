@@ -1,0 +1,12 @@
+[Desktop Entry]
+DefaultProfile=ModernDark.profile
+
+[Favorite Profiles]
+Favorites=ModernDark.profile;ModernLight.profile
+
+[General]
+ConfigVersion=1
+
+[MainWindow]
+MenuBar=Disabled
+State[$d]
