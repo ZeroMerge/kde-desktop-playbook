@@ -21,18 +21,27 @@ Lib.Card {
             flat: true
             noMargins: true
             isLongButton: true
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.preferredHeight: 1
         }
         Components.BluetoothBtn{
             flat: true
             noMargins: true
             isLongButton: true
             heading: i18n("Bluetooth")
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.preferredHeight: 1
         }
         Components.ColorSchemeSwitcher{
             flat: true
             noMargins: true
             isLongButton: true
             heading: i18n("Appearance")
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.preferredHeight: 1
         }
     }
 }

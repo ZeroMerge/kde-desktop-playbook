@@ -23,27 +23,53 @@ Lib.Card {
         anchors.margins: 0
         spacing: 4
 
-        Components.DndButton{}
+        Components.DndButton{
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.preferredHeight: 1
+        }
         RowLayout {
             id: secondaryRow
             visible: root.showColorSwitcher || root.showNightLight
             anchors.margins: 0
             spacing: 4
-            Components.NightLight{}
-            Components.KDEConnect{}
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.preferredHeight: 1
+
+            Components.NightLight{
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                Layout.preferredWidth: 1
+            }
+            Components.KDEConnect{
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                Layout.preferredWidth: 1
+            }
             Components.ScreenshotBtn {
+                visible: root.showScreenshot
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                Layout.preferredWidth: 1
             }
             Components.CommandRun{
                 visible: root.showCmd1
                 title: root.cmdTitle1
                 icon: root.cmdIcon1
                 command: root.cmdRun1
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                Layout.preferredWidth: 1
             }
             Components.CommandRun{
                 visible: root.showCmd2
                 title: root.cmdTitle2
                 icon: root.cmdIcon2
                 command: root.cmdRun2
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                Layout.preferredWidth: 1
             }
         }
     }

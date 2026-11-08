@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.0
 import "../components" as Components
 import "components/ControlCenter" as LayoutComponents 
+
 ColumnLayout {
     id: wrapper
 
@@ -23,15 +24,27 @@ ColumnLayout {
             isLongButton: true
             smallTopMargins: true
             smallBottomMargins: true
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.preferredWidth: 1
         }
-        Components.Battery {
-            id: mainBatteryWidget
-            Layout.preferredWidth: header.Layout.preferredHeight * 1.7
-            Layout.maximumWidth: Layout.preferredWidth
-        }
-        Components.SystemActions{
-            Layout.preferredWidth: header.Layout.preferredHeight
-            Layout.maximumWidth: Layout.preferredWidth
+        RowLayout {
+            spacing: 4
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.preferredWidth: 1
+
+            Components.Battery {
+                id: mainBatteryWidget
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                Layout.preferredWidth: 1
+            }
+            Components.SystemActions{
+                Layout.preferredWidth: header.Layout.preferredHeight
+                Layout.maximumWidth: header.Layout.preferredHeight
+                Layout.fillHeight: true
+            }
         }
     }
 
@@ -45,10 +58,18 @@ ColumnLayout {
         Layout.maximumHeight: root.sectionHeight 
         
         // Network, Bluetooth and Settings Button
-        LayoutComponents.LeftColumn{}
+        LayoutComponents.LeftColumn{
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.preferredWidth: 1
+        }
 
         // Screen controls section
-        LayoutComponents.RightColumn{}
+        LayoutComponents.RightColumn{
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.preferredWidth: 1
+        }
     }
     RowLayout {
         id: slidersRow
@@ -71,6 +92,7 @@ ColumnLayout {
         }
     }
     Components.MediaPlayer{
+        Layout.fillWidth: true
         Layout.preferredHeight: root.sectionHeight/2
     }
 }
