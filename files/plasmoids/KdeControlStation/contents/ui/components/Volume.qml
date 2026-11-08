@@ -29,20 +29,30 @@ Item {
     * plasmoid settings window-
     */
 
-    property bool showTitle: plasmoid.configuration.layout == root.layouts.Custom ? true : root.volume_widget_title
-    property bool flat: plasmoid.configuration.layout == root.layouts.Custom ? false : root.volume_widget_flat
+    property bool showTitle: (plasmoid && plasmoid.configuration && plasmoid.configuration.layout == root.layouts.Custom) ? true : root.volume_widget_title
+    property bool flat: (plasmoid && plasmoid.configuration && plasmoid.configuration.layout == root.layouts.Custom) ? false : root.volume_widget_flat
 
     // Audio source
     property var sink: Vol.PreferredDevice.sink
-    readonly property bool sinkAvailable: sink && !(sink && sink.name == "auto_null")
-
-    onSinkChanged: sliderLoader.active = sink ? true : false
+    readonly property bool sinkAvailable: Boolean(sink && sink.name !== "auto_null")
 
     Loader {
         id: sliderLoader
-        active: false
-        sourceComponent: sliderComponent 
+        active: Boolean(sinkAvailable)
         anchors.fill: parent
+        sourceComponent: sliderComponent
+    }
+
+    onSinkChanged: {
+        if (sinkAvailable) {
+            sliderLoader.active = true;
+        }
+    }
+
+    Component.onCompleted: {
+        if (sinkAvailable) {
+            sliderLoader.active = true;
+        }
     }
 
     Component {
@@ -58,40 +68,55 @@ Item {
             roundedWidget: volumeControl.roundedWidget
             showTitle: volumeControl.showTitle
             thinSlider: root.volume_widget_thin
-            flat: volumeControl.flat// bind to Lib.Card property
+            flat: volumeControl.flat
 
-            value: Math.round(sink.volume / Vol.PulseAudio.NormalVolume * 100)
-            secondaryTitle: Math.round(sink.volume / Vol.PulseAudio.NormalVolume * 100) + "%"
+            from: 0
+            to: 100
+            stepSize: 1
+
+            value: (sink && Vol.PulseAudio.NormalVolume) ? Math.round(sink.volume / Vol.PulseAudio.NormalVolume * 100) : 0
+            secondaryTitle: value + "%"
 
             // Changes icon based on the current volume percentage
-            source: Funcs.volIconName(sink.volume, sink.muted)
+            source: {
+                if (!sink || sink.muted || value <= 0) return "audio-volume-muted";
+                if (value <= 25) return "audio-volume-low";
+                if (value <= 75) return "audio-volume-medium";
+                return "audio-volume-high";
+            }
 
             onPressedChanged: {
-                if (!pressed) {
-                    // Make sure to sync the volume once the button was
-                    // released.
-                    // Otherwise it might be that the slider is at v10
-                    // whereas PA rejected the volume change and is
-                    // still at v15 (e.g.).
-                    volumePage.playFeedback(sink.Index);
+                if (!pressed && sink && typeof volumePage !== "undefined" && volumePage.playFeedback) {
+                    var idx = (typeof sink.index !== "undefined") ? sink.index : sink.Index;
+                    if (idx !== undefined) {
+                        volumePage.playFeedback(idx);
+                    }
                 }
             }
             
-            onMoved: sink.volume = value * Vol.PulseAudio.NormalVolume / 100
+            onMoved: {
+                if (sink && Vol.PulseAudio.NormalVolume) {
+                    sink.volume = Math.round(value * Vol.PulseAudio.NormalVolume / 100);
+                }
+            }
             
             // Display view that shows audio devices list
             onClicked: {
-                var pageHeight =  volumePage.contentItemHeight + volumePage.headerHeight;
-                fullRep.togglePage(fullRep.defaultInitialWidth, pageHeight, volumePage);
+                if (typeof volumePage !== "undefined" && typeof fullRep !== "undefined") {
+                    var pageHeight = volumePage.contentItemHeight + volumePage.headerHeight;
+                    fullRep.togglePage(fullRep.defaultInitialWidth, pageHeight, volumePage);
+                }
             }
             
-            property var oldVol: 100 * Vol.PulseAudio.NormalVolume / 100
+            property real oldVol: (Vol.PulseAudio && Vol.PulseAudio.NormalVolume) ? Vol.PulseAudio.NormalVolume : 65536
             onActionButtonClicked: {
-                if(value!=0){
-                    oldVol = sink.volume
-                    sink.volume=0
-                } else {
-                    sink.volume=oldVol
+                if (sink) {
+                    if (value !== 0) {
+                        oldVol = sink.volume;
+                        sink.volume = 0;
+                    } else {
+                        sink.volume = oldVol > 0 ? oldVol : Math.round(Vol.PulseAudio.NormalVolume * 0.5);
+                    }
                 }
             }
         }

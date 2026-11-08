@@ -141,8 +141,9 @@ This document is a comprehensive, deep technical reference for the entire custom
 
 #### 1. Dynamic Luminance Detection & Pill Anatomy
 * **File**: `~/.local/share/plasma/shells/org.kde.plasma.desktop/contents/views/Panel.qml`
-* **Capsule Layout**: Centered floating pill hosting `org.kde.plasma.digitalclock` (Left), `org.kde.plasma.volume` (Center), and `KdeControlStation` (Right).
-  - **Live Volume Quick Controls**: Direct mouse scroll on the volume icon raises/lowers audio with volume pop feedback; left-click opens the mixer and audio output switcher; middle-click toggles mute.
+* **Capsule Layout**: Centered floating pill hosting `org.kde.plasma.digitalclock` (Left) and `KdeControlStation` (Right), keeping the top bar completely uncluttered.
+* **Integrated Control Center Sliders**: Opening Control Station reveals the unified controls with the **Display Brightness** slider and **Audio Volume** slider stacked together.
+  - **Volume Quick Controls**: Real-time percentage display, dynamic sound wave icon (`muted` / `low` / `medium` / `high`), click-to-mute, and click-to-expand output devices list.
 * **Mechanism**: Rather than hardcoding black (`#000000`) or white (`#ffffff`), `topIslandPill` evaluates the ITU-R BT.601 perceptual luminance formula on `Kirigami.Theme.backgroundColor`:
   ```qml
   Rectangle {
