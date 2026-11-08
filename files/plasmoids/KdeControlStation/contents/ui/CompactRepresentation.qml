@@ -9,9 +9,21 @@ import org.kde.kirigami as Kirigami
 
 Item {
     id: compactRep
+    clip: false
 
     readonly property bool useCustomButtonImage: (Plasmoid.configuration.useCustomButtonImage && Plasmoid.configuration.customButtonImage.length != 0)
     readonly property bool isCollapsed: root.islandCollapsed
+
+    readonly property var activeIconSource: {
+        if (compactRep.useCustomButtonImage) {
+            return Plasmoid.configuration.customButtonImage;
+        }
+        var iconName = Plasmoid.configuration.icon;
+        if (!iconName || iconName === "configure" || iconName === "configure-toolbars-symbolic" || iconName === "control-center-symbolic") {
+            return Qt.resolvedUrl("../icons/control-center-symbolic.svg");
+        }
+        return iconName;
+    }
 
     // Live clock & date strings
     property string currentTimeStr: Qt.formatTime(new Date(), "hh:mm")
@@ -36,14 +48,16 @@ Item {
     // Geometry:
     readonly property int iconSize: 14
     readonly property int contentHeight: 22
-    readonly property int circleSize: 14
+    readonly property int circleSize: 0
 
     readonly property int textWidth: Math.ceil(clockLabel.implicitWidth)
-    readonly property int expandedWidth: textWidth + iconSize + 16
+    readonly property int expandedWidth: textWidth + iconSize + 22
     readonly property int targetWidth: isCollapsed ? circleSize : expandedWidth
 
     implicitWidth: targetWidth
     implicitHeight: contentHeight
+
+
 
     Layout.preferredWidth: implicitWidth
     Layout.minimumWidth: implicitWidth
@@ -60,63 +74,47 @@ Item {
 
     Item {
         id: container
-        anchors.fill: parent
+        anchors.centerIn: parent
+        width: compactRep.isCollapsed ? compactRep.iconSize : parent.width
+        height: parent.height
 
-        Row {
-            id: contentRow
+        // Collapsed state: single centered icon in 1:1 circle
+        Kirigami.Icon {
+            id: collapsedIcon
             anchors.centerIn: parent
-            spacing: compactRep.isCollapsed ? 0 : 6
+            width: compactRep.iconSize
+            height: compactRep.iconSize
+            source: compactRep.activeIconSource
+            smooth: true
+            visible: compactRep.isCollapsed
+            opacity: mouseArea.containsMouse ? 1.0 : 0.88
+        }
 
-            Behavior on spacing {
-                NumberAnimation { duration: 300; easing.type: Easing.InOutCubic }
+        // Expanded state: clock + icon row
+        Row {
+            id: expandedRow
+            anchors.centerIn: parent
+            spacing: 8
+            visible: !compactRep.isCollapsed
+
+            PlasmaComponents.Label {
+                id: clockLabel
+                anchors.verticalCenter: parent.verticalCenter
+                text: compactRep.showDateInsteadOfTime ? compactRep.currentDateStr : compactRep.currentTimeStr
+                font.pixelSize: 12
+                font.weight: Font.Bold
+                color: Kirigami.Theme.textColor
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
             }
 
-            // Collapsible Clock / Date Wrapper
-            Item {
-                id: clockWrapper
-                width: compactRep.isCollapsed ? 0 : compactRep.textWidth
-                height: compactRep.contentHeight
-                clip: true
-                opacity: compactRep.isCollapsed ? 0.0 : 1.0
-
-                Behavior on width {
-                    NumberAnimation {
-                        duration: 320
-                        easing.type: Easing.InOutCubic
-                    }
-                }
-                Behavior on opacity {
-                    NumberAnimation {
-                        duration: 220
-                    }
-                }
-
-                PlasmaComponents.Label {
-                    id: clockLabel
-                    anchors.centerIn: parent
-                    text: compactRep.showDateInsteadOfTime ? compactRep.currentDateStr : compactRep.currentTimeStr
-                    font.pixelSize: 12
-                    font.weight: Font.Bold
-                    color: Kirigami.Theme.textColor
-                    horizontalAlignment: Text.AlignHCenter
-                    verticalAlignment: Text.AlignVCenter
-                }
-            }
-
-            // Quick Actions / Settings Icon
-            Item {
-                id: iconWrapper
+            Kirigami.Icon {
+                anchors.verticalCenter: parent.verticalCenter
                 width: compactRep.iconSize
-                height: compactRep.contentHeight
-
-                Kirigami.Icon {
-                    anchors.centerIn: parent
-                    width: compactRep.iconSize
-                    height: compactRep.iconSize
-                    source: compactRep.useCustomButtonImage ? Plasmoid.configuration.customButtonImage : Plasmoid.configuration.icon
-                    smooth: true
-                    opacity: mouseArea.containsMouse ? 1.0 : 0.85
-                }
+                height: compactRep.iconSize
+                source: compactRep.activeIconSource
+                smooth: true
+                opacity: mouseArea.containsMouse ? 1.0 : 0.88
             }
         }
     }
@@ -139,7 +137,9 @@ Item {
 
     MouseArea {
         id: mouseArea
-        anchors.fill: parent
+        anchors.centerIn: parent
+        width: Math.max(30, parent.width)
+        height: Math.max(30, parent.height)
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
         acceptedButtons: Qt.LeftButton
@@ -152,7 +152,7 @@ Item {
             if (compactRep.isCollapsed) {
                 compactRep.pendingAction = "toggleExpanded";
             } else {
-                if (mouse.x < clockWrapper.width + 8) {
+                if (mouse.x < clockLabel.implicitWidth + 8) {
                     compactRep.pendingAction = "toggleDate";
                 } else {
                     compactRep.pendingAction = "toggleExpanded";

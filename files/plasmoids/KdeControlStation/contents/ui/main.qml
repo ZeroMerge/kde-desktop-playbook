@@ -10,7 +10,7 @@ import org.kde.plasma.plasma5support as Plasma5Support
 PlasmoidItem {
     id: root
     
-    clip: true
+    clip: false
 
     // PROPERTIES
     property bool animations: plasmoid.configuration.animations
@@ -107,7 +107,9 @@ PlasmoidItem {
     property bool islandCollapsed: Boolean(Plasmoid.configuration.islandCollapsed)
 
     function toggleIslandShape() {
-        Plasmoid.configuration.islandCollapsed = !Plasmoid.configuration.islandCollapsed;
+        var nextState = !islandCollapsed;
+        islandCollapsed = nextState;
+        Plasmoid.configuration.islandCollapsed = nextState;
     }
 
     readonly property var layouts: {
