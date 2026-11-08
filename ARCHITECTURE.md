@@ -142,8 +142,9 @@ This document is a comprehensive, deep technical reference for the entire custom
 #### 1. Dynamic Luminance Detection & Pill Anatomy
 * **File**: `~/.local/share/plasma/shells/org.kde.plasma.desktop/contents/views/Panel.qml`
 * **Capsule Layout**: Centered floating pill hosting `org.kde.plasma.digitalclock` (Left) and `KdeControlStation` (Right), keeping the top bar completely uncluttered.
-* **Integrated Control Center Sliders**: Opening Control Station reveals the unified controls with the **Display Brightness** slider and **Audio Volume** slider stacked together.
-  - **Volume Quick Controls**: Real-time percentage display, dynamic sound wave icon (`muted` / `low` / `medium` / `high`), click-to-mute, and click-to-expand output devices list.
+* **Side-by-Side 50/50 Display & Sound Sliders**: In Control Station (`ControlCenter.qml`), the **Display Brightness** and **Audio Volume** cards sit side-by-side in a compact `RowLayout` sharing the same row (each taking 50% width), exactly matching macOS Control Center geometry.
+  - **Display Tile**: Sun glyph (`brightness-high-symbolic`), clean title **Display**, percentage readout, and expandable display controls.
+  - **Sound Tile**: Live wave icon (`audio-volume-high`/`medium`/`low`/`muted`), clean title **Sound**, percentage readout, click-to-mute, and expandable audio device list.
 * **Mechanism**: Rather than hardcoding black (`#000000`) or white (`#ffffff`), `topIslandPill` evaluates the ITU-R BT.601 perceptual luminance formula on `Kirigami.Theme.backgroundColor`:
   ```qml
   Rectangle {

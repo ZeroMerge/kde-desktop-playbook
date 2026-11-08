@@ -50,13 +50,23 @@ ColumnLayout {
         // Screen controls section
         LayoutComponents.RightColumn{}
     }
-    Components.BrightnessSlider{
-        id: brightnessSlider
+    RowLayout {
+        id: slidersRow
+        Layout.fillWidth: true
         Layout.preferredHeight: root.sectionHeight / (root.brightness_widget_title ? 2.2 : 2.8)
-        canTogglePage: true
-    }
-    Components.Volume{
-        Layout.preferredHeight: root.sectionHeight / (root.volume_widget_title ? 2.2 : 2.8)
+        spacing: 4
+
+        Components.BrightnessSlider{
+            id: brightnessSlider
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            canTogglePage: true
+        }
+        Components.Volume{
+            id: volumeSlider
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+        }
     }
     Components.MediaPlayer{
         Layout.preferredHeight: root.sectionHeight/2

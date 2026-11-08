@@ -59,7 +59,7 @@ Item {
         Lib.Slider {
             id: sliderWidget
 
-            title: (currentSink && currentSink.description) ? currentSink.description : i18n("Volume")
+            title: i18n("Sound")
             canTogglePage: volumeControl.canTogglePage
             glassEffect: volumeControl.glassEffect
             cornerRadius: volumeControl.cornerRadius

@@ -78,7 +78,7 @@ Item {
             readonly property int brightnessMin: (mainScreen.maxBrightness > 100 ? 1 : 0)
 
             // Slider properties
-            title: mainScreen.label
+            title: i18n("Display")
             source: "brightness-high-symbolic"
             secondaryTitle: Math.round((mainScreen.brightness / mainScreen.maxBrightness)*100) + "%"
 
