@@ -287,34 +287,44 @@ Item {
         adjustPrefix();
     }
 
+    readonly property real targetDockLength: {
+        if (!containment) {
+            return 0;
+        }
+        if (root.verticalPanel) {
+            if (containment.Layout.fillHeight) {
+                if (panel.lengthMode == Panel.Global.Custom) {
+                    return panel.maximumHeight
+                } else {
+                    return panel.screenGeometry.height
+                }
+            }
+            return containment.Layout.preferredHeight
+        } else {
+            if (containment.Layout.fillWidth) {
+                if (panel.lengthMode == Panel.Global.Custom) {
+                    return panel.maximumWidth
+                } else {
+                    return panel.screenGeometry.width
+                }
+            }
+            return containment.Layout.preferredWidth + (root.topEdge ? 8 : (root.bottomEdge ? 16 : 0))
+        }
+    }
+
+    property real animatedDockLength: targetDockLength
+    Behavior on animatedDockLength {
+        NumberAnimation {
+            duration: 350
+            easing.type: Easing.InOutCubic
+        }
+    }
+
     Binding {
         target: panel
         property: "length"
         when: containment
-        value: {
-            if (!containment) {
-                return;
-            }
-            if (root.verticalPanel) {
-                if (containment.Layout.fillHeight) {
-                    if (panel.lengthMode == Panel.Global.Custom) {
-                        return panel.maximumHeight
-                    } else {
-                        return panel.screenGeometry.height
-                    }
-                }
-                return containment.Layout.preferredHeight
-            } else {
-                if (containment.Layout.fillWidth) {
-                    if (panel.lengthMode == Panel.Global.Custom) {
-                        return panel.maximumWidth
-                    } else {
-                        return panel.screenGeometry.width
-                    }
-                }
-                return containment.Layout.preferredWidth + (root.topEdge ? 8 : (root.bottomEdge ? 6 : 0))
-            }
-        }
+        value: Math.round(root.animatedDockLength / 2) * 2
         restoreMode: Binding.RestoreBinding
     }
 
@@ -381,7 +391,7 @@ Item {
         id: containmentParent
         anchors.verticalCenter: (root.topEdge ? topIslandPill : (root.isOpaque ? floatingOpaqueItem : floatingTranslucentItem)).verticalCenter
         anchors.horizontalCenter: (root.topEdge ? topIslandPill : (root.isOpaque ? floatingOpaqueItem : floatingTranslucentItem)).horizontalCenter
-        anchors.horizontalCenterOffset: root.topEdge ? 4 : (root.bottomEdge ? 4 : 0)
+        anchors.horizontalCenterOffset: root.topEdge ? 4 : 0
         width: root.verticalPanel ? panel.thickness : ((root.topEdge || root.bottomEdge) ? containment.Layout.preferredWidth : root.width)
         height: root.verticalPanel ? root.height - root.fixedBottomFloatingPadding - root.fixedTopFloatingPadding : panel.thickness
     }

@@ -13,7 +13,7 @@ PlasmoidItem {
     Layout.preferredWidth: 16
     Layout.minimumWidth: 16
     Layout.maximumWidth: 16
-    Layout.leftMargin: -2
+    Layout.leftMargin: 0
 
     readonly property var panelWindow: root.Window.window
     readonly property bool isStatic: panelWindow ? panelWindow.visibilityMode === 3 : false
@@ -35,10 +35,7 @@ PlasmoidItem {
         Rectangle {
             id: activatorRect
             anchors.fill: parent
-            anchors.leftMargin: -1
-            anchors.rightMargin: -8
-            anchors.topMargin: -4
-            anchors.bottomMargin: -4
+            anchors.margins: 0
             radius: 0 // 0px sharp rectangular block
 
             // Solid blue (#3DAEE9) in static pinned mode; dark surface in normal dodge mode
