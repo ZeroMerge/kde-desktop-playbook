@@ -7,7 +7,7 @@ for (var i = 0; i < existingPanels.length; ++i) {
     existingPanels[i].remove();
 }
 
-// 2. Create Top-Center Status Capsule (Option 3: KDE Control Station)
+// 2. Create Top-Center Status Capsule (Dynamic Morphing Island: KDE Control Station)
 var topPanel = new Panel;
 topPanel.location = "top";
 topPanel.height = 30;
@@ -16,18 +16,10 @@ topPanel.lengthMode = "fit";
 topPanel.floating = true;
 topPanel.hiding = "windowsgobelow";
 
-var clock = topPanel.addWidget("org.kde.plasma.digitalclock");
-if (clock) {
-    clock.currentConfigGroup = ["Appearance"];
-    clock.writeConfig("showDate", "false");
-    clock.writeConfig("showSeconds", "false");
-}
-
 var cs = topPanel.addWidget("KdeControlStation");
 if (cs) {
     cs.currentConfigGroup = ["Appearance"];
     cs.writeConfig("icon", "configure-toolbars-symbolic");
-    cs.writeConfig("layout", 1);
 }
 
 // 3. Create Bottom Floating Dock

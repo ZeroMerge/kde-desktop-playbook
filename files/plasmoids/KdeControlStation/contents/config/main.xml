@@ -186,5 +186,11 @@
         <entry name="enableQuickActions" type="bool">
             <default>true</default>
         </entry>
+
+        <!-- Dynamic island morphing state -->
+        <entry name="islandCollapsed" type="bool">
+            <label>Whether dynamic island is collapsed to a circle.</label>
+            <default>false</default>
+        </entry>
     </group>
 </kcfg>

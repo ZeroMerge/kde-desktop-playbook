@@ -103,6 +103,13 @@ PlasmoidItem {
     // Enables quick action(triggering action when clicking icon) on Quick toggle buttons
     property bool enableQuickActions: Plasmoid.configuration.enableQuickActions
 
+    // Dynamic Island morphing state
+    property bool islandCollapsed: Boolean(Plasmoid.configuration.islandCollapsed)
+
+    function toggleIslandShape() {
+        Plasmoid.configuration.islandCollapsed = !Plasmoid.configuration.islandCollapsed;
+    }
+
     readonly property var layouts: {
         "Default": 0, 
         "ControlCenter": 1,
@@ -144,6 +151,8 @@ PlasmoidItem {
                     } else if (out === "nightlight") {
                         root.expanded = true;
                         root.openPageRequested("nightlight");
+                    } else if (out === "island_toggle") {
+                        root.toggleIslandShape();
                     } else if (out === "theme_toggle") {
                         executable.connectSource("/bin/bash /home/zeromerge/.local/bin/desktop-theme toggle #" + Date.now());
                     }
