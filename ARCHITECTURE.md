@@ -35,6 +35,8 @@ This document is a comprehensive, deep technical reference for the entire custom
 | **Cursor (Bibata Ice)** | `files/cursor/Bibata-Modern-Ice/` | `~/.local/share/icons/Bibata-Modern-Ice/` | `kcminputrc` / `~/.icons/default/index.theme` |
 | **GTK 3 Config** | `files/gtk/gtk-3.0/settings.ini` | `~/.config/gtk-3.0/settings.ini` | Reread on GTK3 app launch |
 | **GTK 4 Config** | `files/gtk/gtk-4.0/settings.ini` | `~/.config/gtk-4.0/settings.ini` | Reread on GTK4 app launch |
+| **Typography Suite** | `files/fonts/` | `~/.local/share/fonts/` | `fc-cache -f ~/.local/share/fonts` |
+| **Font Switcher Tool** | `files/scripts/desktop-font-switcher` | `~/.local/bin/desktop-font-switcher` | `switch-font <name>` |
 | **SDDM Login Config** | `files/sddm/20-kubuntu.conf` | `/etc/sddm.conf.d/20-kubuntu.conf` | System reboot / SDDM service restart |
 | **SDDM Theme Config** | `files/sddm/kubuntu-theme.conf` | `/usr/share/sddm/themes/kubuntu/theme.conf` | `sddm-greeter-qt6 --test-mode --theme /usr/share/sddm/themes/kubuntu` |
 
@@ -43,6 +45,10 @@ This document is a comprehensive, deep technical reference for the entire custom
 ## 2. Deep Dive: Architectural Subsystems & Bug Fixes
 
 ### A. Dolphin File Explorer (Qt6 / QSS / KIOFileWidgets)
+
+| Dolphin File Explorer (Dark Mode) | Dolphin File Explorer (Light Mode) |
+| :---: | :---: |
+| <img src="docs/images/dolphin_explorer.png" width="460" alt="Dolphin Dark Mode"> | <img src="docs/images/dolphin_explorer_light.png" width="460" alt="Dolphin Light Mode"> |
 
 #### 1. Pitch-Black Breadcrumb Bar (`KUrlNavigator`) in Light Mode
 * **Root Cause**: `KUrlNavigator` inherits `QWidget`. In its C++ painting routine (`KUrlNavigator::paintEvent`), it paints its background using `QStyle::PE_PanelLineEdit` with:
@@ -120,6 +126,16 @@ This document is a comprehensive, deep technical reference for the entire custom
 
 ### B. Shell & Dynamic Island (`Panel.qml`)
 
+| Dynamic Island Capsule (Dark) | Dynamic Island Capsule (Light) |
+| :---: | :---: |
+| ![Dynamic Island Dark](docs/images/island_capsule.png) | ![Dynamic Island Light](docs/images/island_capsule_light.png) |
+
+| Bottom Floating Dock (Dark) |
+| :---: |
+| ![Bottom Dock Dark](docs/images/bottom_dock.png) |
+| **Bottom Floating Dock (Light)** |
+| ![Bottom Dock Light](docs/images/bottom_dock_light.png) |
+
 #### 1. Dynamic Luminance Detection
 * **File**: `~/.local/share/plasma/shells/org.kde.plasma.desktop/contents/views/Panel.qml`
 * **Mechanism**: Rather than hardcoding black (`#000000`) or white (`#ffffff`), `topIslandPill` evaluates the ITU-R BT.601 perceptual luminance formula on `Kirigami.Theme.backgroundColor`:
@@ -148,6 +164,10 @@ This document is a comprehensive, deep technical reference for the entire custom
 ---
 
 ### C. Control Station (`KdeControlStation`)
+
+| Dynamic Island Control Center (Dark) | Dynamic Island Control Center (Light) |
+| :---: | :---: |
+| <img src="docs/images/island_dropdown.png" width="380" alt="Island Dropdown Dark"> | <img src="docs/images/island_dropdown_light.png" width="380" alt="Island Dropdown Light"> |
 
 #### 1. Unified Theme Switcher Execution
 * **File**: `~/.local/share/plasma/plasmoids/KdeControlStation/contents/ui/main.qml`
@@ -207,6 +227,10 @@ This document is a comprehensive, deep technical reference for the entire custom
 
 ### E. Terminal & Konsole
 
+| Konsole Terminal (ModernDark Profile) | Konsole Terminal (ModernLight Profile) |
+| :---: | :---: |
+| <img src="docs/images/konsole_terminal.png" width="460" alt="Konsole Dark"> | <img src="docs/images/konsole_terminal_light.png" width="460" alt="Konsole Light"> |
+
 * **Typography**: Installed JetBrains Mono Nerd Font (`~/.local/share/fonts/JetBrainsMono/`).
 * **Files**:
   - `~/.local/share/konsole/ModernDark.colorscheme`: Deep `#141618` bg, 0.92 opacity, blur enabled, Tokyo Night/Catppuccin hybrid ANSI 16 palette.
@@ -259,6 +283,25 @@ This document is a comprehensive, deep technical reference for the entire custom
     background=/usr/share/wallpapers/DarkestHour/contents/images/2560x1600.jpg
     ```
     Eliminates the stock Kubuntu blue gear splash.
+
+---
+
+### I. Typography Suite & Multi-Font Engine
+
+* **Engine Script**: `files/scripts/desktop-font-switcher` (deployed to `~/.local/bin/desktop-font-switcher` and aliased to `switch-font`).
+* **Supported Font Families**:
+  - `Plus Jakarta Sans`: Geometric sans-serif with friendly open counters, rounded apexes, and generous width (active desktop default).
+  - `Manrope`: Modern semi-condensed grotesque with high legibility on high-DPI displays.
+  - `Switzer`: Contemporary Swiss neo-grotesque with clean tabular metrics and vertical terminals.
+  - `Inter`: Highly neutral screen font designed specifically for user interfaces.
+* **Synchronization Pipeline**:
+  When invoked (`switch-font jakarta` or `switch-font manrope`), the switcher atomically executes:
+  1. Plasma UI font: `kwriteconfig6 --file kdeglobals --group General --key font "$family,10,-1,5,50,0,0,0,0,0"`
+  2. Plasma menu & toolbar fonts: updates `menuFont`, `smallestReadableFont` (8pt), and `toolBarFont`.
+  3. Window manager titlebar font: `kwriteconfig6 --file kdeglobals --group WM --key activeFont "$family,10,-1,5,60,0,0,0,0,0"`
+  4. GTK 3 & GTK 4 configurations: writes `gtk-font-name=$family 10` in `~/.config/gtk-3.0/settings.ini` and `~/.config/gtk-4.0/settings.ini`.
+  5. XDG Desktop Portal: `gsettings set org.gnome.desktop.interface font-name "$family 10"` for instant Electron, Chromium, and Flatpak synchronization.
+  6. Emits D-Bus reload signals to ensure running applications update without requiring logout.
 
 ---
 

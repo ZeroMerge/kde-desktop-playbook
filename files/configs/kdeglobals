@@ -210,10 +210,10 @@ inactiveForeground=161,169,177
 
 [General]
 ColorScheme=BreezeDark
-font=Switzer,10,-1,5,50,0,0,0,0,0
-menuFont=Switzer,10,-1,5,50,0,0,0,0,0
-smallestReadableFont=Switzer,8,-1,5,50,0,0,0,0,0
-toolBarFont=Switzer,10,-1,5,50,0,0,0,0,0
+font=Plus Jakarta Sans,10,-1,5,50,0,0,0,0,0
+menuFont=Plus Jakarta Sans,10,-1,5,50,0,0,0,0,0
+smallestReadableFont=Plus Jakarta Sans,8,-1,5,50,0,0,0,0,0
+toolBarFont=Plus Jakarta Sans,10,-1,5,50,0,0,0,0,0
 
 [Icons]
 Theme=Papirus-Dark
@@ -233,7 +233,7 @@ Show Inline Previews=true
 [WM]
 activeBackground=39,44,49
 activeBlend=252,252,252
-activeFont=Switzer,10,-1,5,60,0,0,0,0,0
+activeFont=Plus Jakarta Sans,10,-1,5,60,0,0,0,0,0
 activeForeground=252,252,252
 inactiveBackground=32,36,40
 inactiveBlend=161,169,177

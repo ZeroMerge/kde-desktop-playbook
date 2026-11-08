@@ -63,7 +63,7 @@
     # --------------------------------------------------------------------------
     # 2b. Deploy Modern UI Fonts & Switcher Tool
     # --------------------------------------------------------------------------
-    - name: Deploy Typography Suite (Switzer, Plus Jakarta Sans, Manrope, Satoshi)
+    - name: Deploy Typography Suite (Switzer, Plus Jakarta Sans, Manrope, Inter)
       copy:
         src: "{{ repo_files_dir }}/fonts/"
         dest: "{{ user_home }}/.local/share/fonts/"
@@ -86,8 +86,8 @@
         state: link
         force: true
 
-    - name: Apply Switzer as System & Application Font
-      command: "{{ user_home }}/.local/bin/desktop-font-switcher switzer"
+    - name: Apply Plus Jakarta Sans as System & Application Font
+      command: "{{ user_home }}/.local/bin/desktop-font-switcher plus-jakarta"
       changed_when: true
 
     # --------------------------------------------------------------------------

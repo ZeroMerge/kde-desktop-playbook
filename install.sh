@@ -90,6 +90,23 @@ deploy_konsole() {
     success "Konsole profiles and JetBrains Mono font deployed."
 }
 
+deploy_fonts() {
+    log "Deploying Modern Typography Suite (Plus Jakarta Sans, Manrope, Switzer, Inter)..."
+    mkdir -p "${FONTS_DIR}" "${BIN_DIR}"
+    
+    if [ -d "${FILES_DIR}/fonts" ]; then
+        cp -r "${FILES_DIR}/fonts/"* "${FONTS_DIR}/" 2>/dev/null || true
+        fc-cache -f "${FONTS_DIR}" 2>/dev/null || true
+    fi
+    
+    if [ -f "${FILES_DIR}/scripts/desktop-font-switcher" ]; then
+        cp "${FILES_DIR}/scripts/desktop-font-switcher" "${BIN_DIR}/desktop-font-switcher"
+        chmod +x "${BIN_DIR}/desktop-font-switcher"
+        ln -sf "${BIN_DIR}/desktop-font-switcher" "${BIN_DIR}/switch-font"
+    fi
+    success "Typography suite and desktop-font-switcher CLI active."
+}
+
 deploy_kwin() {
     log "Deploying KWin Window Rules (Quarter Snapping, Soft Shadows)..."
     mkdir -p "${CONFIG_DIR}"
@@ -182,6 +199,7 @@ echo " Modern Desktop Suite Deployment Tool (KDE Plasma 6)"
 echo "=========================================================="
 
 if [ $# -eq 0 ] || [[ "$*" =~ "--all" ]]; then
+    deploy_fonts
     deploy_theme
     deploy_dolphin
     deploy_konsole
@@ -200,6 +218,7 @@ fi
 
 for arg in "$@"; do
     case "$arg" in
+        --fonts)      deploy_fonts ;;
         --theme)      deploy_theme ;;
         --dolphin)    deploy_dolphin ;;
         --konsole)    deploy_konsole ;;
@@ -214,6 +233,7 @@ for arg in "$@"; do
             echo "Usage: ./install.sh [OPTION]"
             echo "Options:"
             echo "  --all         Deploy all components and restart plasma (default)"
+            echo "  --fonts       Deploy Typography Suite (Plus Jakarta Sans, Manrope, Switzer, Inter) and switcher"
             echo "  --theme       Deploy color schemes, desktop themes, and desktop-theme switcher"
             echo "  --dolphin     Deploy Dolphin QSS stylesheets, wrapper, and desktop entry"
             echo "  --konsole     Deploy Konsole profiles, colorschemes, and JetBrains Mono"

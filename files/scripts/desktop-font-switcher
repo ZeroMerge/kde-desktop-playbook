@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ==============================================================================
 # desktop-font-switcher: Fast switcher for modern system & application fonts
-# Supported Fonts: Switzer, Plus Jakarta Sans, Manrope, Satoshi, Inter
+# Supported Fonts: Switzer, Plus Jakarta Sans, Manrope, Inter
 # ==============================================================================
 set -euo pipefail
 
@@ -12,7 +12,6 @@ declare -A FONT_MAP=(
     ["plus-jakarta"]="Plus Jakarta Sans"
     ["jakarta"]="Plus Jakarta Sans"
     ["manrope"]="Manrope"
-    ["satoshi"]="Satoshi"
     ["inter"]="Inter"
 )
 
@@ -76,11 +75,10 @@ show_help() {
     echo "Usage: $(basename "$0") [FONT_NAME | --list | --current]"
     echo ""
     echo "Available fonts:"
-    echo "  1) switzer       - Switzer (Contemporary Swiss Grotesque, clean tabular metrics)"
-    echo "  2) plus-jakarta  - Plus Jakarta Sans (Modern Geometric, high digital legibility)"
+    echo "  1) plus-jakarta  - Plus Jakarta Sans (Modern Geometric, high digital legibility)"
+    echo "  2) switzer       - Switzer (Contemporary Swiss Grotesque, clean tabular metrics)"
     echo "  3) manrope       - Manrope (Semi-Geometric, friendly modern SaaS look)"
-    echo "  4) satoshi       - Satoshi (Structural Neo-Grotesque, high design polish)"
-    echo "  5) inter         - Inter (Default clean UI grotesque)"
+    echo "  4) inter         - Inter (Default clean UI grotesque)"
     echo ""
     echo "Current active font: $(get_current_font)"
 }
@@ -90,14 +88,13 @@ TARGET="${1:-}"
 if [ -z "$TARGET" ]; then
     show_help
     echo ""
-    read -rp "Enter choice [1-5 or name] (default: switzer): " CHOICE
-    CHOICE="${CHOICE:-switzer}"
+    read -rp "Enter choice [1-4 or name] (default: jakarta): " CHOICE
+    CHOICE="${CHOICE:-jakarta}"
     case "$CHOICE" in
-        1|switzer) TARGET="switzer" ;;
-        2|plus-jakarta|jakarta) TARGET="plus-jakarta" ;;
+        1|plus-jakarta|jakarta) TARGET="plus-jakarta" ;;
+        2|switzer) TARGET="switzer" ;;
         3|manrope) TARGET="manrope" ;;
-        4|satoshi) TARGET="satoshi" ;;
-        5|inter) TARGET="inter" ;;
+        4|inter) TARGET="inter" ;;
         *) TARGET="$CHOICE" ;;
     esac
 fi
@@ -123,9 +120,6 @@ case "$TARGET" in
         ;;
     manrope|Manrope)
         apply_font "Manrope"
-        ;;
-    satoshi|Satoshi)
-        apply_font "Satoshi"
         ;;
     inter|Inter)
         apply_font "Inter"

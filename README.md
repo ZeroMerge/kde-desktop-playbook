@@ -13,13 +13,50 @@ Includes dual-theme instant switching (Dark & Light), adaptive Dynamic Island ca
 │                                                        │      (Porcelain Light #f0f2f5 <-> Deep Charcoal #181a1e)
 │                                                        │
 │                                                        │
-│                     Active Windows                     │  <-- Borderless maximized windows (reclaims 36px)
+│                     Active Windows                     │  <-- Standard titlebars with full min/max/close controls
 │                                                        │      Diffused 80-alpha soft ambient drop shadows
 │                                                        │      Quarter-screen & 50/50 magnetic snapping
 │                                                        │
 │       [ Kickoff | Files | Chrome | Code | [|] ]         │  <-- Bottom Floating Dock
 └────────────────────────────────────────────────────────┘      (14px Left Curve, 0px Flush-Right Activator)
 ```
+
+---
+
+## Visual Component Gallery
+
+### 1. Dynamic Island Capsule & Control Center Dropdown
+*Real-time ITU-R BT.601 perceptual luminance tracking morphs capsule between deep charcoal and porcelain light.*
+
+| Dynamic Island (Dark Mode) | Dynamic Island (Light Mode) |
+| :---: | :---: |
+| **Top Adaptive Capsule** | **Top Adaptive Capsule** |
+| ![Dynamic Island Capsule Dark](docs/images/island_capsule.png) | ![Dynamic Island Capsule Light](docs/images/island_capsule_light.png) |
+| **Island Dropdown / Control Center** | **Island Dropdown / Control Center** |
+| <img src="docs/images/island_dropdown.png" width="380" alt="Island Dropdown Dark"> | <img src="docs/images/island_dropdown_light.png" width="380" alt="Island Dropdown Light"> |
+
+### 2. Bottom Floating Dock
+*Curved floating dock with 14px kickoff offset and 0px flush-right activator pin.*
+
+| Bottom Floating Dock (Dark Mode) |
+| :---: |
+| ![Bottom Dock Dark](docs/images/bottom_dock.png) |
+| **Bottom Floating Dock (Light Mode)** |
+| ![Bottom Dock Light](docs/images/bottom_dock_light.png) |
+
+### 3. Dolphin File Explorer
+*Custom Qt6 QSS stylesheets featuring rounded slate-blue selection pills, crisp porcelain path bars, and readable text pens.*
+
+| Dolphin Dark Mode (`dolphin-dark.qss` + Plus Jakarta Sans) | Dolphin Light Mode (`dolphin-light.qss` + Plus Jakarta Sans) |
+| :---: | :---: |
+| <img src="docs/images/dolphin_explorer.png" width="460" alt="Dolphin Dark Mode"> | <img src="docs/images/dolphin_explorer_light.png" width="460" alt="Dolphin Light Mode"> |
+
+### 4. Konsole Terminal Suite
+*JetBrains Mono Nerd Font, 92% deep charcoal opacity (#141618), 96% light opacity (#ffffff), Gaussian window blur, and hidden menubar.*
+
+| Konsole Terminal (ModernDark Profile) | Konsole Terminal (ModernLight Profile) |
+| :---: | :---: |
+| <img src="docs/images/konsole_terminal.png" width="460" alt="Konsole Dark"> | <img src="docs/images/konsole_terminal_light.png" width="460" alt="Konsole Light"> |
 
 ---
 
@@ -63,12 +100,22 @@ Includes dual-theme instant switching (Dark & Light), adaptive Dynamic Island ca
 
 ### 6. Cursor & GTK / Flatpak Synchronization
 - **Cursor**: `Bibata-Modern-Ice` configured across `kcminputrc`, `kdeglobals`, `~/.icons/default/index.theme`, and GTK 3/4 settings.
-- **GTK 3 & 4**: Synchronized with `Switzer 10` font, `Papirus-Dark` icons, and `Breeze-Dark` theme.
+- **GTK 3 & 4**: Synchronized with `Plus Jakarta Sans 10` font, `Papirus-Dark` icons, and `Breeze-Dark` theme.
 - **GNOME Portal Interface**: `gsettings` emits `prefer-dark` / `prefer-light` so third-party apps (Chrome, VS Code, Discord, Flatpaks) switch themes on the fly.
 
 ### 7. Seamless Lock Screen & SDDM
 - **Lock Screen**: Synchronized with the desktop wallpaper via `kscreenlockerrc` (`DarkestHour` in dark mode, `Flow` in light mode).
 - **SDDM Greeter**: Configuration in `/etc/sddm.conf.d/20-kubuntu.conf` matching cursor and replacing the default Kubuntu gear splash.
+
+### 8. Typography Suite & Multi-Font Switcher
+- **Modern Typography Suite**: Complete OTF/TTF font suites bundled for `Plus Jakarta Sans` (active default), `Manrope`, `Switzer`, and `Inter`.
+- **Live CLI Switcher (`desktop-font-switcher` / `switch-font`)**: Instantly updates KDE Plasma (`kdeglobals`), GTK 3 (`settings.ini`), GTK 4 (`settings.ini`), and XDG GNOME Interface:
+  ```bash
+  switch-font jakarta      # Switch to Plus Jakarta Sans
+  switch-font manrope      # Switch to Manrope
+  switch-font switzer      # Switch to Switzer
+  switch-font inter        # Switch to Inter
+  ```
 
 ---
 
@@ -76,24 +123,39 @@ Includes dual-theme instant switching (Dark & Light), adaptive Dynamic Island ca
 
 ```
 kde-desktop-playbook/
-├── README.md                          # High-level overview & quickstart
+├── README.md                          # High-level overview & visual gallery
 ├── ARCHITECTURE.md                    # Deep technical manual & upstream bugfix guide
 ├── install.sh                         # Turnkey modular deployment tool
 ├── desktop.yml                        # Ansible playbook for headless automation
 ├── inventory.ini                      # Ansible localhost connection definition
 │
+├── docs/
+│   └── images/                        # High-resolution component screenshots
+│       ├── island_capsule.png         # Dynamic island pill (Dark)
+│       ├── island_capsule_light.png   # Dynamic island pill (Light)
+│       ├── island_dropdown.png        # Control Station dropdown (Dark)
+│       ├── island_dropdown_light.png  # Control Station dropdown (Light)
+│       ├── bottom_dock.png            # Floating dock (Dark)
+│       ├── bottom_dock_light.png      # Floating dock (Light)
+│       ├── dolphin_explorer.png       # Dolphin file manager (Dark)
+│       ├── dolphin_explorer_light.png # Dolphin file manager (Light)
+│       ├── konsole_terminal.png       # Konsole terminal suite (Dark)
+│       └── konsole_terminal_light.png # Konsole terminal suite (Light)
+│
 ├── files/                             # Exact source files matching target paths
 │   ├── applications/                  # Desktop entries (Dolphin wrapper)
 │   ├── bin/                           # Executable scripts (desktop-theme, dolphin)
 │   ├── color-schemes/                 # ModernDark.colors, ModernLight.colors
+│   ├── configs/                       # dolphinrc, kdeglobals, user-places.xbel
 │   ├── cursor/                        # Bibata-Modern-Ice cursor suite & X11 index.theme
-│   ├── dolphin/                       # QSS stylesheets (light, dark, active) & dolphinrc
-│   ├── fonts/                         # JetBrains Mono, Switzer, Plus Jakarta Sans, etc.
+│   ├── dolphin/                       # QSS stylesheets (light, dark, active)
+│   ├── fonts/                         # JetBrains Mono, Plus Jakarta Sans, Manrope, Switzer, Inter
 │   ├── gtk/                           # GTK 3.0 and GTK 4.0 settings.ini
 │   ├── konsole/                       # Konsole color schemes, profiles, and konsolerc
 │   ├── kwin/                          # kwinrc (quarter snapping) & breezerc (shadows)
 │   ├── lockscreen/                    # kscreenlockerrc wallpaper configurations
 │   ├── plasmoids/                     # KdeControlStation, org.kde.plasma.dockpin, etc.
+│   ├── scripts/                       # desktop-font-switcher CLI tool
 │   ├── sddm/                          # 20-kubuntu.conf & kubuntu-theme.conf
 │   ├── shell/                         # Panel.qml with luminance detection
 │   └── themes/                        # modern-dock & modern-dock-light desktop themes
@@ -112,6 +174,7 @@ To deploy or restore the entire suite at once:
 ### 2. Selective Modular Deployment
 To update or restore only specific components:
 ```bash
+./install.sh --fonts        # Deploy Plus Jakarta Sans, Manrope, Switzer, Inter & font switcher
 ./install.sh --theme        # Deploy color schemes, modern-dock themes, and switcher
 ./install.sh --dolphin      # Deploy Dolphin QSS stylesheets, wrapper, and desktop entry
 ./install.sh --konsole      # Deploy Konsole profiles, colorschemes, and JetBrains Mono
@@ -121,6 +184,14 @@ To update or restore only specific components:
 ./install.sh --lockscreen   # Deploy lock screen wallpaper configuration
 ./install.sh --shell        # Deploy Panel.qml dynamic island and bottom dock
 ./install.sh --plasmoids    # Deploy Control Station and DockPin plasmoids
+```
+
+### 3. Font Switching
+```bash
+switch-font jakarta         # Apply Plus Jakarta Sans (default)
+switch-font manrope         # Apply Manrope
+switch-font switzer         # Apply Switzer
+switch-font inter           # Apply Inter
 ```
 
 ### 3. Manual Inspection & Troubleshooting
