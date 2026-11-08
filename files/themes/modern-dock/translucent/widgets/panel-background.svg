@@ -1,3 +1,4 @@
+<?xml version='1.0' encoding='utf-8'?>
 <ns0:svg xmlns:ns0="http://www.w3.org/2000/svg" xmlns:ns1="http://www.inkscape.org/namespaces/inkscape" xmlns:ns2="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:ns3="http://www.w3.org/1999/xlink" id="svg2" height="64" viewBox="0 0 157 64" width="157" ns1:version="1.2.1 (9c6d41e410, 2022-07-14)" ns2:docname="panel-background.svg" version="1.1">
   <ns2:namedview id="namedview108" pagecolor="#ffffff" bordercolor="#111111" borderopacity="1" ns1:pageshadow="0" ns1:pageopacity="0" ns1:pagecheckerboard="1" ns1:blackoutopacity="0.0" showgrid="true" ns1:current-layer="svg2" ns1:showpageshadow="2" ns1:deskcolor="#d1d1d1" ns1:zoom="16.003662" ns1:cx="18.027124" ns1:cy="34.210921" ns1:window-width="1920" ns1:window-height="1127" ns1:window-x="0" ns1:window-y="0" ns1:window-maximized="1">
     <ns1:grid type="xygrid" id="grid988" originx="0" originy="4" />
@@ -37,45 +38,45 @@
     <ns0:radialGradient ns1:collect="always" ns3:href="#shadow-corner" id="radialGradient3268-4" cx="95" cy="50" fx="95" fy="50" r="6.5" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0,2.1538462,-2.1538462,0,107.69231,-202.61538)" />
     <ns0:radialGradient ns1:collect="always" ns3:href="#shadow-corner" id="radialGradient3268-6" cx="93.14286" cy="50" fx="93.14286" fy="50" r="6.5" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0,2.1538462,-2.1538462,0,107.69231,-202.61538)" />
   </ns0:defs>
-  <ns0:g id="shadow-bottomright-9" transform="translate(65,48)" />
-  <ns0:rect style="color:#202224;fill:currentColor;fill-opacity:1;stroke:none;stop-color:#202224" id="thick-center" width="0.001" height="32" x="19" y="75" class="ColorScheme-Background" />
+  <ns0:g id="shadow-bottomright-9" transform="translate(95,48)" />
+  <ns0:rect style="color:#202224;fill:currentColor;fill-opacity:1;stroke:none;stop-color:#202224" id="thick-center" width="32" height="32" x="19" y="75" class="ColorScheme-Background" />
   <ns0:rect transform="rotate(90)" style="fill:#800080;fill-opacity:1;stroke:none;stroke-width:1.1547" id="thick-hint-right-margin" width="0" height="0" x="95" y="-56" />
   <ns0:rect transform="rotate(90)" y="-20" x="95" height="0" width="0" id="thick-hint-left-margin" style="fill:#800080;fill-opacity:1;stroke:none;stroke-width:1.1547" />
   <ns0:rect y="69" x="38" height="8" width="4" id="thick-hint-top-margin" style="fill:#800080;fill-opacity:1;stroke:none;stroke-width:1.1547" />
   <ns0:rect style="fill:#800080;fill-opacity:1;stroke:none;stroke-width:1.1547" id="thick-hint-bottom-margin" width="4" height="8" x="39" y="105" />
   <ns0:rect id="hint-tile-center" height="5" style="fill:#ff6600" width="5" x="0" y="0" />
   <ns0:g id="top" transform="translate(6,10)">
-    <ns0:rect id="rect4152" height="6" style="opacity:1;fill:currentColor" class="ColorScheme-Background" width="0.001" x="0" y="4" />
-    <ns0:path style="opacity:0.5;fill:currentColor" d="M 0,4 V 5 H 32 V 4 Z" id="path1337" class="ColorScheme-Background" fill="currentColor" />
+    <ns0:rect id="rect4152" height="6" style="opacity:1;fill:currentColor" class="ColorScheme-Background" width="32" x="0" y="0" />
+    <ns0:path style="opacity:0.5;fill:currentColor" d="M 0,0 V 1 H 32 V 0 Z" id="path1337" class="ColorScheme-Background" fill="currentColor" />
   </ns0:g>
   <ns0:g id="bottom" transform="translate(6,48)">
-    <ns0:rect id="rect4148" height="6" style="opacity:1;fill:currentColor" class="ColorScheme-Background" width="0.001" x="0" y="0" />
+    <ns0:rect id="rect4148" height="6" style="opacity:1;fill:currentColor" class="ColorScheme-Background" width="32" x="0" y="0" />
     <ns0:path style="opacity:1;fill:currentColor" d="M 0,5 V 6 H 32 V 5 Z" id="path1671" class="ColorScheme-Background" fill="currentColor" />
   </ns0:g>
   <ns0:g id="left" transform="translate(0,16)">
     <ns0:rect id="rect4144" height="32" style="opacity:1;fill:currentColor" class="ColorScheme-Background" width="0" x="0" y="0" />
     <ns0:path style="opacity:1;fill:currentColor" d="M 0,0 Z" id="path1785" class="ColorScheme-Background" fill="currentColor" />
   </ns0:g>
-  <ns0:g id="right" transform="translate(4,16)">
+  <ns0:g id="right" transform="translate(38,16)">
     <ns0:rect id="rect4140" height="32" style="opacity:1;fill:currentColor" class="ColorScheme-Background" width="0" x="0" y="0" />
     <ns0:path style="opacity:1;fill:currentColor" d="M 0,0 Z" id="path1902" class="ColorScheme-Background" fill="currentColor" />
   </ns0:g>
   <ns0:g id="center" transform="translate(6,16)">
-    <ns0:rect id="rect4138" height="32" style="opacity:1;fill:currentColor" class="ColorScheme-Background" width="0.001" x="0" y="0" />
+    <ns0:rect id="rect4138" height="32" style="opacity:1;fill:currentColor" class="ColorScheme-Background" width="32" x="0" y="0" />
   </ns0:g>
   <ns0:g id="topleft" transform="translate(0,10)">
     <ns0:path d="M 0,0 H 0 V 0 H 0 Z" style="opacity:1;fill:currentColor" class="ColorScheme-Background" id="path3115" ns2:nodetypes="cccc" />
   </ns0:g>
-  <ns0:g id="topright" transform="translate(4,10)">
+  <ns0:g id="topright" transform="translate(38,10)">
     <ns0:path d="M 0,0 H 0 V 0 H 0 Z" style="opacity:1;fill:currentColor" class="ColorScheme-Background" id="path3118" ns2:nodetypes="cccc" />
   </ns0:g>
   <ns0:g id="bottomleft" transform="translate(0,48)">
     <ns0:path d="M 0,0 H 0 V 0 H 0 Z" style="opacity:1;fill:currentColor" class="ColorScheme-Background" id="path3124" ns2:nodetypes="cccc" />
   </ns0:g>
-  <ns0:g id="bottomright" transform="translate(4,48)">
+  <ns0:g id="bottomright" transform="translate(38,48)">
     <ns0:path d="M 0,0 H 0 V 0 H 0 Z" style="opacity:1;fill:currentColor" class="ColorScheme-Background" id="path3121" ns2:nodetypes="cccc" />
   </ns0:g>
-  <ns0:rect id="hint-top-margin" height="8" style="fill:#ff00ff;stroke-width:0.999996" width="4" x="20" y="10" />
+  <ns0:rect id="hint-top-margin" height="4" style="fill:#ff00ff;stroke-width:0.999996" width="4" x="20" y="10" />
   <ns0:rect id="hint-bottom-margin" height="4" style="fill:#ff00ff;stroke-width:0.999996" width="4" x="20" y="50" />
   <ns0:rect id="hint-right-margin" height="0" style="fill:#ff00ff;stroke-width:0.999996" width="0" x="40" y="30" />
   <ns0:rect id="hint-left-margin" height="0" style="fill:#ff00ff;stroke-width:0.999996" width="0" x="0" y="30" />
@@ -83,23 +84,23 @@
   <ns0:rect id="hint-bottom-inset" height="9.9999999e-09" style="fill:#00ff00" width="4" x="20" y="54" />
   <ns0:rect id="hint-left-inset" height="0" style="fill:#00ff00" width="0" x="0" y="30" />
   <ns0:rect id="hint-right-inset" height="0" style="fill:#00ff00" width="0" x="44" y="30" />
-  <ns0:rect id="mask-top" height="6.000021" width="31.99999" x="119" y="14" />
-  <ns0:rect id="mask-center" height="32" width="0.001" x="119" y="16" />
+  <ns0:rect id="mask-top" height="6.000021" width="31.99999" x="119" y="10" />
+  <ns0:rect id="mask-center" height="32" width="32" x="119" y="16" />
   <ns0:rect id="mask-bottom" height="6.0000215" transform="scale(1,-1)" width="32.000008" x="119" y="-54" />
   <ns0:rect id="mask-left" height="32" width="0" x="113" y="16" />
-  <ns0:rect id="mask-right" height="32" width="0" x="117" y="16" />
+  <ns0:rect id="mask-right" height="32" width="0" x="151" y="16" />
   <ns0:path id="mask-topleft" d="M 0,0 H 0 V 0 H 0 Z" ns2:nodetypes="cccccc" />
   <ns0:g id="shadow-center" transform="translate(63,16)">
-    <ns0:rect id="rect4908" height="32" style="opacity:0.00100002;fill-opacity:0.00100002" width="0.001" x="0" y="0" />
+    <ns0:rect id="rect4908" height="32" style="opacity:0.00100002;fill-opacity:0.00100002" width="32" x="0" y="0" />
   </ns0:g>
   <ns0:path style="fill:#ffff00;stroke-width:2;stroke-linecap:round" d="m 63,10 h 32 c 4,0 6,2 6,6 v 32 c 0,4 -2,6 -6,6 H 63 c -4,0 -6,-2 -6,-6 V 16 c 0,-4 2,-6 6,-6 z" id="path838" ns2:nodetypes="ccccccccc" />
-  <ns0:g id="shadow-topleft" transform="rotate(180,31.5,8) translate(0,-4)">
+  <ns0:g id="shadow-topleft" transform="rotate(180,31.5,8)">
     <ns0:path d="M 0,6 V 0 H 6 C 6,4 4,6 0,6 Z" ns1:label="#shadow-bottomright" style="opacity:0.00100002;fill:#000000;fill-opacity:0.00392157" id="path95-4-2" ns2:nodetypes="cccc" />
     <ns0:path id="path2368-7-5" style="fill:url(#radialGradient3268-6-6);fill-opacity:1;fill-rule:evenodd;stroke-width:0.999997" d="M 6,0 C 6,4 4,6 0,6 V 16 H 3 C 10.179702,16 16,10.179702 16,3 V 0 Z" ns2:nodetypes="cccsscc" />
   </ns0:g>
   <ns0:g id="shadow-top" transform="translate(63)">
-    <ns0:rect id="st" height="14" width="32" style="fill:url(#linearGradient4945);fill-opacity:1" x="0" y="0" />
-    <ns0:rect id="rect1546" height="6" style="opacity:0.00100002;fill:#000000;fill-opacity:0.00392157;fill-rule:evenodd" width="32" y="14" x="0" />
+    <ns0:rect id="st" height="10" width="32" style="fill:url(#linearGradient4945);fill-opacity:1" x="0" y="0" />
+    <ns0:rect id="rect1546" height="6" style="opacity:0.00100002;fill:#000000;fill-opacity:0.00392157;fill-rule:evenodd" width="32" y="10" x="0" />
   </ns0:g>
   <ns0:g id="shadow-bottom" transform="translate(63,48)">
     <ns0:rect id="rect1546-6" height="6" style="opacity:0.00100002;fill:#000000;fill-opacity:0.00392157;fill-rule:evenodd" width="32" x="0" y="0" />
@@ -107,21 +108,21 @@
   </ns0:g>
   <ns0:g id="shadow-left" transform="translate(47,16)">
     <ns0:rect id="sl" height="32" width="10" style="fill:url(#linearGradient1984);fill-opacity:1" x="0" y="0" />
-    <ns0:rect id="rect1546-3-7" height="32" style="opacity:0.00100002;fill:#000000;fill-opacity:0.00392157;fill-rule:evenodd" width="4.5" x="10" y="0" />
+    <ns0:rect id="rect1546-3-7" height="32" style="opacity:0.00100002;fill:#000000;fill-opacity:0.00392157;fill-rule:evenodd" width="6" x="10" y="0" />
   </ns0:g>
-  <ns0:g id="shadow-right" transform="translate(61,16)">
-    <ns0:rect id="rect1546-3" height="32" style="opacity:0.00100002;fill:#000000;fill-opacity:0.00392157;fill-rule:evenodd" width="4.5" x="0" y="0" />
-    <ns0:rect id="sr" height="32" width="10" x="4.5" style="fill:url(#linearGradient8667);fill-opacity:1" y="0" />
+  <ns0:g id="shadow-right" transform="translate(95,16)">
+    <ns0:rect id="rect1546-3" height="32" style="opacity:0.00100002;fill:#000000;fill-opacity:0.00392157;fill-rule:evenodd" width="6" x="0" y="0" />
+    <ns0:rect id="sr" height="32" width="10" x="6" style="fill:url(#linearGradient8667);fill-opacity:1" y="0" />
   </ns0:g>
-  <ns0:rect id="shadow-hint-top-margin" height="14" style="fill:#ff00ff" width="2" x="76" y="0" />
+  <ns0:rect id="shadow-hint-top-margin" height="10" style="fill:#ff00ff" width="2" x="76" y="0" />
   <ns0:rect id="shadow-hint-bottom-margin" height="10" style="fill:#ff00ff" width="2" x="76" y="54" />
   <ns0:rect id="shadow-hint-right-margin" height="0" style="fill:#ff00ff" width="0" x="101" y="33" />
   <ns0:rect id="shadow-hint-left-margin" height="0" style="fill:#ff00ff" width="0" x="47" y="29" />
-  <ns0:rect id="shadow-hint-top-inset" height="14" style="fill:#00ff00" width="2" x="80" y="0" />
+  <ns0:rect id="shadow-hint-top-inset" height="10" style="fill:#00ff00" width="2" x="80" y="0" />
   <ns0:rect id="shadow-hint-bottom-inset" height="10" style="fill:#00ff00" width="2" x="80" y="54" />
   <ns0:rect id="shadow-hint-right-inset" height="0" style="fill:#00ff00" width="0" x="101" y="29" />
   <ns0:rect id="shadow-hint-left-inset" height="0" style="fill:#00ff00" width="0" x="47" y="33" />
-  <ns0:g id="shadow-bottomright" transform="translate(61,48)">
+  <ns0:g id="shadow-bottomright" transform="translate(95,48)">
     <ns0:path d="M 0,6 V 0 H 6 C 6,3.9985637 3.9804714,6 0,6 Z" ns1:label="#shadow-bottomright" style="opacity:0.00100002;fill:#000000;fill-opacity:0.00392157" id="path95" ns2:nodetypes="cccc" />
     <ns0:path id="path2368" style="fill:url(#radialGradient3268);fill-opacity:1;fill-rule:evenodd;stroke-width:0.999997" d="M 6,0 C 6,4 4,6 0,6 V 16 H 3 C 10.179702,16 16,10.179702 16,3 V 0 Z" ns2:nodetypes="cccsscc" />
   </ns0:g>
@@ -129,7 +130,7 @@
     <ns0:path d="M 3,6 H 0 V 0 H 6 V 3 C 6,4.6568542 4.6568542,6 3,6 Z" ns1:label="#shadow-bottomright" style="opacity:0.00100002;fill:#000000;fill-opacity:0.00392157" id="path95-1" />
     <ns0:path id="path2368-0" style="fill:url(#radialGradient3268-4);fill-opacity:1;fill-rule:evenodd;stroke-width:0.999997" d="M 6,0 C 6,3.9985637 3.9951555,6 0,6 V 16 H 3 C 10.179702,16 16,10.179702 16,3 V 0 Z" ns2:nodetypes="cccsscc" />
   </ns0:g>
-  <ns0:g id="shadow-topright" transform="matrix(1,0,0,-1,61,20)">
+  <ns0:g id="shadow-topright" transform="matrix(1,0,0,-1,95,16)">
     <ns0:path d="M 3,6 H 0 V 0 H 6 V 3 C 6,4.6568542 4.6568542,6 3,6 Z" ns1:label="#shadow-bottomright" style="opacity:0.00100002;fill:#000000;fill-opacity:0.00392157" id="path95-4" ns2:nodetypes="scccss" />
     <ns0:path id="path2368-7" style="fill:url(#radialGradient3268-6);fill-opacity:1;fill-rule:evenodd;stroke-width:0.999997" d="M 6,0 C 6,3.9881462 3.9744051,6 0,6 V 16 H 3 C 10.179702,16 16,10.179702 16,3 V 0 Z" ns2:nodetypes="cccsscc" />
   </ns0:g>
@@ -137,4 +138,4 @@
   <ns0:path id="mask-bottomright" d="M 0,0 H 0 V 0 H 0 Z" ns2:nodetypes="cccccc" />
   <ns0:path id="mask-bottomleft" d="M 0,0 H 0 V 0 H 0 Z" ns2:nodetypes="cccccc" />
   <ns0:text xml:space="preserve" style="font-stretch:condensed;font-size:1.25217px;font-family:Impact;-inkscape-font-specification:'Impact Condensed';text-align:start;text-anchor:start;fill:#ff0000;stroke:#000000;stroke-width:5.72866;stroke-linecap:round" x="118" y="1.9579086" id="text1204"><ns0:tspan ns2:role="line" id="tspan1202" x="118" y="1.9579086" style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.25217px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';text-align:start;text-anchor:start;fill:#000000;stroke:none;stroke-width:5.72866">The corners of the mask are 1px  smaller because they</ns0:tspan><ns0:tspan ns2:role="line" x="118" y="3.6373279" style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.25217px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';text-align:start;text-anchor:start;fill:#000000;stroke:none;stroke-width:5.72866" id="tspan1358">are not antialiased, whereas the svg corners are; if the</ns0:tspan><ns0:tspan ns2:role="line" x="118" y="5.3167472" style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.25217px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';text-align:start;text-anchor:start;fill:#000000;stroke:none;stroke-width:5.72866" id="tspan1360">mask is the same size of the svg, then, some of the corner</ns0:tspan><ns0:tspan ns2:role="line" x="118" y="6.9961662" style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.25217px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';text-align:start;text-anchor:start;fill:#000000;stroke:none;stroke-width:5.72866" id="tspan1362">pixels of the mask will be visible even though they should</ns0:tspan><ns0:tspan ns2:role="line" x="118" y="8.6755848" style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.25217px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';text-align:start;text-anchor:start;fill:#000000;stroke:none;stroke-width:5.72866" id="tspan1364">be covered by the svg.</ns0:tspan></ns0:text>
-<ns0:rect id="floating-center" width="0.001" height="32" x="19" y="75" style="color:#202224;fill:currentColor;fill-opacity:1;stroke:none;" /><ns0:rect id="floating-hint-top-margin" height="5" width="4" x="20" y="10" style="fill:#ff00ff;" /><ns0:rect id="floating-hint-bottom-margin" height="0.001" width="4" x="20" y="50" style="fill:#ff00ff;" /><ns0:rect id="floating-hint-left-margin" height="4" width="0.001" x="0" y="30" style="fill:#ff00ff;" /><ns0:rect id="floating-hint-right-margin" height="4" width="0.001" x="40" y="30" style="fill:#ff00ff;" /></ns0:svg>
+</ns0:svg>
