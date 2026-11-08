@@ -1,42 +1,74 @@
-# Modern Desktop Suite for KDE Plasma 6 (Ansible Playbook & Installer)
+# Modern Desktop Suite for Kubuntu / KDE Plasma 6 (Wayland)
 
-Automated provisioning and customization suite for modern Kubuntu / KDE Plasma 6 on Wayland.
-Wraps all desktop refinements, edge flush-fitting fixes, on-top dock behaviors, blur-free performance optimizations, and the unified macOS-style Control Center into a reproducible Ansible playbook and turnkey installer script.
+A complete, battle-tested, modular desktop suite for Kubuntu 26.04 LTS running KDE Plasma 6 on Wayland.
+Includes dual-theme instant switching (Dark & Light), adaptive Dynamic Island capsule, flush-fit bottom floating dock, custom Dolphin file explorer stylesheets, Konsole terminal theme with JetBrains Mono, KWin window snapping & borderless maximized windows, Bibata Modern Ice cursors, GTK 3/4 synchronization, and seamless lockscreen wallpaper matching.
 
 ---
 
-## Architecture & What Gets Deployed
+## Visual Architecture Overview
 
 ```
 ┌────────────────────────────────────────────────────────┐
-│             [ 19:50  •  (Switch Toggle) ]              │  <-- Top Status Capsule (Option 3)
-│                                                        │      (Digital Clock + KDE Control Station)
+│             [ 01:45  •  (Switch Toggle) ]              │  <-- Adaptive Dynamic Island Capsule
+│                                                        │      (Porcelain Light #f0f2f5 <-> Deep Charcoal #181a1e)
 │                                                        │
 │                                                        │
-│                     Active Windows                     │  <-- Maximized windows remain unpushed
+│                     Active Windows                     │  <-- Borderless maximized windows (reclaims 36px)
+│                                                        │      Diffused 80-alpha soft ambient drop shadows
+│                                                        │      Quarter-screen & 50/50 magnetic snapping
 │                                                        │
-│                                                        │
-│       [ Kickoff | Chrome | VSCode | Files | [|] ]       │  <-- Bottom Floating Dock
-└────────────────────────────────────────────────────────┘      (Flush 0px Activator, On-Top Pinned Mode)
+│       [ Kickoff | Files | Chrome | Code | [|] ]         │  <-- Bottom Floating Dock
+└────────────────────────────────────────────────────────┘      (14px Left Curve, 0px Flush-Right Activator)
 ```
 
-### 1. Top-Center Status Capsule (`Option 3: KDE Control Station`)
-* **Placement**: Top-center floating panel (`height = 36px`, `alignment = center`, `lengthMode = fit`, `floating = true`, `hiding = windowsgobelow`).
-* **Widgets**:
-  - **Digital Clock**: Clean time readout (`HH:mm`), clean and non-cluttered.
-  - **KDE Control Station**: Interactive dual-slider toggle button.
-* **Control Center Card**:
-  - Full-width tactile sliders for **Display Brightness** and **Audio Volume**.
-  - One-click quick action tiles for **Wi-Fi**, **Bluetooth**, **Do Not Disturb**, **KDE Connect**, **Night Light**, and **Dark Theme Switcher**.
-  - Integrated MPRIS media player card showing song title, artist, live track progress, and playback controls.
-  - User and power shortcuts (`Abundant Joel`, `zeromerge@homelab`, battery level, power/lock).
-  - High-contrast solid dark styling (`#1e2024`) with zero background bleed-through.
+---
 
-### 2. Bottom Floating Dock & Flush Activator
-* **Flush Right Boundary (0px Gap)**: Activator rectangle extends flush to the outer border of the dock with zero gap.
-* **Halved Activator Footprint**: Slim 16px wide tile with a 2px vertical pin accent.
-* **On-Top Mode (`WindowsGoBelow`)**: Stays on top of full-screen windows without reserving workspace struts or shrinking maximized windows.
-* **Smooth 60fps Transition**: Eliminates dynamic Gaussian blur and contrast filter effects for clean, instant sliding animations.
+## Feature Matrix & Component Details
+
+### 1. Dual-Theme Live Switcher (`desktop-theme`)
+- **1-Click Bidirectional Toggle**: Controlled via CLI (`desktop-theme toggle`) or directly via the **Appearance** tile inside **KdeControlStation**.
+- **Synchronized Subsystems**:
+  - Plasma Color Scheme (`ModernLight` $\leftrightarrow$ `ModernDark`)
+  - Desktop Theme (`modern-dock-light` $\leftrightarrow$ `modern-dock`)
+  - Dynamic Island Pill (`#f0f2f5` with `#d0d4dc` border $\leftrightarrow$ `#181a1e` with `#282a30` border)
+  - Control Station popup and cards (`#ffffff` cards on `#f0f2f5` $\leftrightarrow$ `#21242b` cards on `#181a1e`)
+  - Dolphin File Explorer (`dolphin-light.qss` $\leftrightarrow$ `dolphin-dark.qss`)
+  - Konsole Terminal Profiles (`ModernLight.profile` $\leftrightarrow$ `ModernDark.profile`)
+  - GTK 3 & GTK 4 themes (`Breeze` $\leftrightarrow$ `Breeze-Dark`)
+  - XDG Desktop Portal / GNOME interface (`prefer-light` $\leftrightarrow$ `prefer-dark`)
+  - Icons (`Papirus` $\leftrightarrow$ `Papirus-Dark`)
+  - Lockscreen Wallpaper (`Flow` light $\leftrightarrow$ `DarkestHour` dark)
+
+### 2. Dolphin File Explorer Fixes
+- **Crisp Porcelain Breadcrumbs (`KUrlNavigator`)**: Replaced unstyled black path bar with clean `#f0f2f5` / `#ffffff` background and `#181a1c` dark text.
+- **Floating Rounded Selection Pill**: Replaced full-width rectangular teal block with a soft slate-blue floating rounded pill (`#d0dae6` / `rgb(208,218,230)`) with 10px lateral margins.
+- **Readable Highlight Text Pen**: Fixed upstream white-on-light bug by setting `ForegroundActive=24,26,28` in `ModernLight.colors`.
+- **D-Bus Single-Instance Wrapper**: `~/.local/bin/dolphin` and `~/.local/share/applications/org.kde.dolphin.desktop` guarantee that Dolphin always launches with `-stylesheet ~/.config/dolphin.qss`.
+
+### 3. Adaptive Dynamic Island Capsule (`Panel.qml`)
+- **Perceptual Luminance Formula**: Dynamically monitors `(r*0.299 + g*0.587 + b*0.114) > 0.5` on the desktop background, adapting capsule fill and border colors in real-time.
+- **Dock 0px Flush-Right Pin**: Bottom dock activator tile (`DockPin`) is flush with the right outer border with zero gap, and 14px curve offset on the left.
+
+### 4. Terminal & Konsole Suite
+- **JetBrains Mono Nerd Font**: Installed to `~/.local/share/fonts/JetBrainsMono/` with complete ligatures, dev glyphs, and git symbols.
+- **Deep Dark & Light Profiles**:
+  - `ModernDark.profile`: `#141618` background, 0.92 opacity, active KWin Gaussian blur, Tokyo Night/Catppuccin hybrid ANSI 16 palette.
+  - `ModernLight.profile`: `#ffffff` background, 0.96 opacity, blur enabled, vibrant day palette.
+- **Minimalist Chrome**: Top menubar hidden by default (accessible via `Ctrl+Shift+M`), 10px comfortable terminal padding.
+
+### 5. Window Behavior & Snapping (KWin)
+- **Borderless Maximized Windows**: `BorderlessMaximizedWindows=true` strips titlebars when windows are maximized, saving 36px vertical screen real estate.
+- **Magnetic Snapping**: Drag to top edge to maximize; drag to left/right for 50/50 split; drag to any corner for 25% quarter tiling.
+- **Diffused Ambient Drop Shadows**: Configured `~/.config/breezerc` with `ShadowSize=ShadowLarge` and `ShadowStrength=80` for smooth ambient diffusion.
+
+### 6. Cursor & GTK / Flatpak Synchronization
+- **Cursor**: `Bibata-Modern-Ice` configured across `kcminputrc`, `kdeglobals`, `~/.icons/default/index.theme`, and GTK 3/4 settings.
+- **GTK 3 & 4**: Synchronized with `Switzer 10` font, `Papirus-Dark` icons, and `Breeze-Dark` theme.
+- **GNOME Portal Interface**: `gsettings` emits `prefer-dark` / `prefer-light` so third-party apps (Chrome, VS Code, Discord, Flatpaks) switch themes on the fly.
+
+### 7. Seamless Lock Screen & SDDM
+- **Lock Screen**: Synchronized with the desktop wallpaper via `kscreenlockerrc` (`DarkestHour` in dark mode, `Flow` in light mode).
+- **SDDM Greeter**: Configuration in `/etc/sddm.conf.d/20-kubuntu.conf` matching cursor and replacing the default Kubuntu gear splash.
 
 ---
 
@@ -44,87 +76,52 @@ Wraps all desktop refinements, edge flush-fitting fixes, on-top dock behaviors, 
 
 ```
 kde-desktop-playbook/
-├── .gitignore                         # Git ignore rules for bytecode & editor artifacts
-├── README.md                          # Documentation
-├── desktop.yml                        # Main Ansible Playbook
-├── inventory.ini                      # Localhost connection definition
-├── install.sh                         # Turnkey dual-mode installer (Ansible or pure Bash)
+├── README.md                          # High-level overview & quickstart
+├── ARCHITECTURE.md                    # Deep technical manual & upstream bugfix guide
+├── install.sh                         # Turnkey modular deployment tool
+├── desktop.yml                        # Ansible playbook for headless automation
+├── inventory.ini                      # Ansible localhost connection definition
 │
-├── python-services/                   # Custom Python Desktop Suite (Option 4)
-│   ├── dynamic_island.py              # Custom PyQt6 Wayland dynamic island service
-│   ├── bottom_dock.py                 # Custom PyQt6 physics dock
-│   ├── start_desktop.sh               # Runner script
-│   └── modern-desktop.service         # systemd user unit
-│
-├── scripts/                           # Layout scripts & test tools
-│   ├── setup_desktop_layout.js        # Plasma JS script constructing panels & applets
-│   ├── apply_layout.sh                # Helper script to execute layout via Plasma D-Bus
-│   └── mpris_player.py                # Standalone MPRIS2 test player daemon
-│
-└── files/                             # Provisioning files used by Ansible playbook
-    ├── plasmoids/
-    │   ├── org.kde.plasma.dockpin/    # Custom 16px flush on-top dock pin activator
-    │   ├── KdeControlStation/         # Option 3 Control Station (patched for Plasma 6)
-    │   └── com.manu028.dynamicisland/ # Option 2 Dynamic Island (community alternative)
-    ├── shell/
-    │   └── org.kde.plasma.desktop/    # Custom zero-margin Panel.qml
-    ├── themes/
-    │   └── modern-dock/               # Custom dark 0px blur-free desktop theme
-    ├── python-services/               # Standalone Python desktop suite files
-    └── scripts/
-        ├── setup_desktop_layout.js
-        └── apply_layout.sh
+├── files/                             # Exact source files matching target paths
+│   ├── applications/                  # Desktop entries (Dolphin wrapper)
+│   ├── bin/                           # Executable scripts (desktop-theme, dolphin)
+│   ├── color-schemes/                 # ModernDark.colors, ModernLight.colors
+│   ├── cursor/                        # Bibata-Modern-Ice cursor suite & X11 index.theme
+│   ├── dolphin/                       # QSS stylesheets (light, dark, active) & dolphinrc
+│   ├── fonts/                         # JetBrains Mono, Switzer, Plus Jakarta Sans, etc.
+│   ├── gtk/                           # GTK 3.0 and GTK 4.0 settings.ini
+│   ├── konsole/                       # Konsole color schemes, profiles, and konsolerc
+│   ├── kwin/                          # kwinrc (snapping/borderless) & breezerc (shadows)
+│   ├── lockscreen/                    # kscreenlockerrc wallpaper configurations
+│   ├── plasmoids/                     # KdeControlStation, org.kde.plasma.dockpin, etc.
+│   ├── sddm/                          # 20-kubuntu.conf & kubuntu-theme.conf
+│   ├── shell/                         # Panel.qml with luminance detection
+│   └── themes/                        # modern-dock & modern-dock-light desktop themes
 ```
 
 ---
 
-## Git Repository Setup
+## Quick Start & Usage
 
-This folder is initialized as a standalone Git repository:
-
+### 1. Full Deployment
+To deploy or restore the entire suite at once:
 ```bash
-cd /home/zeromerge/.gemini/antigravity/scratch/kde-desktop-playbook
-
-# Add your remote GitHub / GitLab / Gitea repository:
-git remote add origin git@github.com:YOUR_USERNAME/kde-modern-desktop.git
-
-# Push to your remote repository:
-git branch -M main
-git push -u origin main
+./install.sh --all
 ```
 
----
-
-## Quick Start / How to Run on a New Machine
-
-### Option A: Using the Automated Installer (Recommended)
-On any fresh machine, simply clone or copy this repository and run:
-
+### 2. Selective Modular Deployment
+To update or restore only specific components:
 ```bash
-chmod +x install.sh
-./install.sh
-```
-* If Ansible is installed on the machine, it executes `desktop.yml` via `ansible-playbook`.
-* If Ansible is not installed, it automatically runs the native Shell Installer mode with zero extra dependencies required!
-
-### Option B: Using Ansible Directly
-If you already use Ansible:
-
-```bash
-# Run locally (add -K if you want to install system apt packages)
-ansible-playbook -i inventory.ini desktop.yml -K
+./install.sh --theme        # Deploy color schemes, modern-dock themes, and switcher
+./install.sh --dolphin      # Deploy Dolphin QSS stylesheets, wrapper, and desktop entry
+./install.sh --konsole      # Deploy Konsole profiles, colorschemes, and JetBrains Mono
+./install.sh --kwin         # Deploy KWin borderless maximized, snapping, and soft shadows
+./install.sh --cursor       # Deploy Bibata Modern Ice cursor and X11 inheritance
+./install.sh --gtk          # Deploy GTK 3/4 settings and GNOME interface portal
+./install.sh --lockscreen   # Deploy lock screen wallpaper configuration
+./install.sh --shell        # Deploy Panel.qml dynamic island and bottom dock
+./install.sh --plasmoids    # Deploy Control Station and DockPin plasmoids
 ```
 
-Or skip apt packages and only configure user desktop files and plasma:
-```bash
-ansible-playbook -i inventory.ini desktop.yml --skip-tags packages
-```
-
----
-
-## Compatibility Fixes Included for Plasma 6
-1. **Kirigami.Units Port**: Replaced legacy `PlasmaCore.Units` with modern `Kirigami.Units` in `MainView.qml`.
-2. **Guarded Array Bounds**: Guarded uninitialized `powerManagementItem.inhibitions` in `PowerManagementItem.qml`.
-3. **Strict Boolean Casts**: Fixed uninitialized boolean properties in `VolumePage.qml`.
-4. **Shell Padding Zeroing**: Zeroed horizontal floating padding in `Panel.qml` so applet containers extend 100% flush to the physical dock boundary.
-5. **Blur Calculations Removed**: Disabled dynamic blur effects in `plasmarc` and SVG themes to prevent KWin frame-drops during dock show/hide events.
+### 3. Manual Inspection & Troubleshooting
+See **[ARCHITECTURE.md](ARCHITECTURE.md)** for a line-by-line explanation of every component, root cause analysis of upstream KDE bugs, and manual recovery procedures.

@@ -1,0 +1,39 @@
+[CompactMode]
+IconSize=22
+PreviewSize=22
+UseSystemFont=true
+
+[DetailsMode]
+ExpandableFolders=true
+HighlightEntireRow=true
+IconSize=22
+LeftPadding=10
+PreviewSize=32
+RightPadding=10
+UseSystemFont=true
+
+[General]
+EditableUrl=false
+GlobalViewProps=true
+ShowFullPath=true
+ShowSelectionToggle=true
+ShowStatusBar=true
+ShowToolTips=true
+ShowZoomSlider=false
+Version=202
+ViewPropsTimestamp=2026,11,7,10,36,9.108
+
+[IconsMode]
+MaximumTextLines=2
+PreviewSize=64
+UseSystemFont=true
+
+[KFileDialog Settings]
+Places Icons Auto-resize=false
+Places Icons Static Size=22
+
+[MainWindow]
+MenuBar=Disabled
+
+[Toolbar mainToolBar]
+ToolButtonStyle=IconOnly

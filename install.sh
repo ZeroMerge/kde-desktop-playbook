@@ -1,145 +1,237 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# Modern Desktop Suite - Automated Installer & Deployer
-# Works on fresh Kubuntu / KDE Plasma 6 installations.
-# Can run via Ansible Playbook OR native Shell Installer mode.
+# Modern Desktop Suite - Automated Installer & Modular Deployer
+# System: Kubuntu 26.04 LTS / KDE Plasma 6 (Wayland)
 # ==============================================================================
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 USER_HOME="${HOME}"
+FILES_DIR="${SCRIPT_DIR}/files"
+
+# Destination directories
 PLASMOIDS_DIR="${USER_HOME}/.local/share/plasma/plasmoids"
 SHELLS_DIR="${USER_HOME}/.local/share/plasma/shells/org.kde.plasma.desktop/contents/views"
 THEMES_DIR="${USER_HOME}/.local/share/plasma/desktoptheme"
+COLORS_DIR="${USER_HOME}/.local/share/color-schemes"
+FONTS_DIR="${USER_HOME}/.local/share/fonts"
+ICONS_DIR="${USER_HOME}/.local/share/icons"
+KONSOLE_DIR="${USER_HOME}/.local/share/konsole"
 CONFIG_DIR="${USER_HOME}/.config"
+BIN_DIR="${USER_HOME}/.local/bin"
+APPS_DIR="${USER_HOME}/.local/share/applications"
 
+BACKUP_DIR="${USER_HOME}/.config/kde-desktop-backups/$(date '+%Y%m%d_%H%M%S')"
+
+# Helpers
+log() { echo -e "\033[1;34m==>\033[0m \033[1m$1\033[0m"; }
+success() { echo -e "\033[1;32m✔\033[0m $1"; }
+warn() { echo -e "\033[1;33m⚠\033[0m $1"; }
+
+backup_config() {
+    local target="$1"
+    if [ -e "$target" ]; then
+        mkdir -p "${BACKUP_DIR}"
+        cp -r "$target" "${BACKUP_DIR}/" 2>/dev/null || true
+    fi
+}
+
+deploy_theme() {
+    log "Deploying Color Schemes and Modern Dock Themes..."
+    mkdir -p "${COLORS_DIR}" "${THEMES_DIR}" "${BIN_DIR}"
+    
+    cp "${FILES_DIR}/color-schemes/"* "${COLORS_DIR}/"
+    rm -rf "${THEMES_DIR}/modern-dock" "${THEMES_DIR}/modern-dock-light"
+    cp -r "${FILES_DIR}/themes/modern-dock" "${THEMES_DIR}/"
+    cp -r "${FILES_DIR}/themes/modern-dock-light" "${THEMES_DIR}/"
+    
+    cp "${FILES_DIR}/bin/desktop-theme" "${BIN_DIR}/desktop-theme"
+    chmod +x "${BIN_DIR}/desktop-theme"
+    success "Color schemes, desktop themes, and desktop-theme switcher deployed."
+}
+
+deploy_dolphin() {
+    log "Deploying Dolphin Explorer Stylesheets, Wrapper, and Desktop Entry..."
+    mkdir -p "${CONFIG_DIR}" "${BIN_DIR}" "${APPS_DIR}"
+    
+    backup_config "${CONFIG_DIR}/dolphinrc"
+    backup_config "${CONFIG_DIR}/dolphin.qss"
+    
+    cp "${FILES_DIR}/dolphin/dolphin.qss" "${CONFIG_DIR}/dolphin.qss"
+    cp "${FILES_DIR}/dolphin/dolphin-light.qss" "${CONFIG_DIR}/dolphin-light.qss"
+    cp "${FILES_DIR}/dolphin/dolphin-dark.qss" "${CONFIG_DIR}/dolphin-dark.qss"
+    cp "${FILES_DIR}/dolphin/dolphinrc" "${CONFIG_DIR}/dolphinrc"
+    
+    cp "${FILES_DIR}/bin/dolphin" "${BIN_DIR}/dolphin"
+    chmod +x "${BIN_DIR}/dolphin"
+    
+    cp "${FILES_DIR}/applications/org.kde.dolphin.desktop" "${APPS_DIR}/org.kde.dolphin.desktop"
+    chmod +x "${APPS_DIR}/org.kde.dolphin.desktop"
+    update-desktop-database "${APPS_DIR}" 2>/dev/null || true
+    success "Dolphin QSS (KUrlNavigator & selection contrast fixes) deployed."
+}
+
+deploy_konsole() {
+    log "Deploying Konsole Profiles and JetBrains Mono Nerd Font..."
+    mkdir -p "${KONSOLE_DIR}" "${CONFIG_DIR}" "${FONTS_DIR}/JetBrainsMono"
+    
+    backup_config "${CONFIG_DIR}/konsolerc"
+    
+    cp "${FILES_DIR}/konsole/ModernDark.colorscheme" "${KONSOLE_DIR}/"
+    cp "${FILES_DIR}/konsole/ModernLight.colorscheme" "${KONSOLE_DIR}/"
+    cp "${FILES_DIR}/konsole/ModernDark.profile" "${KONSOLE_DIR}/"
+    cp "${FILES_DIR}/konsole/ModernLight.profile" "${KONSOLE_DIR}/"
+    cp "${FILES_DIR}/konsole/konsolerc" "${CONFIG_DIR}/konsolerc"
+    
+    if [ -d "${FILES_DIR}/fonts/JetBrainsMono" ]; then
+        cp "${FILES_DIR}/fonts/JetBrainsMono/"*.ttf "${FONTS_DIR}/JetBrainsMono/" 2>/dev/null || true
+        fc-cache -f "${FONTS_DIR}" 2>/dev/null || true
+    fi
+    success "Konsole profiles and JetBrains Mono font deployed."
+}
+
+deploy_kwin() {
+    log "Deploying KWin Window Rules (Borderless Maximized, Quarter Snapping, Soft Shadows)..."
+    mkdir -p "${CONFIG_DIR}"
+    
+    backup_config "${CONFIG_DIR}/kwinrc"
+    backup_config "${CONFIG_DIR}/breezerc"
+    
+    cp "${FILES_DIR}/kwin/kwinrc" "${CONFIG_DIR}/kwinrc"
+    cp "${FILES_DIR}/kwin/breezerc" "${CONFIG_DIR}/breezerc"
+    
+    qdbus6 org.kde.KWin /KWin org.kde.KWin.reconfigure >/dev/null 2>&1 || true
+    success "KWin borderless maximized windows and diffused shadows active."
+}
+
+deploy_cursor() {
+    log "Deploying Bibata Modern Ice Cursor Theme..."
+    mkdir -p "${ICONS_DIR}" "${USER_HOME}/.icons/default"
+    
+    if [ -d "${FILES_DIR}/cursor/Bibata-Modern-Ice" ]; then
+        cp -r "${FILES_DIR}/cursor/Bibata-Modern-Ice" "${ICONS_DIR}/"
+    fi
+    cp "${FILES_DIR}/cursor/icons-default/index.theme" "${USER_HOME}/.icons/default/index.theme"
+    
+    kwriteconfig6 --file kcminputrc --group Mouse --key cursorTheme "Bibata-Modern-Ice"
+    kwriteconfig6 --file kdeglobals --group Mouse --key cursorTheme "Bibata-Modern-Ice"
+    success "Bibata Modern Ice cursor deployed and active."
+}
+
+deploy_gtk() {
+    log "Deploying GTK 3/4 & GNOME Interface Portal Synchronization..."
+    mkdir -p "${CONFIG_DIR}/gtk-3.0" "${CONFIG_DIR}/gtk-4.0"
+    
+    cp "${FILES_DIR}/gtk/gtk-3.0/settings.ini" "${CONFIG_DIR}/gtk-3.0/settings.ini"
+    cp "${FILES_DIR}/gtk/gtk-4.0/settings.ini" "${CONFIG_DIR}/gtk-4.0/settings.ini"
+    
+    if command -v gsettings &>/dev/null; then
+        gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark' >/dev/null 2>&1 || true
+        gsettings set org.gnome.desktop.interface gtk-theme 'Breeze-Dark' >/dev/null 2>&1 || true
+        gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark' >/dev/null 2>&1 || true
+    fi
+    success "GTK 3/4 settings and GNOME portal synchronized."
+}
+
+deploy_lockscreen() {
+    log "Deploying Lock Screen Wallpaper Synchronization..."
+    mkdir -p "${CONFIG_DIR}"
+    backup_config "${CONFIG_DIR}/kscreenlockerrc"
+    cp "${FILES_DIR}/lockscreen/kscreenlockerrc" "${CONFIG_DIR}/kscreenlockerrc"
+    success "Lock screen wallpaper configured."
+}
+
+deploy_shell() {
+    log "Deploying Shell Panel.qml (Dynamic Island Pill & Flush Bottom Dock)..."
+    mkdir -p "${SHELLS_DIR}"
+    backup_config "${SHELLS_DIR}/Panel.qml"
+    cp "${FILES_DIR}/shell/org.kde.plasma.desktop/contents/views/Panel.qml" "${SHELLS_DIR}/Panel.qml"
+    success "Shell Panel.qml deployed."
+}
+
+deploy_plasmoids() {
+    log "Deploying Plasmoids (KdeControlStation, DockPin, DynamicIsland)..."
+    mkdir -p "${PLASMOIDS_DIR}"
+    
+    rm -rf "${PLASMOIDS_DIR}/KdeControlStation"
+    cp -r "${FILES_DIR}/plasmoids/KdeControlStation" "${PLASMOIDS_DIR}/"
+    
+    if [ -d "${FILES_DIR}/plasmoids/org.kde.plasma.dockpin" ]; then
+        rm -rf "${PLASMOIDS_DIR}/org.kde.plasma.dockpin"
+        cp -r "${FILES_DIR}/plasmoids/org.kde.plasma.dockpin" "${PLASMOIDS_DIR}/"
+    fi
+    
+    if [ -d "${FILES_DIR}/plasmoids/com.manu028.dynamicisland" ]; then
+        rm -rf "${PLASMOIDS_DIR}/com.manu028.dynamicisland"
+        cp -r "${FILES_DIR}/plasmoids/com.manu028.dynamicisland" "${PLASMOIDS_DIR}/"
+    fi
+    success "Plasmoids deployed."
+}
+
+restart_plasma() {
+    log "Restarting Plasma Shell to reload QML components..."
+    systemctl --user restart plasma-plasmashell.service 2>/dev/null || (kquitapp6 plasmashell 2>/dev/null && kstart plasmashell 2>/dev/null) || true
+    success "Plasma Shell refreshed."
+}
+
+# ------------------------------------------------------------------------------
+# Dispatcher
+# ------------------------------------------------------------------------------
 echo "=========================================================="
-echo " Modern Desktop Suite Installer for KDE Plasma 6"
+echo " Modern Desktop Suite Deployment Tool (KDE Plasma 6)"
 echo "=========================================================="
 
-# Check if ansible-playbook is installed
-if command -v ansible-playbook &>/dev/null; then
-    echo "==> Ansible detected! Running Ansible Playbook (desktop.yml)..."
-    ansible-playbook -i "${SCRIPT_DIR}/inventory.ini" "${SCRIPT_DIR}/desktop.yml" "$@"
+if [ $# -eq 0 ] || [[ "$*" =~ "--all" ]]; then
+    deploy_theme
+    deploy_dolphin
+    deploy_konsole
+    deploy_kwin
+    deploy_cursor
+    deploy_gtk
+    deploy_lockscreen
+    deploy_shell
+    deploy_plasmoids
+    restart_plasma
+    echo "=========================================================="
+    success "Full suite successfully deployed!"
+    echo "=========================================================="
     exit 0
 fi
 
-echo "==> Ansible is not installed. Proceeding with Native Shell Installer mode..."
-
-# 1. Ensure Directories
-echo "==> Creating user directories..."
-mkdir -p "${PLASMOIDS_DIR}"
-mkdir -p "${SHELLS_DIR}"
-mkdir -p "${THEMES_DIR}"
-mkdir -p "${CONFIG_DIR}"
-mkdir -p "${USER_HOME}/.local/share/fonts"
-mkdir -p "${USER_HOME}/.local/bin"
-
-# 1b. Deploy Modern UI Fonts & Switcher Tool
-echo "==> Deploying typography suite (Switzer, Plus Jakarta Sans, Manrope, Satoshi)..."
-cp -r "${SCRIPT_DIR}/files/fonts/"* "${USER_HOME}/.local/share/fonts/"
-fc-cache -f "${USER_HOME}/.local/share/fonts" 2>/dev/null || true
-
-cp "${SCRIPT_DIR}/files/scripts/desktop-font-switcher" "${USER_HOME}/.local/bin/desktop-font-switcher"
-chmod +x "${USER_HOME}/.local/bin/desktop-font-switcher"
-ln -sf "${USER_HOME}/.local/bin/desktop-font-switcher" "${USER_HOME}/.local/bin/switch-font"
-
-# Deploy Dolphin Clean UI configs
-if [ -f "${SCRIPT_DIR}/files/configs/dolphinrc" ]; then
-    cp "${SCRIPT_DIR}/files/configs/dolphinrc" "${CONFIG_DIR}/dolphinrc"
-fi
-if [ -f "${SCRIPT_DIR}/files/configs/user-places.xbel" ]; then
-    cp "${SCRIPT_DIR}/files/configs/user-places.xbel" "${USER_HOME}/.local/share/user-places.xbel"
-fi
-
-# Apply Switzer
-"${USER_HOME}/.local/bin/desktop-font-switcher" switzer || true
-
-# 2. Deploy Custom Plasmoids
-echo "==> Deploying custom plasmoids..."
-# Dock Pin (Halved 16px, 0px flush right, on-top mode)
-rm -rf "${PLASMOIDS_DIR}/org.kde.plasma.dockpin"
-cp -r "${SCRIPT_DIR}/files/plasmoids/org.kde.plasma.dockpin" "${PLASMOIDS_DIR}/"
-
-# KDE Control Station (Option 3 with Plasma 6 compatibility & dark card)
-rm -rf "${PLASMOIDS_DIR}/KdeControlStation"
-cp -r "${SCRIPT_DIR}/files/plasmoids/KdeControlStation" "${PLASMOIDS_DIR}/"
-
-# Dynamic Island (Option 2 community alternative)
-rm -rf "${PLASMOIDS_DIR}/com.manu028.dynamicisland"
-cp -r "${SCRIPT_DIR}/files/plasmoids/com.manu028.dynamicisland" "${PLASMOIDS_DIR}/"
-
-# 3. Deploy Shell Modifications (Zero-padding Panel.qml)
-echo "==> Deploying custom Panel.qml (zero floating horizontal padding)..."
-cp "${SCRIPT_DIR}/files/shell/org.kde.plasma.desktop/contents/views/Panel.qml" "${SHELLS_DIR}/Panel.qml"
-
-# 4. Deploy Custom Desktop Theme (Blur-Free Opaque SVG Borders)
-echo "==> Deploying modern-dock desktop theme..."
-
-# Deploy Color Schemes (ModernDark, ModernLight)
-mkdir -p "${USER_HOME}/.local/share/color-schemes"
-cp -r "${SCRIPT_DIR}/files/color-schemes/"* "${USER_HOME}/.local/share/color-schemes/" 2>/dev/null || true
-
-# Deploy modern-dock-light theme
-rm -rf "${THEMES_DIR}/modern-dock-light"
-cp -r "${SCRIPT_DIR}/files/themes/modern-dock-light" "${THEMES_DIR}/"
-
-# Deploy Theme Switcher and Desktop Toggle
-cp "${SCRIPT_DIR}/files/bin/desktop-theme" "${USER_HOME}/.local/bin/desktop-theme"
-chmod +x "${USER_HOME}/.local/bin/desktop-theme"
-mkdir -p "${USER_HOME}/.local/share/applications"
-cp "${SCRIPT_DIR}/files/applications/theme-toggle.desktop" "${USER_HOME}/.local/share/applications/"
-chmod +x "${USER_HOME}/.local/share/applications/theme-toggle.desktop"
-
-# Deploy Dolphin QSS and wrapper
-cp "${SCRIPT_DIR}/files/configs/dolphin-dark.qss" "${CONFIG_DIR}/dolphin-dark.qss" 2>/dev/null || true
-cp "${SCRIPT_DIR}/files/configs/dolphin-light.qss" "${CONFIG_DIR}/dolphin-light.qss" 2>/dev/null || true
-cp "${SCRIPT_DIR}/files/configs/dolphin.qss" "${CONFIG_DIR}/dolphin.qss" 2>/dev/null || true
-if [ -f "${SCRIPT_DIR}/files/bin/dolphin" ]; then
-    cp "${SCRIPT_DIR}/files/bin/dolphin" "${USER_HOME}/.local/bin/dolphin"
-    chmod +x "${USER_HOME}/.local/bin/dolphin"
-fi
-
-rm -rf "${THEMES_DIR}/modern-dock"
-cp -r "${SCRIPT_DIR}/files/themes/modern-dock" "${THEMES_DIR}/"
-
-# 5. Disable Dynamic Blur and Contrast Effects for 60fps Smooth Transitions
-echo "==> Configuring blur-free 60fps transitions..."
-if command -v kwriteconfig6 &>/dev/null; then
-    kwriteconfig6 --file plasmarc --group Blur --key Enabled "false"
-    kwriteconfig6 --file plasmarc --group ContrastEffect --key Enabled "false"
-    kwriteconfig6 --file plasmarc --group AdaptiveTransparency --key Enabled "false"
-fi
-
-# Stop redundant legacy services if running
-systemctl --user stop modern-desktop.service 2>/dev/null || true
-systemctl --user disable modern-desktop.service 2>/dev/null || true
-
-# Optional: Deploy Python standalone service (Option 4) if explicitly flagged
-if [[ " $* " =~ " --with-python-service " ]]; then
-    echo "==> Deploying custom Python desktop suite (Option 4)..."
-    mkdir -p "${USER_HOME}/.local/share/modern-desktop"
-    mkdir -p "${CONFIG_DIR}/systemd/user"
-    cp "${SCRIPT_DIR}/python-services/"*.py "${USER_HOME}/.local/share/modern-desktop/"
-    cp "${SCRIPT_DIR}/python-services/start_desktop.sh" "${USER_HOME}/.local/share/modern-desktop/"
-    cp "${SCRIPT_DIR}/python-services/modern-desktop.service" "${CONFIG_DIR}/systemd/user/"
-    systemctl --user daemon-reload
-    systemctl --user enable --now modern-desktop.service
-fi
-
-# 6. Apply Desktop Layout via Plasma Scripting
-echo "==> Applying desktop layout via Plasma D-Bus Scripting..."
-if [ -f "${SCRIPT_DIR}/files/scripts/setup_desktop_layout.js" ]; then
-    qdbus6 org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript \
-        "$(cat "${SCRIPT_DIR}/files/scripts/setup_desktop_layout.js")" || true
-fi
-
-# 7. Restart Plasma Shell to refresh
-echo "==> Refreshing Plasma Shell..."
-systemctl --user restart plasma-plasmashell.service 2>/dev/null || (kquitapp6 plasmashell 2>/dev/null && kstart plasmashell 2>/dev/null) || true
+for arg in "$@"; do
+    case "$arg" in
+        --theme)      deploy_theme ;;
+        --dolphin)    deploy_dolphin ;;
+        --konsole)    deploy_konsole ;;
+        --kwin)       deploy_kwin ;;
+        --cursor)     deploy_cursor ;;
+        --gtk)        deploy_gtk ;;
+        --lockscreen) deploy_lockscreen ;;
+        --shell)      deploy_shell ;;
+        --plasmoids)  deploy_plasmoids ;;
+        --restart)    restart_plasma ;;
+        --help|-h)
+            echo "Usage: ./install.sh [OPTION]"
+            echo "Options:"
+            echo "  --all         Deploy all components and restart plasma (default)"
+            echo "  --theme       Deploy color schemes, desktop themes, and desktop-theme switcher"
+            echo "  --dolphin     Deploy Dolphin QSS stylesheets, wrapper, and desktop entry"
+            echo "  --konsole     Deploy Konsole profiles, colorschemes, and JetBrains Mono"
+            echo "  --kwin        Deploy KWin borderless maximized, snapping, and soft shadows"
+            echo "  --cursor      Deploy Bibata Modern Ice cursor and X11 inheritance"
+            echo "  --gtk         Deploy GTK 3/4 settings and GNOME interface portal"
+            echo "  --lockscreen  Deploy lock screen wallpaper configuration"
+            echo "  --shell       Deploy Panel.qml dynamic island and bottom dock"
+            echo "  --plasmoids   Deploy Control Station and DockPin plasmoids"
+            echo "  --restart     Restart plasmashell process"
+            exit 0
+            ;;
+        *)
+            warn "Unknown option: $arg"
+            ;;
+    esac
+done
 
 echo "=========================================================="
-echo " Installation Complete!"
-echo " Top-Center Capsule: Digital Clock + KDE Control Station"
-echo " Bottom Dock: Pinned Launchers + Flush 0px Halved Activator"
+success "Selected operations completed!"
 echo "=========================================================="

@@ -16,10 +16,17 @@ apply_light() {
     # 3. Apply Papirus icon theme (optimized for light panels)
     kwriteconfig6 --file kdeglobals --group Icons --key Theme Papirus
     
-    # 4. Apply GTK 3/4 light themes
+    # 4. Apply GTK 3/4 light themes & GNOME interface portal
     mkdir -p "$HOME/.config/gtk-3.0" "$HOME/.config/gtk-4.0"
     kwriteconfig6 --file "$HOME/.config/gtk-3.0/settings.ini" --group Settings --key gtk-theme-name Breeze
+    kwriteconfig6 --file "$HOME/.config/gtk-3.0/settings.ini" --group Settings --key gtk-icon-theme-name Papirus
+    kwriteconfig6 --file "$HOME/.config/gtk-3.0/settings.ini" --group Settings --key gtk-application-prefer-dark-theme false
     kwriteconfig6 --file "$HOME/.config/gtk-4.0/settings.ini" --group Settings --key gtk-theme-name Breeze
+    kwriteconfig6 --file "$HOME/.config/gtk-4.0/settings.ini" --group Settings --key gtk-icon-theme-name Papirus
+    kwriteconfig6 --file "$HOME/.config/gtk-4.0/settings.ini" --group Settings --key gtk-application-prefer-dark-theme false
+    gsettings set org.gnome.desktop.interface color-scheme 'prefer-light' >/dev/null 2>&1 || true
+    gsettings set org.gnome.desktop.interface gtk-theme 'Breeze' >/dev/null 2>&1 || true
+    gsettings set org.gnome.desktop.interface icon-theme 'Papirus' >/dev/null 2>&1 || true
     
     # 5. Apply Dolphin Explorer Light QSS
     cp "$HOME/.config/dolphin-light.qss" "$HOME/.config/dolphin.qss"
@@ -56,10 +63,17 @@ apply_dark() {
     # 3. Apply Papirus-Dark icon theme
     kwriteconfig6 --file kdeglobals --group Icons --key Theme Papirus-Dark
     
-    # 4. Apply GTK 3/4 dark themes
+    # 4. Apply GTK 3/4 dark themes & GNOME interface portal
     mkdir -p "$HOME/.config/gtk-3.0" "$HOME/.config/gtk-4.0"
     kwriteconfig6 --file "$HOME/.config/gtk-3.0/settings.ini" --group Settings --key gtk-theme-name Breeze-Dark
+    kwriteconfig6 --file "$HOME/.config/gtk-3.0/settings.ini" --group Settings --key gtk-icon-theme-name Papirus-Dark
+    kwriteconfig6 --file "$HOME/.config/gtk-3.0/settings.ini" --group Settings --key gtk-application-prefer-dark-theme true
     kwriteconfig6 --file "$HOME/.config/gtk-4.0/settings.ini" --group Settings --key gtk-theme-name Breeze-Dark
+    kwriteconfig6 --file "$HOME/.config/gtk-4.0/settings.ini" --group Settings --key gtk-icon-theme-name Papirus-Dark
+    kwriteconfig6 --file "$HOME/.config/gtk-4.0/settings.ini" --group Settings --key gtk-application-prefer-dark-theme true
+    gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark' >/dev/null 2>&1 || true
+    gsettings set org.gnome.desktop.interface gtk-theme 'Breeze-Dark' >/dev/null 2>&1 || true
+    gsettings set org.gnome.desktop.interface icon-theme 'Papirus-Dark' >/dev/null 2>&1 || true
     
     # 5. Apply Dolphin Explorer Dark QSS
     cp "$HOME/.config/dolphin-dark.qss" "$HOME/.config/dolphin.qss"

@@ -1,10 +1,10 @@
 * {
-    background-color: #ffffff;
-    color: #181a1c;
+    background-color: #141618;
+    color: #fcfcfc;
 }
 
 QMainWindow, QDockWidget, QToolBar {
-    background-color: #f0f2f5;
+    background-color: #202326;
     border: none;
 }
 
@@ -31,40 +31,40 @@ QSplitter::handle {
 
 /* Breadcrumb / Path Bar */
 KUrlNavigator, KUrlNavigator > QWidget {
-    background-color: #f0f2f5;
-    color: #181a1c;
+    background-color: #202326;
+    color: #fcfcfc;
     border: none;
 }
 
 KUrlNavigatorButton {
     background-color: transparent;
-    color: #181a1c;
+    color: #fcfcfc;
     border: none;
     padding: 3px 6px;
     border-radius: 4px;
 }
 
 KUrlNavigatorButton:hover {
-    background-color: #e2e8f0;
-    color: #181a1c;
+    background-color: #2b2f38;
+    color: #ffffff;
 }
 
 KUrlNavigatorButton:checked, KUrlNavigatorButton:pressed {
-    background-color: #d0dae6;
-    color: #181a1c;
+    background-color: #3c485c;
+    color: #ffffff;
 }
 
 KUrlNavigator QLineEdit, KUrlComboBox {
-    background-color: #ffffff;
-    color: #181a1c;
-    border: 1px solid #d0d4dc;
+    background-color: #141618;
+    color: #fcfcfc;
+    border: 1px solid #3c485c;
     border-radius: 4px;
     padding: 3px 6px;
 }
 
 /* Places Sidebar: generous side padding and floating rounded pill highlight */
 QDockWidget QListView {
-    background-color: #f0f2f5;
+    background-color: #202326;
     border: none;
     outline: none;
     padding-left: 10px;
@@ -82,29 +82,29 @@ QDockWidget QListView::item {
     padding-bottom: 6px;
     border-radius: 4px;
     border: none;
-    color: #181a1c;
+    color: #fcfcfc;
 }
 
 QDockWidget QListView::item:selected {
-    background-color: #d0dae6;
-    color: #181a1c;
+    background-color: #3c485c;
+    color: #ffffff;
     border: none;
 }
 
 QDockWidget QListView::item:selected:active {
-    background-color: #d0dae6;
-    color: #181a1c;
+    background-color: #3c485c;
+    color: #ffffff;
     border: none;
 }
 
 QDockWidget QListView::item:selected:!active {
-    background-color: #d0dae6;
-    color: #181a1c;
+    background-color: #3c485c;
+    color: #ffffff;
     border: none;
 }
 
 QDockWidget QListView::item:hover {
-    background-color: #e2e8f0;
-    color: #181a1c;
+    background-color: #272d38;
+    color: #ffffff;
     border: none;
 }
