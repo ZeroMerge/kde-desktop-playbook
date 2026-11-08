@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+echo "$(date '+%Y-%m-%d %H:%M:%S'): desktop-theme called with $@" >> /tmp/desktop-theme.log
 set -e
 
 MODE_FILE="$HOME/.config/desktop-theme-mode"

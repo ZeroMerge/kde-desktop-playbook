@@ -120,6 +120,10 @@ PlasmoidItem {
 
     signal openPageRequested(string pageName)
 
+    function toggleTheme() {
+        executable.connectSource("/bin/bash /home/zeromerge/.local/bin/desktop-theme toggle #" + Date.now());
+    }
+
     Plasma5Support.DataSource {
         id: executable
         engine: "executable"
@@ -140,6 +144,8 @@ PlasmoidItem {
                     } else if (out === "nightlight") {
                         root.expanded = true;
                         root.openPageRequested("nightlight");
+                    } else if (out === "theme_toggle") {
+                        executable.connectSource("/bin/bash /home/zeromerge/.local/bin/desktop-theme toggle #" + Date.now());
                     }
                 }
             }

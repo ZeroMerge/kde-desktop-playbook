@@ -34,23 +34,6 @@ Lib.CardButton {
     }
 
     onClicked: {
-        executable.swapColorScheme("/home/zeromerge/.local/bin/desktop-theme toggle");
-    }
-
-    Plasma5Support.DataSource {
-        id: executable
-        engine: "executable"
-        connectedSources: []
-        onNewData: (sourceName, data) => { 
-            disconnectSource(sourceName)
-        }
-        
-        function exec(cmd) {
-            connectSource(cmd)
-        }
-
-        function swapColorScheme(what) {
-            exec(what)
-        }
+        root.toggleTheme();
     }
 }
