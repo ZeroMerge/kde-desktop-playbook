@@ -139,8 +139,10 @@ This document is a comprehensive, deep technical reference for the entire custom
 | **Bottom Floating Dock (Light)** |
 | ![Bottom Dock Light](docs/images/bottom_dock_light.png) |
 
-#### 1. Dynamic Luminance Detection
+#### 1. Dynamic Luminance Detection & Pill Anatomy
 * **File**: `~/.local/share/plasma/shells/org.kde.plasma.desktop/contents/views/Panel.qml`
+* **Capsule Layout**: Centered floating pill hosting `org.kde.plasma.digitalclock` (Left), `org.kde.plasma.volume` (Center), and `KdeControlStation` (Right).
+  - **Live Volume Quick Controls**: Direct mouse scroll on the volume icon raises/lowers audio with volume pop feedback; left-click opens the mixer and audio output switcher; middle-click toggles mute.
 * **Mechanism**: Rather than hardcoding black (`#000000`) or white (`#ffffff`), `topIslandPill` evaluates the ITU-R BT.601 perceptual luminance formula on `Kirigami.Theme.backgroundColor`:
   ```qml
   Rectangle {

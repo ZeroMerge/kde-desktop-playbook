@@ -23,6 +23,8 @@ if (clock) {
     clock.writeConfig("showSeconds", "false");
 }
 
+var volume = topPanel.addWidget("org.kde.plasma.volume");
+
 var cs = topPanel.addWidget("KdeControlStation");
 if (cs) {
     cs.currentConfigGroup = ["Appearance"];
