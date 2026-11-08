@@ -159,6 +159,33 @@
         - { section: 'ContrastEffect', option: 'Enabled', value: 'false' }
         - { section: 'AdaptiveTransparency', option: 'Enabled', value: 'false' }
 
+    # --------------------------------------------------------------------------
+    # 6b. Deploy KWin Window Behavior & Desktop Polish (A to D)
+    # --------------------------------------------------------------------------
+    - name: Deploy KWin Rules (Quarter Snapping, TabBox Big Icons, Soft Shadows)
+      copy:
+        src: "{{ repo_files_dir }}/{{ item.src }}"
+        dest: "{{ plasma_config_dir }}/{{ item.dest }}"
+        mode: '0644'
+      loop:
+        - { src: 'kwin/kwinrc', dest: 'kwinrc' }
+        - { src: 'kwin/breezerc', dest: 'breezerc' }
+        - { src: 'configs/krunnerrc', dest: 'krunnerrc' }
+        - { src: 'configs/kaccessrc', dest: 'kaccessrc' }
+        - { src: 'configs/plasmaparc', dest: 'plasmaparc' }
+
+    - name: Configure Instant Window Animations (0.5x) & Ocean Audio in kdeglobals
+      ini_file:
+        path: "{{ plasma_config_dir }}/kdeglobals"
+        section: "{{ item.section }}"
+        option: "{{ item.option }}"
+        value: "{{ item.value }}"
+        mode: '0644'
+      loop:
+        - { section: 'KDE', option: 'AnimationDurationFactor', value: '0.5' }
+        - { section: 'Sounds', option: 'Enable', value: 'true' }
+        - { section: 'Sounds', option: 'Theme', value: 'ocean' }
+
     - name: Stop and Disable Legacy Background Services if present
       systemd:
         name: modern-desktop.service

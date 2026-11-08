@@ -10,6 +10,13 @@ Mode=DarkLight
 [Plugins]
 modern_desktopEnabled=true
 
+[TabBox]
+ActivitiesMode=1
+DesktopMode=1
+HighlightWindows=true
+LayoutName=big_icons
+ShowDesktop=false
+
 [Tiling][3422af61-e9a7-499c-9df6-46ee53deb628][3b2667b7-6da1-435e-9576-55f50dd4ae98]
 padding=4
 tiles={"layoutDirection":"horizontal","tiles":[{"width":0.25},{"width":0.5},{"width":0.25}]}

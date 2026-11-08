@@ -37,6 +37,9 @@ This document is a comprehensive, deep technical reference for the entire custom
 | **GTK 4 Config** | `files/gtk/gtk-4.0/settings.ini` | `~/.config/gtk-4.0/settings.ini` | Reread on GTK4 app launch |
 | **Typography Suite** | `files/fonts/` | `~/.local/share/fonts/` | `fc-cache -f ~/.local/share/fonts` |
 | **Font Switcher Tool** | `files/scripts/desktop-font-switcher` | `~/.local/bin/desktop-font-switcher` | `switch-font <name>` |
+| **KRunner Spotlight** | `files/configs/krunnerrc` | `~/.config/krunnerrc` | `krunner --replace` |
+| **System Bell Silencer** | `files/configs/kaccessrc` | `~/.config/kaccessrc` | Immediate |
+| **Volume Sound Feedback**| `files/configs/plasmaparc` | `~/.config/plasmaparc` | Immediate |
 | **SDDM Login Config** | `files/sddm/20-kubuntu.conf` | `/etc/sddm.conf.d/20-kubuntu.conf` | System reboot / SDDM service restart |
 | **SDDM Theme Config** | `files/sddm/kubuntu-theme.conf` | `/usr/share/sddm/themes/kubuntu/theme.conf` | `sddm-greeter-qt6 --test-mode --theme /usr/share/sddm/themes/kubuntu` |
 
@@ -222,6 +225,37 @@ This document is a comprehensive, deep technical reference for the entire custom
   TitleAlignment=AlignLeft
   ```
   - Replaces harsh 255-alpha black outline borders with diffused 80-alpha ambient drop shadows.
+
+* **Alt + Tab Floating Grid Switcher (`~/.config/kwinrc [TabBox]`)**:
+  ```ini
+  [TabBox]
+  LayoutName=big_icons
+  ShowDesktop=false
+  ActivitiesMode=1
+  DesktopMode=1
+  HighlightWindows=true
+  ```
+  - Replaces stock sidebar list with centered floating card grid (`big_icons`) featuring application icons, window titles, and interactive live outline highlighting.
+
+* **Snappy 0.5x Window Animations (`~/.config/kdeglobals [KDE]`)**:
+  ```ini
+  [KDE]
+  AnimationDurationFactor=0.5
+  ```
+  - Cuts transition delays in half, making window maximize, minimize, unminimize, and virtual desktop switching feel immediate and responsive.
+
+* **Floating Spotlight Search (`~/.config/krunnerrc [General]`)**:
+  ```ini
+  [General]
+  FreeFloating=true
+  RetainPriorSearch=false
+  ```
+  - Detaches KRunner from the top edge and presents a clean, centered floating search dialog on `Alt + Space`.
+
+* **Subtle Acoustic Audio Feedback (`~/.config/kaccessrc` & `~/.config/plasmaparc`)**:
+  - `kaccessrc`: Disables harsh legacy PC speaker and terminal beeps (`SystemBell=false`, `ArtsBell=false`).
+  - `plasmaparc`: Enables subtle volume change clicks (`VolumeFeedback=true`).
+  - `kdeglobals [Sounds]`: Enables modern `ocean` sound theme (`Theme=ocean`).
 
 ---
 

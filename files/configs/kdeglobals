@@ -198,6 +198,7 @@ Name[zh_TW]=Breeze Dark
 shadeSortColumn=true
 
 [KDE]
+AnimationDurationFactor=0.5
 contrast=4
 
 [WM]
@@ -238,3 +239,7 @@ activeForeground=252,252,252
 inactiveBackground=32,36,40
 inactiveBlend=161,169,177
 inactiveForeground=161,169,177
+
+[Sounds]
+Enable=true
+Theme=ocean

@@ -93,10 +93,14 @@ Includes dual-theme instant switching (Dark & Light), adaptive Dynamic Island ca
   - `ModernLight.profile`: `#ffffff` background, 0.96 opacity, blur enabled, vibrant day palette.
 - **Minimalist Chrome**: Top menubar hidden by default (accessible via `Ctrl+Shift+M`), 10px comfortable terminal padding.
 
-### 5. Window Behavior & Snapping (KWin)
+### 5. Window Behavior, Snapping & Desktop Polish (KWin)
 - **Standard Titlebars Preserved**: Window titlebars and window control buttons (min/max/close) remain fully visible and interactive when windows are maximized.
 - **Magnetic Snapping**: Drag to top edge to maximize; drag to left/right for 50/50 split; drag to any corner for 25% quarter tiling.
 - **Diffused Ambient Drop Shadows**: Configured `~/.config/breezerc` with `ShadowSize=ShadowLarge` and `ShadowStrength=80` for smooth ambient diffusion.
+- **Alt + Tab Floating Grid (`big_icons`)**: Centered floating card switcher displaying large application icons, window titles, and interactive highlight borders (`~/.config/kwinrc [TabBox]`).
+- **Snappy 0.5x Window Animations**: Configured `AnimationDurationFactor=0.5` in `~/.config/kdeglobals` for instant, high-refresh-rate window transitions without floaty delays.
+- **Floating Spotlight Search (KRunner)**: Centered floating search modal (`~/.config/krunnerrc [General] FreeFloating=true`) on `Alt + Space`.
+- **Subtle Acoustic Audio Feedback**: Enabled modern `ocean` sound theme with volume change pops (`plasmaparc`) and disabled harsh legacy system bell beeps (`kaccessrc`).
 
 ### 6. Cursor & GTK / Flatpak Synchronization
 - **Cursor**: `Bibata-Modern-Ice` configured across `kcminputrc`, `kdeglobals`, `~/.icons/default/index.theme`, and GTK 3/4 settings.

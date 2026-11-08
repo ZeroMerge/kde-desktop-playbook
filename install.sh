@@ -108,17 +108,29 @@ deploy_fonts() {
 }
 
 deploy_kwin() {
-    log "Deploying KWin Window Rules (Quarter Snapping, Soft Shadows)..."
+    log "Deploying KWin Window Rules (Quarter Snapping, TabBox Big Icons, Soft Shadows, Animations)..."
     mkdir -p "${CONFIG_DIR}"
     
     backup_config "${CONFIG_DIR}/kwinrc"
     backup_config "${CONFIG_DIR}/breezerc"
+    backup_config "${CONFIG_DIR}/krunnerrc"
+    backup_config "${CONFIG_DIR}/kaccessrc"
+    backup_config "${CONFIG_DIR}/plasmaparc"
     
     cp "${FILES_DIR}/kwin/kwinrc" "${CONFIG_DIR}/kwinrc"
     cp "${FILES_DIR}/kwin/breezerc" "${CONFIG_DIR}/breezerc"
+    cp "${FILES_DIR}/configs/krunnerrc" "${CONFIG_DIR}/krunnerrc"
+    cp "${FILES_DIR}/configs/kaccessrc" "${CONFIG_DIR}/kaccessrc"
+    cp "${FILES_DIR}/configs/plasmaparc" "${CONFIG_DIR}/plasmaparc"
+    
+    # Instant window animations (0.5x) & Ocean audio feedback
+    kwriteconfig6 --file kdeglobals --group KDE --key AnimationDurationFactor 0.5
+    kwriteconfig6 --file kdeglobals --group Sounds --key Enable true
+    kwriteconfig6 --file kdeglobals --group Sounds --key Theme ocean
     
     qdbus6 org.kde.KWin /KWin org.kde.KWin.reconfigure >/dev/null 2>&1 || true
-    success "KWin snapping and diffused shadows active."
+    krunner --replace >/dev/null 2>&1 &
+    success "KWin snapping, TabBox Big Icons, floating KRunner, and 0.5x animations active."
 }
 
 deploy_cursor() {
