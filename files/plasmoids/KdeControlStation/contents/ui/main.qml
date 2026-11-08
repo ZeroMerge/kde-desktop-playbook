@@ -12,6 +12,10 @@ PlasmoidItem {
     
     clip: false
 
+    // Suppress default plasmoid hover tooltips
+    toolTipMainText: ""
+    toolTipSubText: ""
+
     // PROPERTIES
     property bool animations: plasmoid.configuration.animations
     property bool enableTransparency: Plasmoid.configuration.transparency
