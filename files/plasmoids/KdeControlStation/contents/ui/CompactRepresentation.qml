@@ -58,22 +58,20 @@ Item {
     readonly property int expandedWidth: (rawExpandedWidth % 2 === 0) ? rawExpandedWidth : rawExpandedWidth + 1
     readonly property int targetWidth: isCollapsed ? 0 : expandedWidth
 
-    // Fluid Framer-Motion liquid easing (monotonic cubic deceleration - zero dead-zone, zero bounce, zero jitter)
+    // Fluid Framer-Motion liquid easing (organic InOutCubic liquid curve - zero jerk, smooth inertia, zero bounce)
     property real animatedWidth: targetWidth
 
     Behavior on animatedWidth {
         NumberAnimation {
             id: widthAnim
-            duration: 320
-            easing.type: Easing.OutCubic
+            duration: 400
+            easing.type: Easing.InOutCubic
         }
     }
 
     readonly property real progress: expandedWidth > 0 ? Math.min(1.0, Math.max(0.0, animatedWidth / expandedWidth)) : (isCollapsed ? 0.0 : 1.0)
     readonly property bool isMorphing: widthAnim.running
 
-    // Strictly even integer implicitWidth clamped to 0:
-    // When 0, the panel outer width is exactly 30px (1:1 circle with height 34, floating=false)
     implicitWidth: Math.max(0, Math.round(animatedWidth / 2) * 2)
     implicitHeight: contentHeight
 

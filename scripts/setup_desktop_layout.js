@@ -10,10 +10,10 @@ for (var i = 0; i < existingPanels.length; ++i) {
 // 2. Create Top-Center Status Capsule (Dynamic Morphing Island: KDE Control Station)
 var topPanel = new Panel;
 topPanel.location = "top";
-topPanel.height = 34;
+topPanel.height = 32;
 topPanel.alignment = "center";
 topPanel.lengthMode = "fit";
-topPanel.floating = false;
+topPanel.floating = true;
 topPanel.hiding = "windowsgobelow";
 
 var cs = topPanel.addWidget("KdeControlStation");
