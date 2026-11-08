@@ -226,16 +226,17 @@ This document is a comprehensive, deep technical reference for the entire custom
   ```
   - Replaces harsh 255-alpha black outline borders with diffused 80-alpha ambient drop shadows.
 
-* **Alt + Tab Floating Grid Switcher (`~/.config/kwinrc [TabBox]`)**:
+* **Alt + Tab Balanced Thumbnail Grid Switcher (`~/.local/share/kwin/tabbox/thumbnail_grid/` & `~/.config/kwinrc [TabBox]`)**:
   ```ini
   [TabBox]
-  LayoutName=big_icons
+  LayoutName=thumbnail_grid
   ShowDesktop=false
   ActivitiesMode=1
   DesktopMode=1
   HighlightWindows=true
   ```
-  - Replaces stock sidebar list with centered floating card grid (`big_icons`) featuring application icons, window titles, and interactive live outline highlighting.
+  - Replaces stock unaligned switchers with a custom balanced card grid displaying live window thumbnails (`KWin.WindowThumbnail`), 20px header application icons, window titles in Plus Jakarta Sans, and close buttons.
+  - Features uniform 14px card spacing, 16px outer padding, non-jagged column balancing (1-4 cols for $\le 4$ windows, 3 cols for 5-6 windows, 4 cols for 7-8 windows), and active selection highlight (`#007aff`).
 
 * **Snappy 0.5x Window Animations (`~/.config/kdeglobals [KDE]`)**:
   ```ini

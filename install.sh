@@ -108,8 +108,9 @@ deploy_fonts() {
 }
 
 deploy_kwin() {
-    log "Deploying KWin Window Rules (Quarter Snapping, TabBox Big Icons, Soft Shadows, Animations)..."
+    log "Deploying KWin Window Rules (Quarter Snapping, TabBox Thumbnail Grid, Soft Shadows, Animations)..."
     mkdir -p "${CONFIG_DIR}"
+    mkdir -p "${USER_HOME}/.local/share/kwin/tabbox"
     
     backup_config "${CONFIG_DIR}/kwinrc"
     backup_config "${CONFIG_DIR}/breezerc"
@@ -123,6 +124,11 @@ deploy_kwin() {
     cp "${FILES_DIR}/configs/kaccessrc" "${CONFIG_DIR}/kaccessrc"
     cp "${FILES_DIR}/configs/plasmaparc" "${CONFIG_DIR}/plasmaparc"
     
+    # Custom balanced Thumbnail Grid task switcher
+    if [ -d "${FILES_DIR}/kwin/tabbox/thumbnail_grid" ]; then
+        cp -r "${FILES_DIR}/kwin/tabbox/thumbnail_grid" "${USER_HOME}/.local/share/kwin/tabbox/"
+    fi
+
     # Instant window animations (0.5x) & Ocean audio feedback
     kwriteconfig6 --file kdeglobals --group KDE --key AnimationDurationFactor 0.5
     kwriteconfig6 --file kdeglobals --group Sounds --key Enable true
@@ -130,7 +136,7 @@ deploy_kwin() {
     
     qdbus6 org.kde.KWin /KWin org.kde.KWin.reconfigure >/dev/null 2>&1 || true
     krunner --replace >/dev/null 2>&1 &
-    success "KWin snapping, TabBox Big Icons, floating KRunner, and 0.5x animations active."
+    success "KWin snapping, TabBox Thumbnail Grid, floating KRunner, and 0.5x animations active."
 }
 
 deploy_cursor() {

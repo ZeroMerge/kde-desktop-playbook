@@ -162,7 +162,13 @@
     # --------------------------------------------------------------------------
     # 6b. Deploy KWin Window Behavior & Desktop Polish (A to D)
     # --------------------------------------------------------------------------
-    - name: Deploy KWin Rules (Quarter Snapping, TabBox Big Icons, Soft Shadows)
+    - name: Deploy Custom Balanced Thumbnail Grid Task Switcher
+      copy:
+        src: "{{ repo_files_dir }}/kwin/tabbox/thumbnail_grid"
+        dest: "{{ user_home }}/.local/share/kwin/tabbox/"
+        mode: '0755'
+
+    - name: Deploy KWin Rules (Quarter Snapping, TabBox Thumbnail Grid, Soft Shadows)
       copy:
         src: "{{ repo_files_dir }}/{{ item.src }}"
         dest: "{{ plasma_config_dir }}/{{ item.dest }}"

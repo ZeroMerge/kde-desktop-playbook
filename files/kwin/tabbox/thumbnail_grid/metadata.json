@@ -1,0 +1,16 @@
+{
+    "KPackageStructure": "KWin/WindowSwitcher",
+    "KPlugin": {
+        "Authors": [
+            {
+                "Name": "Modern Desktop Suite"
+            }
+        ],
+        "Description": "Clean, balanced thumbnail grid window switcher with modern cards",
+        "Icon": "preferences-system-windows-switcher-thumbnail-grid",
+        "Id": "thumbnail_grid",
+        "License": "GPLv2+",
+        "Name": "Thumbnail Grid"
+    },
+    "X-Plasma-API": "declarativeappletscript"
+}

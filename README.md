@@ -97,7 +97,7 @@ Includes dual-theme instant switching (Dark & Light), adaptive Dynamic Island ca
 - **Standard Titlebars Preserved**: Window titlebars and window control buttons (min/max/close) remain fully visible and interactive when windows are maximized.
 - **Magnetic Snapping**: Drag to top edge to maximize; drag to left/right for 50/50 split; drag to any corner for 25% quarter tiling.
 - **Diffused Ambient Drop Shadows**: Configured `~/.config/breezerc` with `ShadowSize=ShadowLarge` and `ShadowStrength=80` for smooth ambient diffusion.
-- **Alt + Tab Floating Grid (`big_icons`)**: Centered floating card switcher displaying large application icons, window titles, and interactive highlight borders (`~/.config/kwinrc [TabBox]`).
+- **Alt + Tab Balanced Thumbnail Grid (`thumbnail_grid`)**: Custom balanced card grid switcher displaying live window previews (`KWin.WindowThumbnail`), header application icons, window titles, and interactive highlight borders with uniform 14px spacing and non-jagged row/column alignment (`~/.local/share/kwin/tabbox/thumbnail_grid/` & `~/.config/kwinrc [TabBox]`).
 - **Snappy 0.5x Window Animations**: Configured `AnimationDurationFactor=0.5` in `~/.config/kdeglobals` for instant, high-refresh-rate window transitions without floaty delays.
 - **Floating Spotlight Search (KRunner)**: Centered floating search modal (`~/.config/krunnerrc [General] FreeFloating=true`) on `Alt + Space`.
 - **Subtle Acoustic Audio Feedback**: Enabled modern `ocean` sound theme with volume change pops (`plasmaparc`) and disabled harsh legacy system bell beeps (`kaccessrc`).
