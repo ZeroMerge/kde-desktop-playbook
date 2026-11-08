@@ -45,19 +45,36 @@ Item {
         }
     }
 
-    // Geometry:
+    // Geometry & Layout:
     readonly property int iconSize: 14
     readonly property int contentHeight: 22
     readonly property int circleSize: 0
 
+    // Expanded target width (enforce even integer to guarantee symmetrical subpixel recentering)
     readonly property int textWidth: Math.ceil(clockLabel.implicitWidth)
-    readonly property int expandedWidth: textWidth + iconSize + 22
+    readonly property int rawExpandedWidth: textWidth + iconSize + 22
+    readonly property int expandedWidth: (rawExpandedWidth % 2 === 0) ? rawExpandedWidth : rawExpandedWidth + 1
     readonly property int targetWidth: isCollapsed ? circleSize : expandedWidth
 
-    implicitWidth: targetWidth
+    // Fluid Framer-Motion liquid spring width animation
+    property real animatedWidth: targetWidth
+
+    Behavior on animatedWidth {
+        NumberAnimation {
+            id: widthAnim
+            duration: 380
+            easing.type: Easing.OutBack
+            easing.overshoot: compactRep.isCollapsed ? 1.0 : 1.12
+        }
+    }
+
+    readonly property bool isMorphing: widthAnim.running
+
+    // Strictly even integer implicitWidth clamped to 0:
+    // (1920 - W) / 2 produces integer coordinates with 0 remainder,
+    // eliminating Wayland LayerShell horizontal alternating coordinate oscillation (jitter/shaking)
+    implicitWidth: Math.max(0, Math.round(animatedWidth / 2) * 2)
     implicitHeight: contentHeight
-
-
 
     Layout.preferredWidth: implicitWidth
     Layout.minimumWidth: implicitWidth
@@ -65,41 +82,50 @@ Item {
     Layout.preferredHeight: contentHeight
     Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
 
-    Behavior on implicitWidth {
-        NumberAnimation {
-            duration: 320
-            easing.type: Easing.InOutCubic
-        }
-    }
-
     Item {
         id: container
         anchors.centerIn: parent
-        width: compactRep.isCollapsed ? compactRep.iconSize : parent.width
+        width: compactRep.isCollapsed && !compactRep.isMorphing ? compactRep.iconSize : Math.max(compactRep.iconSize, compactRep.implicitWidth)
         height: parent.height
 
-        // Collapsed state: single centered icon in 1:1 circle
-        Kirigami.Icon {
-            id: collapsedIcon
-            anchors.centerIn: parent
-            width: compactRep.iconSize
-            height: compactRep.iconSize
-            source: compactRep.activeIconSource
-            smooth: true
-            visible: compactRep.isCollapsed
-            opacity: mouseArea.containsMouse ? 1.0 : 0.88
-        }
+        // Collapsible Clock Container: animates width, scale, opacity, and clips content
+        Item {
+            id: clockWrapper
+            anchors.left: parent.left
+            anchors.leftMargin: 2
+            anchors.verticalCenter: parent.verticalCenter
+            height: compactRep.contentHeight
+            clip: true
+            visible: !compactRep.isCollapsed || compactRep.isMorphing
 
-        // Expanded state: clock + icon row
-        Row {
-            id: expandedRow
-            anchors.centerIn: parent
-            spacing: 8
-            visible: !compactRep.isCollapsed
+            width: compactRep.isCollapsed ? 0 : compactRep.textWidth
+            opacity: compactRep.isCollapsed ? 0.0 : 1.0
+            scale: compactRep.isCollapsed ? 0.75 : 1.0
+
+            Behavior on width {
+                NumberAnimation {
+                    duration: 380
+                    easing.type: Easing.OutBack
+                    easing.overshoot: compactRep.isCollapsed ? 1.0 : 1.12
+                }
+            }
+            Behavior on opacity {
+                NumberAnimation {
+                    duration: 250
+                    easing.type: Easing.InOutCubic
+                }
+            }
+            Behavior on scale {
+                NumberAnimation {
+                    duration: 380
+                    easing.type: Easing.OutBack
+                    easing.overshoot: compactRep.isCollapsed ? 1.0 : 1.12
+                }
+            }
 
             PlasmaComponents.Label {
                 id: clockLabel
-                anchors.verticalCenter: parent.verticalCenter
+                anchors.centerIn: parent
                 text: compactRep.showDateInsteadOfTime ? compactRep.currentDateStr : compactRep.currentTimeStr
                 font.pixelSize: 12
                 font.weight: Font.Bold
@@ -107,15 +133,22 @@ Item {
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
             }
+        }
 
-            Kirigami.Icon {
-                anchors.verticalCenter: parent.verticalCenter
-                width: compactRep.iconSize
-                height: compactRep.iconSize
-                source: compactRep.activeIconSource
-                smooth: true
-                opacity: mouseArea.containsMouse ? 1.0 : 0.88
-            }
+        // Single Control Center Symbolic Icon:
+        // When collapsed: centered in container (exact geometric center of 1:1 circle)
+        // When expanded: positioned on right side of container with smooth spring gliding
+        Kirigami.Icon {
+            id: controlIcon
+            width: compactRep.iconSize
+            height: compactRep.iconSize
+            source: compactRep.activeIconSource
+            smooth: true
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: (compactRep.isCollapsed && !compactRep.isMorphing) ? undefined : parent.right
+            anchors.rightMargin: (compactRep.isCollapsed && !compactRep.isMorphing) ? 0 : 2
+            anchors.horizontalCenter: (compactRep.isCollapsed && !compactRep.isMorphing) ? parent.horizontalCenter : undefined
+            opacity: mouseArea.containsMouse ? 1.0 : 0.88
         }
     }
 
@@ -144,15 +177,13 @@ Item {
         cursorShape: Qt.PointingHandCursor
         acceptedButtons: Qt.LeftButton
 
-        ToolTip.visible: containsMouse && !root.expanded
-        ToolTip.text: compactRep.fullDateStr
-        ToolTip.delay: 600
+        // NO TOOLTIPS ON HOVER - per user explicit requirement
 
         onClicked: mouse => {
             if (compactRep.isCollapsed) {
                 compactRep.pendingAction = "toggleExpanded";
             } else {
-                if (mouse.x < clockLabel.implicitWidth + 8) {
+                if (mouse.x < (clockWrapper.x + clockWrapper.width + 4)) {
                     compactRep.pendingAction = "toggleDate";
                 } else {
                     compactRep.pendingAction = "toggleExpanded";

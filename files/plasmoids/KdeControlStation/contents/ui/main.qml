@@ -110,6 +110,7 @@ PlasmoidItem {
         var nextState = !islandCollapsed;
         islandCollapsed = nextState;
         Plasmoid.configuration.islandCollapsed = nextState;
+        console.log("ISLAND_TOGGLED: islandCollapsed is now", nextState);
     }
 
     readonly property var layouts: {
@@ -170,7 +171,7 @@ PlasmoidItem {
         repeat: true
         running: true
         onTriggered: {
-            executable.connectSource("if [ -f /tmp/control_station_cmd ]; then cat /tmp/control_station_cmd && rm -f /tmp/control_station_cmd; fi");
+            executable.connectSource("if [ -f /tmp/control_station_cmd ]; then cat /tmp/control_station_cmd && rm -f /tmp/control_station_cmd; fi #" + Date.now());
         }
     }
     
