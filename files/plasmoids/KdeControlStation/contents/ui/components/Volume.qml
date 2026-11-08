@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.15
 
 import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.private.volume as Vol
+import org.kde.kitemmodels as KItemModels
 
 import "../lib" as Lib
 
@@ -13,7 +14,7 @@ Item {
     Layout.fillHeight: true
     Layout.fillWidth: true
 
-    property var currentSink: Vol.PreferredDevice.sink
+    property var currentSink: null
 
     property bool canTogglePage: true
     property bool glassEffect: false
@@ -25,6 +26,14 @@ Item {
     property bool roundedWidget: false
     property bool showTitle: true
 
+    Vol.SinkModel {
+        id: paSinkModel
+        onCountChanged: updateSink()
+        onDataChanged: updateSink()
+        onModelReset: updateSink()
+        onRowsInserted: updateSink()
+    }
+
     Connections {
         target: Vol.PreferredDevice
         function onSinkChanged() {
@@ -33,9 +42,33 @@ Item {
     }
 
     function updateSink() {
-        var s = Vol.PreferredDevice.sink;
-        if (s) {
-            volumeControl.currentSink = s;
+        if (Vol.PreferredDevice && Vol.PreferredDevice.sink) {
+            volumeControl.currentSink = Vol.PreferredDevice.sink;
+            sliderLoader.active = true;
+            return;
+        }
+
+        if (paSinkModel.count === 0) return;
+
+        var defaultRole = paSinkModel.KItemModels.KRoleNames.role("Default");
+        var pulseObjectRole = paSinkModel.KItemModels.KRoleNames.role("PulseObject");
+        var defaultSink = null;
+        var firstSink = null;
+
+        for (var i = 0; i < paSinkModel.count; ++i) {
+            var idx = paSinkModel.index(i, 0);
+            var sinkObj = paSinkModel.data(idx, pulseObjectRole);
+            if (!sinkObj) continue;
+            if (!firstSink) firstSink = sinkObj;
+            if (paSinkModel.data(idx, defaultRole) === true) {
+                defaultSink = sinkObj;
+                break;
+            }
+        }
+
+        var chosen = defaultSink || firstSink;
+        if (chosen) {
+            volumeControl.currentSink = chosen;
             sliderLoader.active = true;
         }
     }
@@ -44,7 +77,7 @@ Item {
         updateSink();
     }
 
-    visible: true
+    visible: (typeof root !== "undefined" && typeof root.showVolume !== "undefined") ? root.showVolume : true
 
     Loader {
         id: sliderLoader
@@ -82,6 +115,18 @@ Item {
                 if (value <= 25) return "audio-volume-low";
                 if (value <= 75) return "audio-volume-medium";
                 return "audio-volume-high";
+            }
+
+            Connections {
+                target: currentSink
+                function onVolumeChanged() {
+                    if (currentSink && !sliderWidget.pressed) {
+                        sliderWidget.value = Math.round(currentSink.volume / Vol.PulseAudio.NormalVolume * 100);
+                    }
+                }
+                function onMutedChanged() {
+                    // Triggers source re-evaluation
+                }
             }
 
             onPressedChanged: {

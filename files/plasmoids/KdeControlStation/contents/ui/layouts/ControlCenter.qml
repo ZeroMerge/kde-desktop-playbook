@@ -60,12 +60,14 @@ ColumnLayout {
             id: brightnessSlider
             Layout.fillWidth: true
             Layout.fillHeight: true
+            Layout.preferredWidth: 1
             canTogglePage: true
         }
         Components.Volume{
             id: volumeSlider
             Layout.fillWidth: true
             Layout.fillHeight: true
+            Layout.preferredWidth: 1
         }
     }
     Components.MediaPlayer{
