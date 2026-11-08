@@ -36,6 +36,10 @@ apply_light() {
     # 8. Set Konsole default profile to Modern Light
     kwriteconfig6 --file konsolerc --group "Desktop Entry" --key DefaultProfile ModernLight.profile
     
+    # 9. Sync Lock Screen Wallpaper to Light
+    kwriteconfig6 --file kscreenlockerrc --group Greeter --group Wallpaper --group org.kde.image --group General --key Image "/usr/share/wallpapers/Flow/contents/images/5120x2880.jpg"
+    kwriteconfig6 --file kscreenlockerrc --group Greeter --group Wallpaper --group org.kde.image --group General --key PreviewImage "/usr/share/wallpapers/Flow/contents/images/5120x2880.jpg"
+    
     echo "light" > "$MODE_FILE"
     echo "Successfully switched to Light Mode."
 }
@@ -71,6 +75,10 @@ apply_dark() {
     
     # 8. Set Konsole default profile to Modern Dark
     kwriteconfig6 --file konsolerc --group "Desktop Entry" --key DefaultProfile ModernDark.profile
+    
+    # 9. Sync Lock Screen Wallpaper to Dark
+    kwriteconfig6 --file kscreenlockerrc --group Greeter --group Wallpaper --group org.kde.image --group General --key Image "/usr/share/wallpapers/DarkestHour/contents/images/2560x1600.jpg"
+    kwriteconfig6 --file kscreenlockerrc --group Greeter --group Wallpaper --group org.kde.image --group General --key PreviewImage "/usr/share/wallpapers/DarkestHour/contents/images/2560x1600.jpg"
     
     echo "dark" > "$MODE_FILE"
     echo "Successfully switched to Dark Mode."
